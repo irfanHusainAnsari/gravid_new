@@ -1,0 +1,57 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Optima Regular.ttf",
+      "sha1": "f97002fc1ab09c0a7e5a6df18c0369e7d4313337"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-Black.otf",
+      "sha1": "35c41bc5e140a563b8f53715ef38c182aa269aa8"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-BlackItalic.otf",
+      "sha1": "d36dccc92ac37e4d87d0d4cfae421ae14a3f7341"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-Bold.otf",
+      "sha1": "4f0c6b355b85bed7d046a409d0379ee336e05c6a"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-BoldItalic.otf",
+      "sha1": "fd4f55f31f65e9caf3c2323a00c97435e5670aff"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-DemiBold.otf",
+      "sha1": "bdbda91fd3b413b1fc5e2d8d052e71c1170e928b"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-DemiBoldItalic.otf",
+      "sha1": "1ba84a02a6e5e5921696e3786c90b6da7d3b6318"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-ExtraBlack.otf",
+      "sha1": "35975e471425c98b436fdd95ab708e33721137d2"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-ExtraBlackIta.otf",
+      "sha1": "9050612eefb5dedc69f13ffdc6f56b47b6704a0c"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-Italic.otf",
+      "sha1": "ad9641ed134f5495b59308517cf484db5423ef51"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-Medium.otf",
+      "sha1": "7c4f1f005d9ea639f96cbd1a8a748657099a98e2"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-MediumItalic.otf",
+      "sha1": "9f2953bc9f955fd5e8b130e29b18b3dc6bdeb3e1"
+    },
+    {
+      "path": "assets/fonts/OptimaLTPro-Roman.otf",
+      "sha1": "d94f2d93b7f5c00504a63fa0e85fcb3e49877e42"
+    }
+  ]
+}
