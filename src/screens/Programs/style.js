@@ -9,12 +9,13 @@ const styles = StyleSheet.create({
   },
   haddingView: {
     backgroundColor: colors.themeColor,
+    height: 110,
     paddingTop: 16,
     paddingBottom: 40,
-    flexDirection: "row",
+    // flexDirection: "row",
     paddingHorizontal: 24,
-    // alignItems: "center",
-    // justifyContent: "center"
+    alignItems: "center",
+    // justifyContent: 'center'
   },
   haddingTxt: {
     flex: 3,
@@ -22,7 +23,26 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontSize: 20,
     textAlign: "center",
-    lineHeight: 32
+    lineHeight: 32,
+  },
+  searchBoxView: {
+    backgroundColor: colors.grayLight,
+    marginHorizontal: 24,
+    borderRadius: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16
+  },
+  searchBox: {
+    fontFamily: fonts.OptimaBold,
+    color: colors.black,
+    fontSize: 14,
+    marginLeft: 6,
+    paddingRight: 12,
+    height: 45, 
+    width: 315,
+
+    flex:1
   },
   child: {
     // justifyContent: 'center',
@@ -32,11 +52,11 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   radiusView: {
-    height: 30,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    height: 60,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     backgroundColor: "white",
-    marginTop: -30,
+    marginTop: -60,
   },
   tabView: {
     // position:"absolute",
@@ -82,31 +102,33 @@ const styles = StyleSheet.create({
   },
   pregnantBack: {
     paddingTop: 60,
-    justifyContent: "space-between",
+    // marginTop: 18,
+    // paddingHorizontal: 16,
     flexDirection: "row",
-    marginTop: 18,
-    marginBottom: 70,
-    paddingHorizontal: 16
+    justifyContent: "space-between",
+  },
+  pregnantBack2: {
+
+    paddingHorizontal: 16,
   },
   subscribeTxt: {
-    fontFamily: fonts.OptimaDemiBold,
     color: colors.black,
-    fontSize: 18,
-    lineHeight: 24
-    // marginBottom: 20,
+    fontSize: 16, fontWeight: '500',
+    lineHeight: 24,
+
   },
   paidType: {
     paddingVertical: 4,
     paddingHorizontal: 12,
     position: "absolute",
-    backgroundColor: colors.themeColor,
     top: 4,
+    backgroundColor: colors.themeColor,
     left: 4,
     borderRadius: 13
   },
   wifiCon: {
-    paddingVertical: 4,
-    paddingHorizontal: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 6,
     position: "absolute",
     backgroundColor: colors.white,
     top: 4,
@@ -119,17 +141,15 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   subscribeBtn: {
-    // paddingHorizontal: 22,
-    paddingVertical: 9,
-    borderWidth: 2,
-    borderColor: colors.themeColor,
-    borderRadius: 15,
-    // flex: 1,
-    width: 150,
+    width: 145,
+    height: 40,
     marginTop: 32,
+    borderWidth: 1.5,
     marginBottom: 32,
+    borderRadius: 12,
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "center"
+    borderColor: colors.themeColor,
   },
   subscribeBtnTxt: {
     fontFamily: fonts.OptimaBold,
@@ -143,6 +163,8 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
   },
   searchBoxView: {
+    marginTop:-20,
+    marginBottom:20,
     backgroundColor: colors.grayLight,
     marginHorizontal: 24,
     borderRadius: 15,
@@ -214,18 +236,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   issuetitle: {
-    marginTop: 8,
-    fontFamily: fonts.OptimaBold,
-    color: colors.black,
-    fontSize: 13,
-    lineHeight: 17
-  },
-  issueDes: {
     marginTop: 5,
     fontFamily: fonts.OptimaRegular,
     color: colors.gray,
     fontSize: 13,
-    lineHeight: 16
+    lineHeight: 17,
+    paddingHorizontal:5
+  },
+  issueDes: {
+    marginTop: 5,
+    fontFamily: fonts.OptimaDemiBold,
+    color: colors.gray,
+    fontSize: 12,
+    lineHeight: 16,
+    paddingHorizontal:5
   },
   issueImg: {
     width: width / 3,
@@ -242,39 +266,41 @@ const styles = StyleSheet.create({
   },
   newsleftView: {
     paddingBottom: 12,
-    paddingHorizontal: 12,
+    paddingHorizontal: 5, width: 175
     // borderWidth:1
   },
   newsImg: {
-    width: width / 2,
-    height: width / 2
+    width: width / 4 + 60,
+    height: width / 4.3 + 40,
+    borderRadius: 10 / 2, marginTop: 10,
+    resizeMode: 'contain',
   },
   bkmrkBtn: {
     flexDirection: "row",
-    // marginTop: 12,
+    marginTop: 6,
     alignItems: "center",
     // justifyContent: "center"
   },
   bkmrkBtnTxt: {
-    fontFamily: fonts.OptimaRegular,
+    fontFamily: fonts.OptimaDemiBold,
     color: colors.gray,
     fontSize: 12,
     lineHeight: 17,
     marginLeft: 4
   },
   bkmrkIcn: {
-    // backgroundColor: colors.white,
-    // padding: 6,
     borderRadius: 100
   },
   endView: {
     marginHorizontal: 24,
-    marginVertical: 35
+    marginVertical: 40,
+    height:200
   },
   endImg: {
     width: "100%",
-    height: 122,
-    borderRadius: 10
+    height: 180,
+    borderRadius: 10,
+    resizeMode:"contain"
   },
   modalMainView: {
     marginHorizontal: 24,
@@ -322,20 +348,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   offHadding: {
-    // fontFamily: fonts.OptimaBold,
-    fontWeight: '700',
+    fontFamily: fonts.OptimaBold,
     color: colors.black,
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 24,
     marginTop: 10,
-    textAlign: "center",
-    marginHorizontal: 20
+    textAlign: "center"
   },
   offDes: {
-    fontWeight: '800',
-    color: colors.themeColor,
-    fontSize: 30,
-    marginTop: 16,
+    fontFamily: fonts.OptimaRegular,
+    color: colors.gray,
+    fontSize: 18,
+    lineHeight: 24,
+    marginTop: 18,
     textAlign: "center"
   },
   offType: {
@@ -393,21 +418,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   submitBtn: {
-    marginTop: 30,
-    borderWidth: 1.5,
-    borderRadius: 5,
     marginBottom: 50,
-    alignSelf: 'center',
+    paddingVertical: 9,
+    marginHorizontal: 60,
     alignItems: "center",
-    width: 169, height: 45,
-    justifyContent: 'center',
+    borderWidth: 1,
     borderColor: colors.themeColor,
+    borderRadius: 5
   },
   submitBtnTxt: {
-    fontFamily: fonts.OptimaMeduim,
-    fontWeight: '500',
-    color: colors.themeColor,
-    fontSize: 15,
+    fontFamily: fonts.OptimaBold,
+    color: colors.black,
+    fontSize: 14,
   },
   talkBubbleTriangleRight: {
     position: "absolute",
@@ -432,221 +454,7 @@ const styles = StyleSheet.create({
     borderRightColor: colors.themeColor,
     borderBottomWidth: 20,
     borderBottomColor: "transparent",
-  },
-  webinarTitle: {
-    marginVertical: 16,
-    fontFamily: fonts.OptimaBold,
-    color: colors.black,
-    fontSize: 16,
-  },
-  webinarDes: {
-    fontFamily: fonts.OptimaDemiBold,
-    color: colors.gray,
-    fontSize: 12,
-    lineHeight: 18.
-  },
-  joinWebinarBtn: {
-    backgroundColor: colors.themeColor,
-    marginTop: 10,
-    marginBottom: 20,
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  joinWebinarBtnTxt: {
-    fontFamily: fonts.OptimaMedium,
-    color: colors.black,
-    fontSize: 20,
-    paddingVertical: 14,
-    alignSelf:"center"
-  },
-  datetext:{
-    marginHorizontal:25,
-    fontFamily:fonts.OptimaBold,
-    fontSize:16,
-    color: colors.black,
-    marginBottom:15,
-  },
-  calFlatList:{
-    borderWidth:1,
-    borderColor:"#F1F1F1",
-    borderRadius:20,
-    paddingHorizontal:20,
-    paddingVertical:10,
-    marginLeft:10,
-    marginRight:10,
-    fontFamily:fonts.OptimaBold,
-  },
-  dateTimeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  dateTimeContainerFirst: {
-    width: '48%',
-    borderWidth: 0.5,
-    borderColor: '  #E3E3E3',
-    borderRadius: 30,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  timeTextTitleColor: {
-    color: '#6D7A90',
-  },
-  dateTimeContainerTo: {
-    width: '48%',
-    borderWidth: 0.5,
-    borderColor: '  #E3E3E3',
-    borderRadius: 30,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  timeTextTitleColor: {
-    color: '#6D7A90',
-  },
-  mainContainer: {
-    flex: 1,
-  },
-  headersContainer: {
-    backgroundColor: '#FA8981',
-    paddingHorizontal: 13,
-    height: 100,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 15,
-    // flex:1
-  },
-  headerIcons: {
-    width: 30,
-    height: 30,
-  },
-  headerTitle: {
-    color: '#000',
-    fontSize: 22,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  colorContainer: {
-    backgroundColor: '#ffffff',
-    borderTopRightRadius: 40,
-    borderTopLeftRadius: 40,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    marginTop: -30,
-  },
-  appointmentCard: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  appointmentImage: {
-    // backgroundColor: '#E3E3E3',
-    // borderRadius: 8,
-    // // height: 110,
-    // width: '100%',
-  },
-  appointmentText: {
-    color: '#6D7A90',
-    fontSize: 14,
-    marginBottom: 2,
-    fontFamily:fonts.OptimaMedium,
-  },
-  one1Text: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 14,
-    fontFamily:fonts.OptimaMedium,
-  },
-  localTimeText: {
-    color: '#000',
-    fontFamily:fonts.OptimaRegular
-  },
-  time: {
-    color: '#000',
-    fontWeight: '600',
-    fontSize: 14,
-    fontFamily:fonts.OptimaBold
-  },
-  cancelImageCOntainer: {
-    backgroundColor: '#FA8981',
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 25,
-    height: 25,
-    alignSelf: 'flex-end',
-  },
-  boderContainer: {
-    borderWidth: 0.5,
-    borderColor: '#E3E3E3',
-    marginTop: 15,
-    marginBottom: 10,
-  },
-  couponContainer: {
-    backgroundColor: '#E3E3E3',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    // paddingVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  couponCodeText: {
-    color: '#000',
-    fontSize: 15,
-    fontFamily:fonts.OptimaBold
-  },
-  buttonApply: {
-    backgroundColor: '#FA8981',
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '30%',
-    height: 36,
-  },
-  buttonTitle: {
-    color: '#000000',
-    fontSize: 15,
-    fontFamily:fonts.OptimaBold
-  },
-  subtotalContainers: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  subtotalTitleText: {
-    color: '#000',
-    fontSize: 16,
-    fontSize: 15,fontFamily:fonts.OptimaMedium
-  },
-  countButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FA8981',
-    borderBottomRightRadius: 4,
-    borderBottomLeftRadius: 4,
-    height: 45,
-    marginTop: 10,
-    paddingHorizontal: 10,
-  },
-  titleText: {
-    fontFamily:fonts.OptimaMedium,
-    color:"#000000"
-  },
-  buttonBookNow: {
-    backgroundColor: '#FA8981',
-    borderRadius: 10,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginBottom: 40,
-  },
- 
+  }
 });
 
 export default styles;

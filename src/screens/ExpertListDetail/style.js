@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     radiusView: {
-        height: 50,
+        height: 30,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
        
     },
-    CONTRIBUTORSTEXT: {
+        contributorText: {
         position:"relative",
         marginTop: -30,
         color: '#ffffff',
@@ -82,6 +82,27 @@ const styles = StyleSheet.create({
         fontFamily: fonts.OptimaBold,
         color: colors.black,
         fontSize: 18,
-    }
+    },
+    joinWebinarBtn: {
+        backgroundColor: colors.themeColor,
+        marginTop: 10,
+        marginBottom: 20,
+        alignItems: "center",
+        borderRadius: 5,
+      },
+      joinWebinarBtnTxt: {
+        fontFamily: fonts.OptimaMedium,
+        color: colors.black,
+        fontSize: 20,
+        paddingVertical: 14,
+        alignSelf:"center"
+      },
+      datetext:{
+        marginHorizontal:25,
+        fontFamily:fonts.OptimaBold,
+        fontSize:16,
+        color: colors.black,
+        marginBottom:15,
+      },
 })
 export default styles;

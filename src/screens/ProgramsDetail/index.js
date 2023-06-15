@@ -1,25 +1,41 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+
 import React, {useEffect, useState} from 'react';
 import {
+  ImageBackground,
   Image,
+  SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  StatusBar,
   Text,
+  useColorScheme,
   View,
   TouchableOpacity,
   TextInput,
+  FlatList,
   Dimensions,
+  Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {svgs, colors, fonts} from '@common';
-import styles from './styles';
+import styles from './style';
 import Apis from '../../Services/apis';
 import {imageurl} from '../../Services/constants';
 import RenderHtml from 'react-native-render-html';
-const {width, height} = Dimensions.get('window');
+import RazorpayCheckout from 'react-native-razorpay';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CalendarPicker from 'react-native-calendar-picker';
 import Toast from 'react-native-simple-toast';
-const WebinarDetail = props => {
+const {width, height} = Dimensions.get('window');
+const ProgramsDetail = props => {
   const isFocused = useIsFocused();
   const paid = props?.route?.params?.paid;
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,20 +45,19 @@ const WebinarDetail = props => {
   const [isLoader, setIsLoader] = useState(false);
   const [openCloseCalendar, setOpenCloseCalendar] = useState(false);
   const [dates, setDates] = useState(null);
-  const [webinarDetailItem, setWebinarDetailItem] = useState(true);
+  const [dateforcartsave, setdateforcartsave] = useState(null);
+  const [selectedItem1, setSelectedItem1] = useState("");
+  const [selectedItem2, setSelectedItem2] = useState("");
+  const [timeSlot, setTimeSlot] = useState([]);
+  const [selectedSlotId, setSelectedSlotId] = useState("");
+  const [programDetailItem, setProgramDetailItem] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   const [taxData, setTaxData] = useState("");
   const minDate = new Date(); // Today
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
-  const date = new Date(delail?.from_date);
-  const year = date.toLocaleString('default', {year: 'numeric'});
-  const monthh = date.toLocaleString('default', {month: '2-digit'});
-  const day = date.toLocaleString('default', {day: '2-digit'});
-  const formattedDate = day + '/' + monthh + '/' + year;
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-
  
   useEffect(() => {
     HomePagedata();
@@ -52,8 +67,8 @@ const WebinarDetail = props => {
     const params = {
       id: paid?.id,
     };
-    Apis.webinar_detail(params).then(async json => {
-      console.log('Detail=====:', json);
+    Apis.programs_detail(params).then(async json => {
+      console.log('programs_detail',json);
       if (json.status == true) {
         setDetail(json.data);
       }
@@ -66,22 +81,48 @@ const WebinarDetail = props => {
     }
   }, [isFocused]);
 
-  const onPressBookNow =()=>{
-    let form_data = new FormData();
+  const setUserProfileData = async () => {
+    // console.log('object');
+    try {
+      const jsondata = await AsyncStorage.getItem('valuedata');
+      // console.log('jsondata', jsondata);
+      if (jsondata !== null) {
+        var newVal = JSON.parse(jsondata);
+        setUserData(newVal);
+        console.log('imageurl + newVal.profile', imageurl + newVal.profile);
+        setShowdpimage({path: imageurl + newVal.profile});
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  const onSetScreen = () => {
+    setProgramDetailItem(false);
+    setOpenCloseCalendar(true);
+  };
+
+  const onPressContinue = () => {
+    if(selectedItem1 == ""){
+      alert("please select a time slot")
+    }else{
+      let form_data = new FormData();
       form_data.append("data_id",paid?.id);
       form_data.append("category_id", paid?.category);
       form_data.append("expert_id",paid?.expert_id);
       form_data.append("amount", paid?.amount);
-      form_data.append("sloat_date",paid?.to_date);
-      form_data.append("slot_from", paid?.start_time);
-      form_data.append("slot_to", paid?.end_time);
-      form_data.append("type", "webinar");
+      form_data.append("sloat_date", dateforcartsave);
+      form_data.append("slot_from", selectedItem1);
+      form_data.append("slot_to", selectedItem2);
+      form_data.append("type", "program");
+      console.log('form_data', form_data)
       Apis.getCartPostSaveData(form_data).then(async data => {
         if(data.status == true){
           Toast.show(data?.message, Toast.LONG)
           setIsLoader(true);
           Apis.getCartData({})
             .then(async (json) => {
+              console.log('json++++', json)
               if (json.status == true) {
                   setCartData(json?.data[0])
                   setTaxData(json?.taxData)
@@ -91,26 +132,13 @@ const WebinarDetail = props => {
               console.log("error", error);
               setIsLoader(false);
             })
-          setWebinarDetailItem(false);
+          setProgramDetailItem(false);
           setOpenCloseCalendar(false)
           setCartOpen(true)
         }else{
           Toast.show(data?.message, Toast.LONG)
         }
-      }).catch((err)=>{console.log("errrr form_data" , err)})
-  }
-
-
-  const setUserProfileData = async () => {
-    try {
-      const jsondata = await AsyncStorage.getItem('valuedata');
-      if (jsondata !== null) {
-        var newVal = JSON.parse(jsondata);
-        setUserData(newVal);
-        setShowdpimage({path: imageurl + newVal.profile});
-      }
-    } catch (error) {
-      // Error retrieving data
+      }).catch((err)=>{console.log("errrr form_data" , err);})
     }
   };
 
@@ -121,7 +149,7 @@ const WebinarDetail = props => {
   const handleInstamozo = (id) => {
     setIsLoader(true);
     const params = {
-      type: 2,
+      type: 4,
       type_id: cartData?.data_id,
       amount: totalAmount,
       purpose: cartData?.category?.title,
@@ -135,8 +163,11 @@ const WebinarDetail = props => {
     };
     Apis.instaMojoPayment(params)
       .then(async json => {
+        console.log('json,,,', json)
         if (json.status == true) {
-            props.navigation.navigate('InstaMojoWebScreen', {instamojoData: json});
+          props.navigation.navigate('InstaMojoWebScreen', {
+            instamojoData: json,
+          });
         }
         setIsLoader(false);
       })
@@ -146,11 +177,13 @@ const WebinarDetail = props => {
       });
   };
 
+
   const handleJoinWebinar = async data => {
+    // console.log("newaoiurl" , JSON.stringify(data)?.data?.web_link);
     const params = {
       id: paid.id,
     };
-    Apis.webinar_detail(params).then(async json => {
+    Apis.programs_detail(params).then(async json => {
       if (json.status == true) {
         setDetail(json?.data);
       }
@@ -159,6 +192,128 @@ const WebinarDetail = props => {
     props.navigation.navigate('WebViewScreen', {delail});
   };
 
+  const onDateChange = date => {
+    var date = new Date(date);
+    var year = date.toLocaleString('default', {year: 'numeric'});
+    var monthh = date.toLocaleString('default', {month: '2-digit'});
+    var day = date.toLocaleString('default', {day: '2-digit'});
+    var formattedDate = day + '/' + monthh + '/' + year;
+    var newFormateDate = year+"-" + monthh +"-"+day
+    console.log('objectformattedDate', newFormateDate);
+    setdateforcartsave(newFormateDate)
+    setDates(formattedDate);
+    const params = {
+      id: delail?.expert_id,
+      date: date,
+    };
+    console.log('params', params);
+    Apis.SendDateWebinar(params).then(async json => {
+      console.log('SendDateWebinar', json)
+      if (json.status == true) {
+        setTimeSlot(json?.data);
+      }
+    });
+  };
+
+  const startDate = dates ? dates.toString() : '';
+  console.log('date', startDate);
+  const customDatesStylesCallback = date => {
+    switch (date.isoWeekday()) {
+      case 1: // Monday
+        return {
+          style: {
+            // backgroundColor: '#F1F1F1',
+            borderColor: '#E3E3E3',
+            borderRadius: 100,
+            borderWidth: 1,
+          },
+          textStyle: {
+            color: '#6D7A90',
+            fontWeight: 'bold',
+          },
+        };
+
+      case 2: // Monday
+        return {
+          style: {
+            // backgroundColor: '#F1F1F1',
+            borderColor: '#FE887E',
+            borderRadius: 100,
+            borderWidth: 1,
+          },
+          textStyle: {
+            color: '#FE887E',
+            fontWeight: 'bold',
+          },
+        };
+
+      case 3: // Monday
+        return {
+          style: {
+            // backgroundColor: '#F1F1F1',
+            borderColor: '#FE887E',
+            borderRadius: 100,
+            borderWidth: 1,
+          },
+          textStyle: {
+            color: '#FE887E',
+            fontWeight: 'bold',
+          },
+        };
+
+      case 4: // Monday
+        return {
+          style: {
+            // backgroundColor: '#F1F1F1',
+            borderColor: '#FE887E',
+            borderRadius: 100,
+            borderWidth: 1,
+          },
+          textStyle: {
+            color: '#FE887E',
+            fontWeight: 'bold',
+          },
+        };
+
+      case 5: // Monday
+        return {
+          style: {
+            // backgroundColor: '#F1F1F1',
+            borderColor: '#FE887E',
+            borderRadius: 100,
+            borderWidth: 1,
+          },
+          textStyle: {
+            color: '#FE887E',
+            fontWeight: 'bold',
+          },
+        };
+      case 6: // Saturday
+        return {
+          style: {
+            backgroundColor: '#E3E3E3',
+          },
+          textStyle: {
+            color: '#6D7A90',
+            fontWeight: 'bold',
+          },
+        };
+      case 7: // Sunday
+        return {
+          style: {
+            backgroundColor: '#E3E3E3',
+            // borderRadius:100,
+            // borderWidth:1,
+          },
+          textStyle: {
+            color: '#6D7A90',
+            fontWeight: 'bold',
+          },
+        };
+    }
+  };
+
+ 
   return (
     <View style={styles.container}>
       <View style={styles.haddingView}>
@@ -167,9 +322,8 @@ const WebinarDetail = props => {
           onPress={() => props.navigation.goBack()}>
           {svgs.backArrow('black', 24, 24)}
         </TouchableOpacity>
-        {/* <Text style={styles.haddingTxt}>Webinar Detail</Text> */}
-        {webinarDetailItem == true ? (
-          <Text style={styles.haddingTxt}>Webinar Detail</Text>
+        {programDetailItem == true ? (
+          <Text style={styles.haddingTxt}>Programs Detail</Text>
         ) : openCloseCalendar == true ? (
           <Text style={styles.haddingTxt}>Date & Time</Text>
         ) : cartOpen == true ? (
@@ -181,7 +335,7 @@ const WebinarDetail = props => {
 
       <View style={styles.radiusView} />
 
-      {webinarDetailItem && (
+      {programDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}>
@@ -191,21 +345,20 @@ const WebinarDetail = props => {
               style={{width: '100%', resizeMode: 'contain', height: 300}}
             />
 
-
-            <View style={{flex: 1,flexDirection: 'row', marginVertical: 10}}>
-                <View style={{flex: 1, flexDirection: 'row',marginHorizontal:15}}>
-                  <Image
+            <View style={{flex:1,flexDirection: 'row', marginVertical: 10,}}>
+              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+                <Image
                   source={require('../../assets/images/calendar.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
                 />
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{alignItems:"center",justifyContent:"center"}}>
                   <Text
                     style={{
                       fontSize: 14,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
-                    Date
+                    Duration
                   </Text>
                   <Text
                     style={{
@@ -213,24 +366,24 @@ const WebinarDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                   {formattedDate}
+                   {delail?.duration}
                   </Text>
                 </View>
               </View>
 
-              <View style={{flex: 1, flexDirection: 'row',marginLeft:10}}>
+              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
                 <Image
                   source={require('../../assets/images/watch.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
                 />
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{alignItems:"center",justifyContent:"center"}}>
                   <Text
                     style={{
                       fontSize: 14,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
-                    Time
+                    Sessions
                   </Text>
                   <Text
                     style={{
@@ -238,18 +391,18 @@ const WebinarDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                  {delail?.start_time}
+                   {delail?.total_sessions}
                   </Text>
                 </View>
-              </View> 
+              </View>
 
-              <View style={{flex: 1, flexDirection: 'row',marginRight:-20,marginLeft:10}}>
+              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
                 <Image
                   source={require('../../assets/images/card.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
                 />
 
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{alignItems:"center",justifyContent:"center"}}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -269,9 +422,6 @@ const WebinarDetail = props => {
                 </View>
               </View>
             </View>
-
-
-
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
             {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
             <RenderHtml
@@ -285,14 +435,9 @@ const WebinarDetail = props => {
                 <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
               </TouchableOpacity>
             ) : (
-              // <TouchableOpacity style={styles.joinWebinarBtn} onPress={() => { setModalVisible(true) }}>
-              //   <Text style={styles.joinWebinarBtnTxt}>Join</Text>
-              // </TouchableOpacity>
               <TouchableOpacity
                 style={styles.joinWebinarBtn}
-                // onPress={onSetScreen}
-                onPress={onPressBookNow}
-                >
+                onPress={onSetScreen}>
                 <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
               </TouchableOpacity>
             )}
@@ -300,7 +445,7 @@ const WebinarDetail = props => {
         </ScrollView>
       )}
 
-      {/* {openCloseCalendar && (
+      {openCloseCalendar && (
         <View style={{flex: 1, backgroundColor: '#ffffff'}}>
           <ScrollView style={{}}>
             <Text style={[styles.haddingTxt, {paddingHorizontal: 20}]}>
@@ -347,8 +492,14 @@ const WebinarDetail = props => {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                          setSelectedItem1(item.slot_form);
-                          setSelectedItem2(item.slot_to);
+                          if(item.id){
+                            setSelectedSlotId(item.id)
+                            setSelectedItem1(item.slot_form);
+                            setSelectedItem2(item.slot_to);
+                          }else{
+
+                          }
+                         
                         }}>
                         <Text
                           style={{
@@ -361,7 +512,7 @@ const WebinarDetail = props => {
                             marginRight: 10,
                             fontFamily: fonts.OptimaBold,
                             backgroundColor:
-                              selectedItem1 == item.slot_form
+                            selectedSlotId == item.id
                                 ? colors.themeColor
                                 : null,
                           }}>
@@ -383,19 +534,17 @@ const WebinarDetail = props => {
             <Text style={styles.joinWebinarBtnTxt}>Continue</Text>
           </TouchableOpacity>
         </View>
-      )} */}
+      )}
 
       {cartOpen && (
         <View style={styles.mainContainer}>
           <View style={styles.colorContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-
-
             <View style={{}}>
             <View style={styles.appointmentCard}>
                 <View style={{ flex: 2 }}>
                     <View style={styles.appointmentImage}>
-                        <Image source={{uri:imageurl+cartData?.get_webinar?.image}} style={{height:100,resizeMode:"contain"}}/>
+                        <Image source={{uri:imageurl+cartData?.get_program?.image}} style={{height:100,resizeMode:"contain"}}/>
                     </View>
                 </View>
                 <View style={{ flex: 5, marginLeft: 10}}>
@@ -414,12 +563,6 @@ const WebinarDetail = props => {
             </View>
             <View style={styles.boderContainer}></View>
         </View>
-
-
-
-
-
-              
               <View style={styles.couponContainer}>
                 <TextInput style={styles.couponCodeText} placeholder='Coupon Code'/>
                 <TouchableOpacity style={styles.buttonApply}>
@@ -504,4 +647,4 @@ const WebinarDetail = props => {
   );
 };
 
-export default WebinarDetail;
+export default ProgramsDetail;

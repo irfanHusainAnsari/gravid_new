@@ -47,8 +47,8 @@ const Signup = (props) => {
   }
 
   const data = [
-    { key: '1', value: 'Doctor ', },
-    { key: '2', value: 'User' },
+    { key: '1', value: 'Doctor'},
+    { key: '2', value: 'User'},
   ]
 
   const SignUp = async () => {
@@ -76,9 +76,10 @@ const Signup = (props) => {
       Toast.show(errmail, Toast.LONG);
     } else if (city == '') {
       Toast.show(errcity, Toast.LONG);
-    }else if (referral == '') {
-      Toast.show(errReferral, Toast.LONG);
     }
+    // else if (referral == '') {
+    //   Toast.show(errReferral, Toast.LONG);
+    // }
     else if (term == '') {
       Toast.show(errcheck, Toast.LONG);
     }

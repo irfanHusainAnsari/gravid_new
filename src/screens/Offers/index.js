@@ -29,7 +29,7 @@ console.log('object', blogslist)
     Apis.HomeDatalist(params)
       .then(async (json) => {
         if (json.status == true) {
-          console.log('offers:', json.data.offers);
+          console.log('offers:', json?.data?.offers);
           setBlogsList(json?.data?.offers?.data);
         }
         setIsLoader(false)

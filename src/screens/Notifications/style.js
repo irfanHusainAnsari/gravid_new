@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import fonts from '../../common/fonts';
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -65,13 +66,13 @@ export const styles = StyleSheet.create({
     // flex: 2,
   },
   notificationsImage: {
-    width: 30,
-    height: 30,
+    width:25,
+    height:25,
     resizeMode: 'contain',
   },
   notificationsImageContainer: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
@@ -83,8 +84,8 @@ export const styles = StyleSheet.create({
   },
   textNotificationColor: {
     color: '#1C2F50',
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 14,
+    fontFamily:fonts.OptimaMedium
   },
   textTimeNotificationcolor: {
     color: '#6D7A90',

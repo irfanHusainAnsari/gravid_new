@@ -33,6 +33,9 @@ import ParentingTV from '../screens/ParentingTV';
 import Notifications from '../screens/Notifications';
 import WebViewScreen from '../component/WebViewScreen';
 import ServiceSelection from '../screens/ServiceSelection';
+import Cart from '../screens/Cart';
+import ProgramsDetail from '../screens/ProgramsDetail';
+
 
 
 const RootStack = createNativeStackNavigator();
@@ -77,6 +80,8 @@ const Navigators = () => {
       <RootStack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }} />
       <RootStack.Screen name="WebViewScreen" component={WebViewScreen} options={{ headerShown: false }} />
       <RootStack.Screen name="ServiceSelection" component={ServiceSelection} options={{ headerShown: false }} />
+      <RootStack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
+      <RootStack.Screen name="ProgramsDetail" component={ProgramsDetail} options={{ headerShown: false }} />
   
     </RootStack.Navigator>
   );

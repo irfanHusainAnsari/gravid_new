@@ -20,15 +20,21 @@ const styles = StyleSheet.create({
   signupImg: {
     width: 30,
     height: 30,
-    resizeMode: 'contain',
-    borderRadius: 15,
+    resizeMode:"stretch",
+    borderRadius: 100,
    
   },
   notification:{
-    width: 30,
-    height: 30,
+    width: 22,
+    height: 22,
     resizeMode: 'contain',
   },
+  cart:{
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+  
   headingText: {
     marginLeft: 13,
     flex:4

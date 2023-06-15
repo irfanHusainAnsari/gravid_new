@@ -16,7 +16,7 @@ export const Network = (method, endpoint, data = {}, isFile = false) => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       if (accessToken !== null) {
         Token = accessToken
-        // console.log("Token====", accessToken);
+        console.log("Token====", accessToken);
       }
     } catch (error) {
       // Error retrieving data

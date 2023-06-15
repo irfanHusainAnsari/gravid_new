@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   NewsLetterView: {
-    // backgroundColor:"red",
-    marginHorizontal: 8,
+    backgroundColor: "#F9FAFC",
+    flex:1,
     marginBottom: 16,
     padding: 10,
     backgroundColor:colors.grayLight,
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   issuetitle: {
-    fontFamily: fonts.OptimaBold,
+    fontFamily: fonts.OptimaMedium,
     color: colors.black,
-    fontSize: 18,
-    lineHeight: 18,
+    fontSize: 14,
+    // lineHeight:0,
     marginTop: 10,
     textAlign: "center",
   },
@@ -99,9 +99,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   newsImg: {
-    flex: 1,
-    width: width / 2.5,
-    height: width / 2.5,
+    flex:1,
+    width: width / 2.8,
+    height: width / 2.8,
     marginTop: 5,
     resizeMode: "contain",    // width: "100%",
     alignSelf: "center",

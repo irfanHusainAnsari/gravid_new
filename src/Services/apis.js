@@ -1,12 +1,6 @@
 import { Network } from './network'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//Network will recieve 4 Arguments
-// "method(type of request)",
-// "endpoint ()", 
-// "body (if POST method)"
-// See the main function at ./network.js
-
 export default class Apis {
   static signup = (data) => {
     return Network('POST', 'register', data)
@@ -33,8 +27,10 @@ export default class Apis {
     const localData = await AsyncStorage.getItem('catID')
     return Network('GET', 'home-data?category_id=' + JSON.parse(localData), data)
   }
+  static getNotificationData = async (data) => {
+    return Network('GET', 'get-notifications', data)
+  }
   static HomeDatalist = async (data) => {
-    console.log('objectdatadatadatadatadata', data.type)
     return Network('GET', 'home-data-list?type='+data.type +'&category_id='+data.id, data)
   }
   static Welcomescreendata = (data) => {
@@ -43,11 +39,32 @@ export default class Apis {
   static webinarlistLive = (data) => {
     return Network('GET', 'webinar-list?type=live', data)
   }
+  static programslistLive = (data) => {
+    return Network('GET', 'program-list', data)
+  }
   static webinarrecoded = (data) => {
     return Network('GET', 'webinar-list?type=recorded', data)
   }
   static webinar_detail = (data) => {
     return Network('GET', 'webinar-detail?id=' + data.id, data)
+  }
+  static programs_detail = (data) => {
+    return Network('GET', 'program-detail?id=' + data.id, data)
+  }
+  static expert_detail = (data) => {
+    return Network('GET', 'expert-detail?id=' + data.id, data)
+  }
+  static getCartPostSaveData = (data) => {
+    return Network('POST', 'cart-post', data , true)
+  }
+  static proceedOrder = (data) => {
+    return Network('POST', 'order-post', data , true)
+  }
+  static RemoveCart = (data) => {
+    return Network('POST', 'cart-remove', data , true)
+  }
+  static getCartData = (data) => {
+    return Network('GET', 'carts', data)
   }
   static HomeListsDetails = (data) => {
     return Network('GET', 'home-list-details?type=' + data.type + '&id=' + data.id, data)
@@ -59,7 +76,7 @@ export default class Apis {
     return Network('GET', 'expert-list', data)
   }
   static AddBookmark = (data) => {
-    console.log('data111111111111', data)
+    console.log('data11', data)
     return Network('POST', 'bookmark', data)
   }
   static AllBookMark = (data) => {
@@ -80,44 +97,4 @@ export default class Apis {
   static TermsCondition = (data) => {
   return Network('GET', 'terms-condition-app', data)
   }
-
-  // static fetch_usersTrip = () => {
-  //  return Network('GET', 'driver/viewTrip')
-  // }
-  // static create_employee = (data) => {
-  //   return Network('POST', 'create', data)
-  // }
-
-  // static OtpMobile = (data) => {
-  //   return Network('POST', 'driverAuth/verifyMobile', data)
-  // }
-  // static Verifymail = (data) => {
-  //   return Network('POST', 'driverAuth/verifyEmail', data)
-  // }
-  // static login = (data) => {
-  //   return Network('POST', 'driverAuth/login', data)
-  // }
-  // static resendEmailVerifyOtp = (data) => {
-  //   return Network('POST', 'driverAuth/resendEmailVerifyOtp', data)
-  // }
-  // static forgotPassword = (data) => {
-  //   return Network('POST', 'driverAuth/forgotPassword', data)
-  // }
-  // static verifyResetPasswordOtp = (data) => {
-  //   return Network('POST', 'driverAuth/verifyResetPasswordOtp', data)
-  // }
-  // static resetPassword = (data) => {
-  //   return Network('POST', 'driverAuth/resetPassword', data)
-  // }
-  // static insertDetails = (data) => {
-  //   return Network('POST', 'driver/insertDetails', data)
-  // }
-  // static updateDetails = (data) => {
-  //   return Network('POST', 'driver/updateDetails', data)
-  // }
-  // static driverpostTrip = (data) => {
-  //   return Network('POST', 'driver/postTrip', data)
-  // }
-
-
 }

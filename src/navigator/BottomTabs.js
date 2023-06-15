@@ -7,6 +7,9 @@ import Library from '../screens/Library';
 import { svgs } from '@common';
 import ParentingTV from '../screens/ParentingTV';
 import ExpertList from '../screens/ExpertList';
+import Packages from '../screens/Packages';
+import Programs from '../screens/Programs';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -24,10 +27,10 @@ function WebinarTab() {
     </Stack.Navigator>
   )
 }
-function LibraryTab() {
+function ProgramsTab() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="libraryScreen" component={Library} />
+      <Stack.Screen name="ProgramsScreen" component={Programs} />
     </Stack.Navigator>
   )
 }
@@ -42,10 +45,10 @@ function ExpertListTab() {
     </Stack.Navigator>
   )
 }
-function ParentingTVtab() {
+function PackagesTab() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }}>
-      <Stack.Screen name="ParentingTV" component={ParentingTV} />
+      <Stack.Screen name="PackagesScreen" component={Packages} />
     </Stack.Navigator>
   )
 }
@@ -76,9 +79,9 @@ function BottomTabs() {
     >
       <Tab.Screen name="Home" options={{ headerShown: false }} component={HomeTab} />
       <Tab.Screen name="Webinar" options={{ headerShown: false }} component={WebinarTab} />
-      <Tab.Screen name="Programs" options={{ headerShown: false }} component={LibraryTab} />
+      <Tab.Screen name="Programs" options={{ headerShown: false }} component={ProgramsTab} />
       <Tab.Screen name="Expert On Call" options={{ headerShown: false }} component={ExpertListTab} />
-      <Tab.Screen name="Packages" options={{ headerShown: false }} component={ParentingTVtab} />
+      <Tab.Screen name="Packages" options={{ headerShown: false }} component={PackagesTab} />
     </Tab.Navigator>
     
   );

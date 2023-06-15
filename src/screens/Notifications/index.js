@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {
   View,
   Text,
@@ -8,44 +8,31 @@ import {
   FlatList,
 } from 'react-native';
 import {styles} from './style';
-import {NotificationsContainerData} from '../../Common/FlatList';
+import Apis from '../../Services/apis';
+import fonts from '../../common/fonts';
 
 const Notifications = (props) => {
-  const NotificationsContainerData = [
-    {
-      id: 1,
-      NotificationImage: require('../../assets/images/bell.png'),
-      textNotification: 'Appointment confirmed',
-      textTimeNotification:
-        'Your Appointment with Dr. Mahmud Nik is confirmed. he will call you at 11 : 00 AM | 3 May, 2023',
-    },
-    {
-      id: 2,
-      NotificationImage: require('../../assets/images/bell.png'),
+  const [isLoader, setIsLoader] = useState(false)
+  const [notificationData, setNotificationData] = useState("")
+  console.log('notificationData', notificationData)
+  useEffect(() => {
+      getNotification();
+  }, [])
 
-      textNotification: 'Appointment confirmed',
-      textTimeNotification:
-        'Your Appointment with Dr. Mahmud Nik is confirmed. he will call you at 11 : 00 AM | 3 May, 2023',
-    },
-    {
-      id: 3,
-      NotificationImage: require('../../assets/images/bell.png'),
-
-      textNotification: 'Appointment confirmed',
-      textTimeNotification:
-        'Your Appointment with Dr. Mahmud Nik is confirmed. he will call you at 11 : 00 AM | 3 May, 2023',
-    },
-    {
-      id: 4,
-      NotificationImage: require('../../assets/images/bell.png'),
-
-      textNotification: 'Appointment confirmed',
-      textTimeNotification:
-        'Your Appointment with Dr. Mahmud Nik is confirmed. he will call you at 11 : 00 AM | 3 May, 2023',
-    },
-  ];
-
-
+  const getNotification = () => {
+    setIsLoader(true);
+    Apis.getNotificationData({})
+      .then(async (json) => {
+        console.log('getNotificationData',json.data);
+        if (json.status == true) {
+            setNotificationData(json?.data)
+        }
+        setIsLoader(false);
+      }).catch((error) => {
+        console.log("error", error);
+        setIsLoader(false);
+      })
+  }
 
 
   const NotificationsData = ({item}) => {
@@ -55,18 +42,22 @@ const Notifications = (props) => {
           <View style={styles.notificationsImageContainer}>
             <Image
               style={styles.notificationsImage}
-              source={item.NotificationImage}
+              source={require('../../assets/images/bell.png')}
             />
           </View>
         </View>
         <View style={styles.notificationsText}>
           <Text style={styles.textNotificationColor}>
-            {item.textNotification}
+            {item.message}
           </Text>
           <Text style={styles.textTimeNotificationcolor}>
             {item.textTimeNotification}
           </Text>
+          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{item.created_at}</Text>
+         
         </View>
+       
+
       </View>
     );
   };
@@ -87,25 +78,13 @@ const Notifications = (props) => {
       </View>
       <View style={styles.mainFlexContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.stylestoDayText}>Today - 3 May, 2023</Text>
-
           <FlatList
-            data={NotificationsContainerData}
+            data={notificationData}
             keyExtractor={item => item.id}
             renderItem={NotificationsData}
             ItemSeparatorComponent={() => (
               <View style={{borderWidth: 0.3, borderColor: '#ccc'}} />
             )}
-          />
-          <Text style={styles.stylestoDay}>Today - 3 May, 2023</Text>
-          <FlatList
-            data={NotificationsContainerData}
-            keyExtractor={item => item.id}
-            renderItem={NotificationsData}
-            ItemSeparatorComponent={() => (
-              <View style={{borderWidth: 0.3, borderColor: '#ccc'}} />
-            )}
-            contentContainerStyle={{marginBottom: 30}}
           />
         </ScrollView>
       </View>

@@ -19,10 +19,12 @@ import {useState} from 'react';
 
 const ServiceSelection = props => {
   const [catOpen, setCatOpen] = useState(false);
-  const [consultantOpen, setConsultantOpen] = useState(true);
+  const [consultantOpen, setConsultantOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [serviceList, setServiceList] = useState('Select Service');
   const [finalserviceselect, setfinalserviceselect] =useState('Select Service');
+  const [consultant, setConsultant] =useState('Select Service');
+  console.log('consultant', consultant)
   const serviceArray = [
     {name: 'Gynecology/Obstained', service: ['irfan']},
     {name: 'Pediatsss', service: ['aakash', 'sandesh', 'ravi']},
@@ -106,8 +108,6 @@ const ServiceSelection = props => {
                         </TouchableOpacity>
                       )
                     })}
-                   
-              
               </View>
             </View>
           <View style={{flex:5,paddingLeft:10,paddingVertical:10}}>
@@ -127,13 +127,11 @@ const ServiceSelection = props => {
                   )
                 })}
               </View>
-           
           )}
-            
           </View>
         </View>
-        </View> }
-         {/* irfan  */}
+      </View>}
+         
         <Text
           style={{
             fontSize: 16,
@@ -141,14 +139,8 @@ const ServiceSelection = props => {
             color: '#000',
             marginTop: 20,
           }}>
-          Consultant ::::::
+          Consultant :
         </Text>
-        {/* ffdfdfdfdf  */}
-        {/* ffdfdfdfdf  */}
-        {/* ffdfdfdfdf  */}
-        {/* ffdfdfdfdf  */}
-        {/* ffdfdfdfdf  */}
-        {/* ffdfdfdfdf  */}
         <View>
           <TouchableOpacity
             onPress={() => {
@@ -156,7 +148,7 @@ const ServiceSelection = props => {
             }}
             style={styles.touchableOpacity}>
             <Text style={{color: '#6D7A90', fontFamily: fonts.OptimaRegular}}>
-              Select Consultant
+             { consultant.name == undefined ? "select service" : consultant.name}
             </Text>
 
             <Image
@@ -169,14 +161,16 @@ const ServiceSelection = props => {
           {consultantOpen && 
           <View style={{backgroundColor:"#fff",borderRadius:8,marginTop:8,elevation:5,padding:10}}>
               {consultantArray.map((item)=>{
-              
                 return(
-                    <TouchableOpacity style={{flexDirection:"row",justifyContent:"space-between",paddingVertical:8}} onPress={()=>console.log('item',item)}>
-                      <View style={{flexDirection:"row",alignItems:"center",flex:.8,backgroundColor:"red"}}>
+                    <TouchableOpacity style={{flexDirection:"row",justifyContent:"space-between",paddingVertical:8}} onPress={()=>{
+                      setConsultant(item)
+                      setConsultantOpen(false)
+                      }}>
+                      <View style={{flexDirection:"row",alignItems:"center",flex:.8}}>
                       <Image source={require("../../assets/images/profile.png")} style={{width:30,height:30,resizeMode:"contain"}}/>
-                      <Text style={{marginLeft:8}}>{item.name}</Text>
+                      <Text style={{marginLeft:8,fontFamily:fonts.OptimaMedium}}>{item.name}</Text>
                       </View>
-                      <Text style={{alignSelf:"center",flex:.2,justifyContent:"flex-end"}}>{item.price}</Text>
+                      <Text style={{alignSelf:"center",flex:.2,justifyContent:"flex-end",fontFamily:fonts.OptimaMedium}}>{item.price}</Text>
                     </TouchableOpacity>
                 )
               })}
