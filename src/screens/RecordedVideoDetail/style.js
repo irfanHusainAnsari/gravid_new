@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         borderWidth:5,
         borderColor:"black",
         height:250,
-        width:"100%",
+        width:"90%",
         alignSelf:"center",
        
         },
@@ -50,17 +50,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     gravidTitleText: {
-        textAlign: 'center',
+        left:10,
         fontSize: 22,
         marginTop: 20,
         color: '#000000',
         fontWeight: 'bold'
     },
     novemberText: {
-        textAlign: 'center',
+        left:10,
         fontSize: 12,
         color: '#939393',
-        marginTop: 5
+        marginTop: 10
     },
     buyIssuesButton: {
         backgroundColor: '#FE887E',

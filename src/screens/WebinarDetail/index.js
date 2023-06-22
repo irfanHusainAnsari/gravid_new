@@ -43,8 +43,6 @@ const WebinarDetail = props => {
   const formattedDate = day + '/' + monthh + '/' + year;
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-
- 
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);

@@ -36,14 +36,13 @@ import ServiceSelection from '../screens/ServiceSelection';
 import Cart from '../screens/Cart';
 import ProgramsDetail from '../screens/ProgramsDetail';
 import PackageDetail from '../screens/PackageDetail.js';
-
-
+import RecordedWebinarVidioList from '../screens/RecordedWebinarVidioList/RecordedWebinarVidioList';
 
 const RootStack = createNativeStackNavigator();
 
 const Navigators = () => {
   return (
-    <RootStack.Navigator 
+    <RootStack.Navigator
     // initialRouteName='ServiceSelection'
     >
 
@@ -84,7 +83,7 @@ const Navigators = () => {
       <RootStack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
       <RootStack.Screen name="ProgramsDetail" component={ProgramsDetail} options={{ headerShown: false }} />
       <RootStack.Screen name="PackageDetail" component={PackageDetail} options={{ headerShown: false }} />
-  
+      <RootStack.Screen name='RecordedWebinarVidioList' component={RecordedWebinarVidioList} options={{ headerShown: false }} />
     </RootStack.Navigator>
   );
 };
