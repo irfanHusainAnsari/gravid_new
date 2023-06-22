@@ -3,6 +3,7 @@ import { Text, ActivityIndicator,TouchableOpacity, StyleSheet, View } from 'reac
 
 const Button = props => {
     const {
+        buyIssuesButton,
         Buttontitle,
         buyIssuesText,
         mainButtonContainer,
@@ -10,7 +11,7 @@ const Button = props => {
     } = props;
     return (
         <TouchableOpacity
-            style={styles.buyIssuesButton}
+            style={[styles.buyIssuesButton,buyIssuesButton]}
             onPress={Onhandle}
         >
          <Text style={[styles.buyIssuesText, buyIssuesText]}>{Buttontitle}</Text>
@@ -31,7 +32,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 60,
         height: 43
     },
     mainButtonContainer: {

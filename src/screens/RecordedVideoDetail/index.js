@@ -19,7 +19,6 @@ import Button from '../../component/Button';
 const { width } = Dimensions.get('window');
 
 const RecordedVideoDetail = (props) => {
-
   const isFocused = useIsFocused();
   const [isPaused, setIsPaused] = useState(false);
   let recordedVideoData = props?.route?.params?.item;
@@ -63,7 +62,6 @@ const setUserProfileData = async () => {
         // Error retrieving data
     }
 }
-
 const handleInstamozo = () => {
   setIsLoader(true)
   const params = {
@@ -96,7 +94,6 @@ const handleInstamozo = () => {
       setIsLoader(false)
     })
 }
-
   const handleRazorpay = () => {
     var options = {
       description: 'Credits towards consultation',
@@ -148,7 +145,6 @@ const handleInstamozo = () => {
         setIsLoader(false)
       })
   }
-
   const handleDownload = (pdfUrl) => {
     RNFetchBlob.config({
       fileCache: true,
@@ -170,10 +166,8 @@ const handleInstamozo = () => {
       console.log("err", err);
     })
   }
-
   const getDownloadsFile = () => {
     const android = RNFetchBlob.android
-
     RNFetchBlob.config({
       addAndroidDownloads: {
         // useDownloadManager: true,
@@ -229,7 +223,6 @@ const handleInstamozo = () => {
               style={styles.buyIssuesButton}
               disabled={isLoader}
               onPress={handleInstamozo}
-              // onPress={handleRazorpay}
             >
               {
                 isLoader ? (
@@ -239,12 +232,10 @@ const handleInstamozo = () => {
                 )
               }
             </TouchableOpacity>
-
           </ScrollView>
         )
       }
     </View>
   );
 };
-
 export default RecordedVideoDetail;

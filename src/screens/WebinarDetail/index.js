@@ -21,6 +21,7 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
 import CommonHeader from '../../component/CommonHeader';
+import Button from '../../component/Button';
 const WebinarDetail = props => {
   const isFocused = useIsFocused();
   const paid = props?.route?.params?.paid;
@@ -166,10 +167,10 @@ const WebinarDetail = props => {
   return (
     <View style={styles.container}>
       <CommonHeader
-        HeaderTitle={webinarDetailItem == true ? "Webinar Detail":
-        openCloseCalendar == true ?"Date & Time":
-        cartOpen == true ?"Cart":null} 
-        navigation={() =>props.navigation.goBack()} />
+        HeaderTitle={webinarDetailItem == true ? "Webinar Detail" :
+          openCloseCalendar == true ? "Date & Time" :
+            cartOpen == true ? "Cart" : null}
+        navigation={() => props.navigation.goBack()} />
       <View style={styles.radiusView} />
       {webinarDetailItem && (
         <ScrollView
@@ -261,22 +262,33 @@ const WebinarDetail = props => {
               source={{ html: delail?.description }}
             />
             {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
-              <TouchableOpacity
-                style={styles.joinWebinarBtn}
-                onPress={delail => handleJoinWebinar(delail)}>
-                <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
-              </TouchableOpacity>
+              <View style={{ paddingVertical: 10, }}>
+                <Button
+                  buyIssuesButton={styles.button_manage}
+                  Onhandle={(delail) => { handleJoinWebinar(delail) }}
+                  Buttontitle={"Get Link"} />
+              </View>
+              // <TouchableOpacity
+              //   style={styles.joinWebinarBtn}
+              //   onPress={delail => handleJoinWebinar(delail)}>
+              //   <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
+              // </TouchableOpacity>
             ) : (
               // <TouchableOpacity style={styles.joinWebinarBtn} onPress={() => { setModalVisible(true) }}>
               //   <Text style={styles.joinWebinarBtnTxt}>Join</Text>
               // </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.joinWebinarBtn}
-                // onPress={onSetScreen}
-                onPress={onPressBookNow}
-              >
-                <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
-              </TouchableOpacity>
+              <View style={{ paddingVertical: 10, }}>
+                <Button
+                  buyIssuesButton={styles.button_manage}
+                  Onhandle={() => { onPressBookNow() }}
+                  Buttontitle={"Book Now"} />
+              </View>
+              // <TouchableOpacity
+              //   style={styles.joinWebinarBtn}
+              //   onPress={onPressBookNow}
+              // >
+              //   <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+              // </TouchableOpacity>
             )}
           </View>
         </ScrollView>

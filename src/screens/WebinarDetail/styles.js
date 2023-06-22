@@ -459,6 +459,9 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     alignSelf:"center"
   },
+  button_manage:{
+   marginTop:-25,
+  },
   datetext:{
     marginHorizontal:25,
     fontFamily:fonts.OptimaBold,
