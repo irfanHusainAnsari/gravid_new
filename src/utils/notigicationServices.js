@@ -29,11 +29,9 @@ const getFcmToken =async ()=>{
       console.log(error, "error raised in fcm token")
     }
   }
-
 }
 
 export const notificationListener = async ()=>{
- 
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
@@ -50,10 +48,6 @@ export const notificationListener = async ()=>{
       );
       // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
     }
-   
   });
-
-
-
 }
 

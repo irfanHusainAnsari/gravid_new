@@ -64,13 +64,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   cancelImageCOntainer: {
-    backgroundColor: '#FA8981',
-    borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 25,
-    height: 25,
-    alignSelf: 'flex-end',
   },
   boderContainer: {
     borderWidth: 0.5,
@@ -117,8 +112,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#FA8981',
-    borderBottomRightRadius: 4,
-    borderBottomLeftRadius: 4,
+    borderRadius:10,
     height: 45,
     marginTop: 10,
     paddingHorizontal: 10,
@@ -146,12 +140,5 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
   },
-  colorContainer: {
-    backgroundColor: '#ffffff',
-    borderTopRightRadius: 40,
-    borderTopLeftRadius: 40,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    marginTop: -30,
-  },
+  
 });

@@ -30,6 +30,9 @@ export default class Apis {
   static getNotificationData = async (data) => {
     return Network('GET', 'get-notifications', data)
   }
+  static getPackageItem = async (data) => {
+    return Network('GET', 'packages', data)
+  }
   static HomeDatalist = async (data) => {
     return Network('GET', 'home-data-list?type='+data.type +'&category_id='+data.id, data)
   }
@@ -41,6 +44,9 @@ export default class Apis {
   }
   static programslistLive = (data) => {
     return Network('GET', 'program-list', data)
+  }
+  static getreadNotification = (data) => {
+    return Network('POST', 'read-notifications', data , true)
   }
   static webinarrecoded = (data) => {
     return Network('GET', 'webinar-list?type=recorded', data)

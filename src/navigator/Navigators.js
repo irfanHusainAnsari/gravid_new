@@ -35,6 +35,7 @@ import WebViewScreen from '../component/WebViewScreen';
 import ServiceSelection from '../screens/ServiceSelection';
 import Cart from '../screens/Cart';
 import ProgramsDetail from '../screens/ProgramsDetail';
+import PackageDetail from '../screens/PackageDetail.js';
 
 
 
@@ -82,6 +83,7 @@ const Navigators = () => {
       <RootStack.Screen name="ServiceSelection" component={ServiceSelection} options={{ headerShown: false }} />
       <RootStack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
       <RootStack.Screen name="ProgramsDetail" component={ProgramsDetail} options={{ headerShown: false }} />
+      <RootStack.Screen name="PackageDetail" component={PackageDetail} options={{ headerShown: false }} />
   
     </RootStack.Navigator>
   );

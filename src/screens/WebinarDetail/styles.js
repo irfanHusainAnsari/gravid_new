@@ -592,6 +592,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    height:40,
   },
   couponCodeText: {
     color: '#000',
@@ -603,12 +604,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '30%',
-    height: 36,
+    width: '25%',
+    height:25,
   },
   buttonTitle: {
     color: '#000000',
     fontSize: 15,
+    fontFamily:fonts.OptimaBold
+  },
+  buttonTitles: {
+    color: '#000000',
+    fontSize: 13,
     fontFamily:fonts.OptimaBold
   },
   subtotalContainers: {
@@ -627,8 +633,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#FA8981',
-    borderBottomRightRadius: 4,
-    borderBottomLeftRadius: 4,
+    borderRadius:10,
     height: 45,
     marginTop: 10,
     paddingHorizontal: 10,

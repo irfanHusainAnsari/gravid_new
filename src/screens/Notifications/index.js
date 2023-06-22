@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   FlatList,
+  ActivityIndicator
 } from 'react-native';
 import {styles} from './style';
 import Apis from '../../Services/apis';
@@ -34,10 +35,43 @@ const Notifications = (props) => {
       })
   }
 
-
+  const readNotification = (id) => {
+    const params = {
+      id:id,
+    };
+    setIsLoader(true);
+    Apis.getreadNotification(params)
+      .then(async (json) => {
+        console.log('getreadNotification',json.data);
+        if (json.status == true) {
+          Apis.getNotificationData({})
+          .then(async (json) => {
+            console.log('getNotificationData',json.data);
+            if (json.status == true) {
+                setNotificationData(json?.data)
+            }
+            setIsLoader(false);
+          }).catch((error) => {
+            console.log("error", error);
+            setIsLoader(false);
+          })
+        }
+        setIsLoader(false);
+      }).catch((error) => {
+        console.log("error", error);
+        setIsLoader(false);
+      })
+  }
+  if (isLoader) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
   const NotificationsData = ({item}) => {
     return (
-      <View style={styles.cardColorContainer}>
+      <TouchableOpacity style={styles.cardColorContainer} onPress={()=>readNotification(item?.id)}>
         <View style={styles.imageCard}>
           <View style={styles.notificationsImageContainer}>
             <Image
@@ -53,12 +87,10 @@ const Notifications = (props) => {
           <Text style={styles.textTimeNotificationcolor}>
             {item.textTimeNotification}
           </Text>
-          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{item.created_at}</Text>
-         
+          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{item.created_at}</Text>         
         </View>
        
-
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

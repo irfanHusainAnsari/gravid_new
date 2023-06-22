@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
@@ -29,15 +21,15 @@ import styles from './style';
 import Apis from '../../Services/apis';
 import {imageurl} from '../../Services/constants';
 import RenderHtml from 'react-native-render-html';
-import RazorpayCheckout from 'react-native-razorpay';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CalendarPicker from 'react-native-calendar-picker';
 import Toast from 'react-native-simple-toast';
 const {width, height} = Dimensions.get('window');
-const ProgramsDetail = props => {
+const PackageDetail = props => {
   const isFocused = useIsFocused();
-  const paid = props?.route?.params?.paid;
+  const packageitem =props?.route?.params?.packageitem
+  console.log('packageitem', packageitem)
   const [modalVisible, setModalVisible] = useState(false);
   const [delail, setDetail] = useState();
   const [cartData, setCartData] = useState("")
@@ -53,267 +45,267 @@ const ProgramsDetail = props => {
   const [programDetailItem, setProgramDetailItem] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   const [taxData, setTaxData] = useState("");
-  const minDate = new Date(); // Today
-  const month = minDate.getMonth();
-  const maxDate = new Date(2023, month + 1, 30);
-  const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
-  const totalAmount = taxDataitem+cartData?.amount
+  // const minDate = new Date(); // Today
+  // const month = minDate.getMonth();
+  // const maxDate = new Date(2023, month + 1, 30);
+  // const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
+  // const totalAmount = taxDataitem+cartData?.amount
 
 
  
-  useEffect(() => {
-    HomePagedata();
-  }, [isFocused]);
+  // useEffect(() => {
+  //   HomePagedata();
+  // }, [isFocused]);
 
-  const HomePagedata = () => {
-    const params = {
-      id: paid?.id,
-    };
-    Apis.programs_detail(params).then(async json => {
-      console.log('programs_detail',json);
-      if (json.status == true) {
-        setDetail(json.data);
-      }
-    });
-  };
+  // const HomePagedata = () => {
+  //   const params = {
+  //     id: paid?.id,
+  //   };
+  //   Apis.programs_detail(params).then(async json => {
+  //     console.log('programs_detail',json);
+  //     if (json.status == true) {
+  //       setDetail(json.data);
+  //     }
+  //   });
+  // };
 
-  useEffect(() => {
-    if (isFocused) {
-      setUserProfileData();
-    }
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     setUserProfileData();
+  //   }
+  // }, [isFocused]);
 
-  const setUserProfileData = async () => {
-    // console.log('object');
-    try {
-      const jsondata = await AsyncStorage.getItem('valuedata');
-      // console.log('jsondata', jsondata);
-      if (jsondata !== null) {
-        var newVal = JSON.parse(jsondata);
-        setUserData(newVal);
-        console.log('imageurl + newVal.profile', imageurl + newVal.profile);
-        setShowdpimage({path: imageurl + newVal.profile});
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
+  // const setUserProfileData = async () => {
+  //   // console.log('object');
+  //   try {
+  //     const jsondata = await AsyncStorage.getItem('valuedata');
+  //     // console.log('jsondata', jsondata);
+  //     if (jsondata !== null) {
+  //       var newVal = JSON.parse(jsondata);
+  //       // setUserData(newVal);
+  //       console.log('imageurl + newVal.profile', imageurl + newVal.profile);
+  //       // setShowdpimage({path: imageurl + newVal.profile});
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // };
 
-  const onSetScreen = () => {
-    setProgramDetailItem(false);
-    setOpenCloseCalendar(true);
-  };
+  // const onSetScreen = () => {
+  //   setProgramDetailItem(false);
+  //   setOpenCloseCalendar(true);
+  // };
 
-  const onPressContinue = () => {
-    if(selectedItem1 == ""){
-      alert("please select a time slot")
-    }else{
-      let form_data = new FormData();
-      form_data.append("data_id",paid?.id);
-      form_data.append("category_id", paid?.category);
-      form_data.append("expert_id",paid?.expert_id);
-      form_data.append("amount", paid?.amount);
-      form_data.append("sloat_date", dateforcartsave);
-      form_data.append("slot_from", selectedItem1);
-      form_data.append("slot_to", selectedItem2);
-      form_data.append("type", "program");
-      console.log('form_data', form_data)
-      Apis.getCartPostSaveData(form_data).then(async data => {
-        if(data.status == true){
-          Toast.show(data?.message, Toast.LONG)
-          setIsLoader(true);
-          Apis.getCartData({})
-            .then(async (json) => {
-              console.log('json++++', json)
-              if (json.status == true) {
-                  setCartData(json?.data[0])
-                  setTaxData(json?.taxData)
-              }
-              setIsLoader(false);
-            }).catch((error) => {
-              console.log("error", error);
-              setIsLoader(false);
-            })
-          setProgramDetailItem(false);
-          setOpenCloseCalendar(false)
-          setCartOpen(true)
-        }else{
-          Toast.show(data?.message, Toast.LONG)
-        }
-      }).catch((err)=>{console.log("errrr form_data" , err);})
-    }
-  };
+  // const onPressContinue = () => {
+  //   if(selectedItem1 == ""){
+  //     alert("please select a time slot")
+  //   }else{
+  //     let form_data = new FormData();
+  //     form_data.append("data_id",paid?.id);
+  //     form_data.append("category_id", paid?.category);
+  //     form_data.append("expert_id",paid?.expert_id);
+  //     form_data.append("amount", paid?.amount);
+  //     form_data.append("sloat_date", dateforcartsave);
+  //     form_data.append("slot_from", selectedItem1);
+  //     form_data.append("slot_to", selectedItem2);
+  //     form_data.append("type", "program");
+  //     console.log('form_data', form_data)
+  //     Apis.getCartPostSaveData(form_data).then(async data => {
+  //       if(data.status == true){
+  //         Toast.show(data?.message, Toast.LONG)
+  //         setIsLoader(true);
+  //         Apis.getCartData({})
+  //           .then(async (json) => {
+  //             console.log('json++++', json)
+  //             if (json.status == true) {
+  //                 setCartData(json?.data[0])
+  //                 setTaxData(json?.taxData)
+  //             }
+  //             setIsLoader(false);
+  //           }).catch((error) => {
+  //             console.log("error", error);
+  //             setIsLoader(false);
+  //           })
+  //         setProgramDetailItem(false);
+  //         setOpenCloseCalendar(false)
+  //         setCartOpen(true)
+  //       }else{
+  //         Toast.show(data?.message, Toast.LONG)
+  //       }
+  //     }).catch((err)=>{console.log("errrr form_data" , err);})
+  //   }
+  // };
 
-  const proceedToCkeckout =()=>{
-    handleInstamozo()
-  }
+  // const proceedToCkeckout =()=>{
+  //   handleInstamozo()
+  // }
 
-  const handleInstamozo = (id) => {
-    setIsLoader(true);
-    const params = {
-      type: 4,
-      type_id: cartData?.data_id,
-      amount: totalAmount,
-      purpose: cartData?.category?.title,
-      phone: userData?.mobile,
-      buyer_name: userData?.name,
-      email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
-    };
-    Apis.instaMojoPayment(params)
-      .then(async json => {
-        console.log('json,,,', json)
-        if (json.status == true) {
-          props.navigation.navigate('InstaMojoWebScreen', {
-            instamojoData: json,
-          });
-        }
-        setIsLoader(false);
-      })
-      .catch(error => {
-        console.log('error', error);
-        setIsLoader(false);
-      });
-  };
+  // const handleInstamozo = (id) => {
+  //   setIsLoader(true);
+  //   const params = {
+  //     type: 4,
+  //     type_id: cartData?.data_id,
+  //     amount: totalAmount,
+  //     purpose: cartData?.category?.title,
+  //     phone: userData?.mobile,
+  //     buyer_name: userData?.name,
+  //     email: userData?.email,
+  //     cart_id:cartData?.id,
+  //     tax_amount:taxDataitem,
+  //     tax_percent:taxData?.gst,
+  //     paid_amount:totalAmount,
+  //   };
+  //   Apis.instaMojoPayment(params)
+  //     .then(async json => {
+  //       console.log('json,,,', json)
+  //       if (json.status == true) {
+  //         props.navigation.navigate('InstaMojoWebScreen', {
+  //           instamojoData: json,
+  //         });
+  //       }
+  //       setIsLoader(false);
+  //     })
+  //     .catch(error => {
+  //       console.log('error', error);
+  //       setIsLoader(false);
+  //     });
+  // };
 
 
-  const handleJoinWebinar = async data => {
-    // console.log("newaoiurl" , JSON.stringify(data)?.data?.web_link);
-    const params = {
-      id: paid.id,
-    };
-    Apis.programs_detail(params).then(async json => {
-      if (json.status == true) {
-        setDetail(json?.data);
-      }
-    });
-    await Linking.openURL(`https://${delail?.web_link}`);
-    // props.navigation.navigate('WebViewScreen', {delail});
-  };
+  // const handleJoinWebinar = async data => {
+  //   // console.log("newaoiurl" , JSON.stringify(data)?.data?.web_link);
+  //   const params = {
+  //     id: paid.id,
+  //   };
+  //   Apis.programs_detail(params).then(async json => {
+  //     if (json.status == true) {
+  //       setDetail(json?.data);
+  //     }
+  //   });
+  //   await Linking.openURL(`https://${delail?.web_link}`);
+  //   // props.navigation.navigate('WebViewScreen', {delail});
+  // };
 
-  const onDateChange = date => {
-    var date = new Date(date);
-    var year = date.toLocaleString('default', {year: 'numeric'});
-    var monthh = date.toLocaleString('default', {month: '2-digit'});
-    var day = date.toLocaleString('default', {day: '2-digit'});
-    var formattedDate = day + '/' + monthh + '/' + year;
-    var newFormateDate = year+"-" + monthh +"-"+day
-    console.log('objectformattedDate', newFormateDate);
-    setdateforcartsave(newFormateDate)
-    setDates(formattedDate);
-    const params = {
-      id: delail?.expert_id,
-      date: date,
-    };
-    console.log('params', params);
-    Apis.SendDateWebinar(params).then(async json => {
-      console.log('SendDateWebinar', json)
-      if (json.status == true) {
-        setTimeSlot(json?.data);
-      }
-    });
-  };
+  // const onDateChange = date => {
+  //   var date = new Date(date);
+  //   var year = date.toLocaleString('default', {year: 'numeric'});
+  //   var monthh = date.toLocaleString('default', {month: '2-digit'});
+  //   var day = date.toLocaleString('default', {day: '2-digit'});
+  //   var formattedDate = day + '/' + monthh + '/' + year;
+  //   var newFormateDate = year+"-" + monthh +"-"+day
+  //   console.log('objectformattedDate', newFormateDate);
+  //   setdateforcartsave(newFormateDate)
+  //   setDates(formattedDate);
+  //   const params = {
+  //     id: delail?.expert_id,
+  //     date: date,
+  //   };
+  //   console.log('params', params);
+  //   Apis.SendDateWebinar(params).then(async json => {
+  //     console.log('SendDateWebinar', json)
+  //     if (json.status == true) {
+  //       setTimeSlot(json?.data);
+  //     }
+  //   });
+  // };
 
-  const startDate = dates ? dates.toString() : '';
-  console.log('date', startDate);
-  const customDatesStylesCallback = date => {
-    switch (date.isoWeekday()) {
-      case 1: // Monday
-        return {
-          style: {
-            // backgroundColor: '#F1F1F1',
-            borderColor: '#E3E3E3',
-            borderRadius: 100,
-            borderWidth: 1,
-          },
-          textStyle: {
-            color: '#6D7A90',
-            fontWeight: 'bold',
-          },
-        };
+  // const startDate = dates ? dates.toString() : '';
+  // console.log('date', startDate);
+  // const customDatesStylesCallback = date => {
+  //   switch (date.isoWeekday()) {
+  //     case 1: // Monday
+  //       return {
+  //         style: {
+  //           // backgroundColor: '#F1F1F1',
+  //           borderColor: '#E3E3E3',
+  //           borderRadius: 100,
+  //           borderWidth: 1,
+  //         },
+  //         textStyle: {
+  //           color: '#6D7A90',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
 
-      case 2: // Monday
-        return {
-          style: {
-            // backgroundColor: '#F1F1F1',
-            borderColor: '#FE887E',
-            borderRadius: 100,
-            borderWidth: 1,
-          },
-          textStyle: {
-            color: '#FE887E',
-            fontWeight: 'bold',
-          },
-        };
+  //     case 2: // Monday
+  //       return {
+  //         style: {
+  //           // backgroundColor: '#F1F1F1',
+  //           borderColor: '#FE887E',
+  //           borderRadius: 100,
+  //           borderWidth: 1,
+  //         },
+  //         textStyle: {
+  //           color: '#FE887E',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
 
-      case 3: // Monday
-        return {
-          style: {
-            // backgroundColor: '#F1F1F1',
-            borderColor: '#FE887E',
-            borderRadius: 100,
-            borderWidth: 1,
-          },
-          textStyle: {
-            color: '#FE887E',
-            fontWeight: 'bold',
-          },
-        };
+  //     case 3: // Monday
+  //       return {
+  //         style: {
+  //           // backgroundColor: '#F1F1F1',
+  //           borderColor: '#FE887E',
+  //           borderRadius: 100,
+  //           borderWidth: 1,
+  //         },
+  //         textStyle: {
+  //           color: '#FE887E',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
 
-      case 4: // Monday
-        return {
-          style: {
-            // backgroundColor: '#F1F1F1',
-            borderColor: '#FE887E',
-            borderRadius: 100,
-            borderWidth: 1,
-          },
-          textStyle: {
-            color: '#FE887E',
-            fontWeight: 'bold',
-          },
-        };
+  //     case 4: // Monday
+  //       return {
+  //         style: {
+  //           // backgroundColor: '#F1F1F1',
+  //           borderColor: '#FE887E',
+  //           borderRadius: 100,
+  //           borderWidth: 1,
+  //         },
+  //         textStyle: {
+  //           color: '#FE887E',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
 
-      case 5: // Monday
-        return {
-          style: {
-            // backgroundColor: '#F1F1F1',
-            borderColor: '#FE887E',
-            borderRadius: 100,
-            borderWidth: 1,
-          },
-          textStyle: {
-            color: '#FE887E',
-            fontWeight: 'bold',
-          },
-        };
-      case 6: // Saturday
-        return {
-          style: {
-            backgroundColor: '#E3E3E3',
-          },
-          textStyle: {
-            color: '#6D7A90',
-            fontWeight: 'bold',
-          },
-        };
-      case 7: // Sunday
-        return {
-          style: {
-            backgroundColor: '#E3E3E3',
-            // borderRadius:100,
-            // borderWidth:1,
-          },
-          textStyle: {
-            color: '#6D7A90',
-            fontWeight: 'bold',
-          },
-        };
-    }
-  };
+  //     case 5: // Monday
+  //       return {
+  //         style: {
+  //           // backgroundColor: '#F1F1F1',
+  //           borderColor: '#FE887E',
+  //           borderRadius: 100,
+  //           borderWidth: 1,
+  //         },
+  //         textStyle: {
+  //           color: '#FE887E',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
+  //     case 6: // Saturday
+  //       return {
+  //         style: {
+  //           backgroundColor: '#E3E3E3',
+  //         },
+  //         textStyle: {
+  //           color: '#6D7A90',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
+  //     case 7: // Sunday
+  //       return {
+  //         style: {
+  //           backgroundColor: '#E3E3E3',
+  //           // borderRadius:100,
+  //           // borderWidth:1,
+  //         },
+  //         textStyle: {
+  //           color: '#6D7A90',
+  //           fontWeight: 'bold',
+  //         },
+  //       };
+  //   }
+  // };
 
  
   return (
@@ -324,19 +316,140 @@ const ProgramsDetail = props => {
           onPress={() => props.navigation.goBack()}>
           {svgs.backArrow('black', 24, 24)}
         </TouchableOpacity>
-        {programDetailItem == true ? (
-          <Text style={styles.haddingTxt}>Programs Detail</Text>
-        ) : openCloseCalendar == true ? (
+        {/* {programDetailItem == true ? ( */}
+          <Text style={styles.haddingTxt}>Package Detail</Text>
+        {/* ) : openCloseCalendar == true ? (
           <Text style={styles.haddingTxt}>Date & Time</Text>
         ) : cartOpen == true ? (
           <Text style={styles.haddingTxt}>Cart</Text>
-        ) : null}
+        ) : null} */}
         <Text style={styles.haddingTxt}></Text>
         <View style={{flex: 3}} />
       </View>
 
       <View style={styles.radiusView} />
 
+      <ScrollView
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={false}>
+          <View style={{marginHorizontal: 20}}>
+            <Image
+              source={{uri: imageurl + packageitem?.image}}
+              style={{width: '100%', resizeMode: 'contain', height: 300}}
+            />
+            <View style={{flex: 1,flexDirection: 'row', marginVertical: 10}}>
+                <View style={{flex: 1, flexDirection: 'row',marginHorizontal:15}}>
+                  <Image
+                  source={require('../../assets/images/calendar.png')}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                />
+                <View style={{flex: 1, paddingHorizontal: 5}}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: fonts.OptimaMedium,
+                      color: '#000',
+                    }}>
+                    Date
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontFamily: fonts.OptimaMedium,
+                      color: 'gray',
+                    }}>
+                   {/* {formattedDate} */}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{flex:1, flexDirection: 'row',marginLeft:10}}>
+                <Image
+                  source={require('../../assets/images/watch.png')}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                />
+                <View style={{flex: 1, paddingHorizontal: 5}}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: fonts.OptimaMedium,
+                      color: '#000',
+                    }}>
+                    Time
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontFamily: fonts.OptimaMedium,
+                      color: 'gray',
+                    }}>
+                  {/* {delail?.start_time} */}
+                  </Text>
+                </View>
+              </View> 
+
+              <View style={{flex: 1, flexDirection: 'row',marginRight:-20,marginLeft:10}}>
+                <Image
+                  source={require('../../assets/images/card.png')}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                />
+
+                <View style={{flex: 1, paddingHorizontal: 5}}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: fonts.OptimaMedium,
+                      color: '#000',
+                    }}>
+                       Price
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontFamily: fonts.OptimaMedium,
+                      color: 'gray',
+                    }}>
+                    {/* ₹ {delail?.amount} /- */}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+
+
+            {/* <Text style={styles.webinarTitle}>{delail?.title}</Text> */}
+            {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
+            {/* <RenderHtml
+              contentWidth={width}
+            //   source={{html: delail?.description}}
+            /> */}
+            {/* {delail?.check_payment?.id || delail?.payment_type == 'Free' ? ( */}
+              {/* <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                // onPress={delail => handleJoinWebinar(delail)}
+                >
+                <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
+              </TouchableOpacity> */}
+            {/* ) : ( */}
+              {/* // <TouchableOpacity style={styles.joinWebinarBtn} onPress={() => { setModalVisible(true) }}>
+              //   <Text style={styles.joinWebinarBtnTxt}>Join</Text>
+              // </TouchableOpacity> */}
+              {/* <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                // onPress={onSetScreen}
+                // onPress={onPressBookNow}
+                >
+                <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+              </TouchableOpacity> */}
+            {/* )} */}
+          </View>
+        </ScrollView>
+
+
+
+
+
+{/* 
       {programDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
@@ -426,7 +539,7 @@ const ProgramsDetail = props => {
             </View>
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
             {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
-            <RenderHtml
+            {/* <RenderHtml
               contentWidth={width}
               source={{html: delail?.description}}
             />
@@ -445,9 +558,9 @@ const ProgramsDetail = props => {
             )}
           </View>
         </ScrollView>
-      )}
+      )} */}
 
-      {openCloseCalendar && (
+      {/* {openCloseCalendar && (
         <View style={{flex: 1, backgroundColor: '#ffffff'}}>
           <ScrollView style={{}}>
             <Text style={[styles.haddingTxt, {paddingHorizontal: 20}]}>
@@ -536,9 +649,9 @@ const ProgramsDetail = props => {
             <Text style={styles.joinWebinarBtnTxt}>Continue</Text>
           </TouchableOpacity>
         </View>
-      )}
+      )} */}
 
-      {cartOpen && (
+      {/* {cartOpen && (
         <View style={styles.mainContainer}>
           <View style={styles.colorContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -556,13 +669,13 @@ const ProgramsDetail = props => {
                     <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
                     <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
                     <Text style={styles.appointmentText}>Price <Text style={styles.time}>{cartData.amount}/-</Text></Text>
-                </View>
+                </View> */}
                 {/* <View style={{ flex: 1, }}>
                     <TouchableOpacity style={styles.cancelImageCOntainer}>
                         <Image style={{ width: 15, height: 15 }} source={item.Cancel_Image} />
                     </TouchableOpacity>
                 </View> */}
-            </View>
+            {/* </View>
             <View style={styles.boderContainer}></View>
         </View>
               <View style={styles.couponContainer}>
@@ -600,9 +713,9 @@ const ProgramsDetail = props => {
             </ScrollView>
           </View>
         </View>
-      )}
+      )} */}
 
-      <Modal
+      {/* <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}>
@@ -644,9 +757,9 @@ const ProgramsDetail = props => {
             </TouchableOpacity>
           </ScrollView>
         </View>
-      </Modal>
+      </Modal> */} 
     </View>
   );
 };
 
-export default ProgramsDetail;
+export default PackageDetail;

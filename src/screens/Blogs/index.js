@@ -5,7 +5,6 @@ import styles from './styles';
 import Swiper from 'react-native-swiper';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
-
 const Blogs = (props) => {
   const adsense = props?.route?.params?.adsense;
   const [blogslist, setBlogsList] = useState([])
@@ -46,7 +45,6 @@ const Blogs = (props) => {
         style={styles.NewsLetterView}
         onPress={() => props.navigation.navigate("RecentBlogsDetail", { item })}
       >
-
         <Text style={styles.issuetitle}>{item.title}</Text>
         <View style={styles.newsleftView}>
           <Text style={styles.issueDes}>{item.short_description}</Text>

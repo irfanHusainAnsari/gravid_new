@@ -7,7 +7,8 @@ import {
   Image,
   Dimensions,
   Linking,
-  FlatList
+  FlatList,
+  TextInput
 } from 'react-native';
 import styles from './style';
 import {svgs, colors,fonts} from '@common';
@@ -18,6 +19,7 @@ import {imageurl} from '../../Services/constants';
 import {useIsFocused} from '@react-navigation/native';
 import CalendarPicker from 'react-native-calendar-picker';
 import Toast from 'react-native-simple-toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ExpertListDetail = props => {
   const minDate = new Date(); // Today
@@ -40,13 +42,35 @@ const ExpertListDetail = props => {
   const [taxData, setTaxData] = useState("");
   const [cartData, setCartData] = useState("")
   const [cartOpen, setCartOpen] = useState(false);
-
-  console.log('taxData', taxData)
+  const [showdpimage, setShowdpimage] = useState({});
+  const [userData, setUserData] = useState({});
+  const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
+  const totalAmount = taxDataitem+cartData?.amount
   console.log('cartData', cartData)
-  console.log('timeSlot', timeSlot)
   useEffect(() => {
     ExpertListDetailData();
+    setUserProfileData();
   }, [isFocused]);
+
+  
+
+
+  const setUserProfileData = async () => {
+    // console.log('object');
+    try {
+      const jsondata = await AsyncStorage.getItem('valuedata');
+      console.log('jsondata', jsondata);
+      if (jsondata !== null) {
+        var newVal = JSON.parse(jsondata);
+        setUserData(newVal);
+        console.log('imageurl + newVal.profile', imageurl + newVal.profile);
+        setShowdpimage({path: imageurl + newVal.profile});
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+  
 
   const ExpertListDetailData = () => {
     const params = {
@@ -186,6 +210,34 @@ const ExpertListDetail = props => {
         };
     }
   };
+  const proceedToCkeckout = () => {
+    setIsLoader(true);
+    const params = {
+      type: 5,
+      type_id: cartData?.data_id,
+      amount: cartData.amount,
+      purpose: cartData?.get_expert?.name,
+      phone: userData?.mobile,
+      buyer_name: userData?.name,
+      email: userData?.email,
+      cart_id:cartData?.id,
+      tax_amount:taxDataitem,
+      tax_percent:taxData?.gst,
+      paid_amount:totalAmount,
+    };
+    Apis.instaMojoPayment(params)
+      .then(async json => {
+        console.log('instaMojoPayment', json)
+        if (json.status == true) {
+            props.navigation.navigate('InstaMojoWebScreen', {instamojoData: json});
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
 
   const onPressContinue = () => {
     console.log('selectedItem1', selectedItem1)
@@ -213,6 +265,8 @@ const ExpertListDetail = props => {
               if (json.status == true) {
                   setCartData(json?.data[0])
                   setTaxData(json?.taxData)
+                  setOpenCloseCalendar(false)
+                  setCartOpen(true)
               }
               setIsLoader(false);
             }).catch((error) => {
@@ -381,6 +435,72 @@ const ExpertListDetail = props => {
             >
             <Text style={styles.joinWebinarBtnTxt}>Continue</Text>
           </TouchableOpacity>
+        </View>
+      )}
+
+{cartOpen && (
+        <View style={styles.mainContainer}>
+          <View style={styles.colorContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{}}>
+            <View style={styles.appointmentCard}>
+                <View style={{ flex: 2 }}>
+                    <View style={styles.appointmentImage}>
+                        <Image source={{uri:imageurl+cartData?.get_program?.image}} style={{height:100,resizeMode:"contain"}}/>
+                    </View>
+                </View>
+                <View style={{ flex: 5, marginLeft: 10}}>
+                    <Text style={styles.appointmentText}>Appointment: 1</Text>
+                    <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Date & Time :</Text></Text>
+                    <Text style={styles.time}>{dates}, {cartData?.slot_form}-{cartData?.slot_to}</Text>
+                    <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
+                    <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
+                    <Text style={styles.appointmentText}>Price <Text style={styles.time}>{cartData.amount}/-</Text></Text>
+                </View>
+                {/* <View style={{ flex: 1, }}>
+                    <TouchableOpacity style={styles.cancelImageCOntainer}>
+                        <Image style={{ width: 15, height: 15 }} source={item.Cancel_Image} />
+                    </TouchableOpacity>
+                </View> */}
+            </View>
+            <View style={styles.boderContainer}></View>
+        </View>
+              <View style={styles.couponContainer}>
+                <TextInput style={styles.couponCodeText} placeholder='Coupon Code' placeholderTextColor={"#000"}/>
+                <TouchableOpacity style={styles.buttonApply}>
+                  <Text style={styles.buttonTitles}>Apply</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.subtotalContainers}>
+                <Text style={styles.subtotalTitleText}>Subtotal</Text>
+                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹{cartData?.amount}</Text>
+              </View>
+              <View
+                style={{
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  borderColor: 'red',
+                  marginTop: 10,
+                  height:0.5
+                }}></View>
+              <View style={styles.subtotalContainers}>
+                <Text style={styles.subtotalTitleText}>Tax(GST 18%)</Text>
+                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹ {taxDataitem}</Text>
+              </View>
+
+              <View style={styles.countButton}>
+                <Text style={styles.titleText}>Total Amount</Text>
+                <Text style={{color: '#000',fontSize: 15,fontFamily:fonts.OptimaBold}}>
+                  ₹ {totalAmount}
+                </Text>
+              </View>
+              <TouchableOpacity style={styles.buttonBookNow} 
+              onPress={proceedToCkeckout}
+              >
+                <Text style={styles.buttonTitle}>Proceed to checkout</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
       )}
 

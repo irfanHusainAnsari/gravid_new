@@ -6,7 +6,6 @@ import Modal from "react-native-modal";
 import styles from './styles';
 import Swiper from 'react-native-swiper'
 import Apis from '../../Services/apis';
-import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
@@ -37,6 +36,8 @@ const Home = (props, { route }) => {
   const [offerListSearch, setofferListSearch] = useState([])
   const [videolistSearch, setVideoListSearch] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
+  const [cartCount, setCartCount] = useState("")
+  console.log('cartCount', cartCount)
   // const [showslider, setShowSlider] = useState(true)
   const [isLoader, setIsLoader] = useState(false)
 
@@ -47,6 +48,7 @@ const Home = (props, { route }) => {
       HomePagedata();
       setProfileAndHomeData();
       addBookmark();
+      getCart();
     }
   }, [isFocused])
 
@@ -91,6 +93,25 @@ const Home = (props, { route }) => {
       })
   }
 
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+        console.log('getCartData000000', json.cartCount);
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
+
 
   const addBookmark = (bookmarkID, bookmarkType) => {
     console.log('bookmarkID',"bookmarkType", bookmarkID,bookmarkType)
@@ -108,22 +129,7 @@ const Home = (props, { route }) => {
       })
   }
 
-  const renderslider = ({ item, index }) => (
-    <TouchableOpacity onPress={item?.slider_url ? () => Linking.openURL(item.slider_url) : null}>
-      <Image style={styles.subscribeOfferImg}
-        source={{ uri: imageurl + item.image }}
-      />
-      {/* <ImageBackground source={require('../../assets/images/pregnant-black-woman.png')}
-        style={styles.subscribeOfferImg}>
-        <Image source={{ uri: imageurl + item.image }} style={styles.gravidimg} />
-        <Text style={styles.yearlydis}>{item.title}</Text>
-        <Text numberOfLines={2} style={styles.destxt}>{item.description}</Text>
-        <TouchableOpacity style={styles.subscribeBtn}>
-          <Text style={styles.subscribeBtnTxt}>SUBSCRIBE</Text>
-        </TouchableOpacity>
-      </ImageBackground> */}
-    </TouchableOpacity>
-  )
+ 
   const renderItemIssue = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -266,10 +272,12 @@ const Home = (props, { route }) => {
             {/* <Text style={{position:"absolute",fontSize:8,right:5,top:2.5,color:colors.themeColor}}>5</Text> */}
           </TouchableOpacity>
           <TouchableOpacity
-          style={{borderRadius:100}}
+          
             onPress={() => { props.navigation.navigate('Cart') }}>
             <Image style={styles.cart} source={require('../../assets/images/cart.png')} />
-            {/* <Text style={{position:"absolute",fontSize:8,right:4,top:2.1,color:colors.themeColor}}>1</Text> */}
+            <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:12,height:12,right:-5,top:-8, backgroundColor:colors.themeColor}}>
+              <Text style={{fontSize:10,color:"white",marginHorizontal:2,marginTop:-2}}>{cartCount}</Text>
+            </View>
           </TouchableOpacity>
           <View>
           </View>
@@ -319,11 +327,6 @@ const Home = (props, { route }) => {
           horizontal
         // extraData={selectedId}
         />
-
-
-
-
-
         <View style={styles.sliderHadding}>
           <Text style={styles.haddingTxt}>Magazines</Text>
           <TouchableOpacity style={styles.viewAllBtn} onPress={() => props.navigation.navigate("CurrentIssue")}>
@@ -370,11 +373,6 @@ const Home = (props, { route }) => {
           showsHorizontalScrollIndicator={false}
           horizontal
         />
-
-      
-
-
-
         {/* </View> */}
         <View style={styles.endView} >
           <Swiper style={{}}

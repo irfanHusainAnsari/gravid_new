@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {svgs, colors, fonts} from '@common';
@@ -155,8 +156,8 @@ const WebinarDetail = props => {
         setDetail(json?.data);
       }
     });
-    // await Linking.openURL(`https://${delail?.web_link}`);
-    props.navigation.navigate('WebViewScreen', {delail});
+    await Linking.openURL(`${delail.web_link}`);
+    // props.navigation.navigate('WebViewScreen', {delail});
   };
 
   return (
@@ -179,8 +180,7 @@ const WebinarDetail = props => {
         <View style={{flex: 3}} />
       </View>
 
-      <View style={styles.radiusView} />
-
+      <View style={styles.radiusView}/>
       {webinarDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
@@ -190,8 +190,6 @@ const WebinarDetail = props => {
               source={{uri: imageurl + delail?.image}}
               style={{width: '100%', resizeMode: 'contain', height: 300}}
             />
-
-
             <View style={{flex: 1,flexDirection: 'row', marginVertical: 10}}>
                 <View style={{flex: 1, flexDirection: 'row',marginHorizontal:15}}>
                   <Image
@@ -241,14 +239,12 @@ const WebinarDetail = props => {
                   {delail?.start_time}
                   </Text>
                 </View>
-              </View> 
-
+              </View>
               <View style={{flex: 1, flexDirection: 'row',marginRight:-20,marginLeft:10}}>
                 <Image
                   source={require('../../assets/images/card.png')}
                   style={{width: 25, height: 25, resizeMode: 'contain'}}
                 />
-
                 <View style={{flex: 1, paddingHorizontal: 5}}>
                   <Text
                     style={{
@@ -269,9 +265,6 @@ const WebinarDetail = props => {
                 </View>
               </View>
             </View>
-
-
-
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
             {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
             <RenderHtml
@@ -300,90 +293,7 @@ const WebinarDetail = props => {
         </ScrollView>
       )}
 
-      {/* {openCloseCalendar && (
-        <View style={{flex: 1, backgroundColor: '#ffffff'}}>
-          <ScrollView style={{}}>
-            <Text style={[styles.haddingTxt, {paddingHorizontal: 20}]}>
-              Date & Time
-            </Text>
-            <CalendarPicker
-              minDate={minDate}
-              maxDate={maxDate}
-              firstDay={1}
-              customDatesStyles={customDatesStylesCallback}
-              customDayHeaderStyles={() => {
-                return {
-                  textStyle: {color: '#FE887E', opacity: 1, fontWeight: 'bold'},
-                };
-              }}
-              dayLabelsWrapper={{
-                borderTopWidth: 0,
-                borderBottomWidth: 0,
-              }}
-              onDateChange={onDateChange}
-              todayBackgroundColor="#FE887E"
-            />
-            <View
-              style={{
-                borderBottomColor: '#E3E3E3',
-                borderWidth: 1,
-                marginHorizontal: 20,
-                marginVertical: 15,
-                opacity: 0.1,
-              }}
-            />
-            <Text style={styles.datetext}>{dates}</Text>
-            <View style={{marginHorizontal: 1}}>
-              <FlatList
-                data={timeSlot}
-                keyExtractor={item => item.id}
-                numColumns={2}
-                contentContainerStyle={{alignItems: 'center'}}
-                renderItem={({item, index}) => {
-                  return (
-                    <View
-                      style={{
-                        marginVertical: 5,
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setSelectedItem1(item.slot_form);
-                          setSelectedItem2(item.slot_to);
-                        }}>
-                        <Text
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#F1F1F1',
-                            borderRadius: 20,
-                            paddingHorizontal: 20,
-                            paddingVertical: 10,
-                            marginLeft: 10,
-                            marginRight: 10,
-                            fontFamily: fonts.OptimaBold,
-                            backgroundColor:
-                              selectedItem1 == item.slot_form
-                                ? colors.themeColor
-                                : null,
-                          }}>
-                          {item.slot_form} - {item.slot_to}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-              />
-            </View>
-          </ScrollView>
-
-          <TouchableOpacity
-            style={[styles.joinWebinarBtn, {marginHorizontal: 20}]}
-            // onPress={() => setModalVisible(true)}
-            // onPress={()=>props.navigation.navigate("Cart")}
-            onPress={onPressContinue}>
-            <Text style={styles.joinWebinarBtnTxt}>Continue</Text>
-          </TouchableOpacity>
-        </View>
-      )} */}
+    
 
       {cartOpen && (
         <View style={styles.mainContainer}>
@@ -400,7 +310,7 @@ const WebinarDetail = props => {
                 </View>
                 <View style={{ flex: 5, marginLeft: 10}}>
                     <Text style={styles.appointmentText}>Appointment: 1</Text>
-                    <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Local Time</Text></Text>
+                    <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Date & Time</Text></Text>
                     <Text style={styles.time}>{cartData?.sloat_date}, {cartData?.slot_form}-{cartData?.slot_to}</Text>
                     <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
                     <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
@@ -414,16 +324,11 @@ const WebinarDetail = props => {
             </View>
             <View style={styles.boderContainer}></View>
         </View>
-
-
-
-
-
               
               <View style={styles.couponContainer}>
-                <TextInput style={styles.couponCodeText} placeholder='Coupon Code'/>
+                <TextInput style={styles.couponCodeText} placeholder='Coupon Code' placeholderTextColor={"#000"}/>
                 <TouchableOpacity style={styles.buttonApply}>
-                  <Text style={styles.buttonTitle}>Apply</Text>
+                  <Text style={styles.buttonTitles}>Apply</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.subtotalContainers}>
@@ -439,7 +344,7 @@ const WebinarDetail = props => {
                   height:0.5
                 }}></View>
               <View style={styles.subtotalContainers}>
-                <Text style={styles.subtotalTitleText}>Tax</Text>
+                <Text style={styles.subtotalTitleText}>Tax (GST 18%)</Text>
                 <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹ {taxDataitem}</Text>
               </View>
 

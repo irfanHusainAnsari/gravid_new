@@ -166,7 +166,7 @@ const OtpVerify = (props) => {
         </View>
         <View style={styles.formMainView}>
           <Text style={styles.welcmTxt}>Verification Code</Text>
-          <Text style={styles.signinTxt}>We have sent the code verification to </Text>
+          <Text style={styles.signinTxt}>We have sent the code verification to</Text>
 
           <View style={{flexDirection:"row",marginHorizontal:35}}>
               <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>

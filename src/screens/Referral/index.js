@@ -95,4 +95,4 @@ const Referral = (props) => {
         </View>
     )
 }
-export default Referral 
+export default Referral;
