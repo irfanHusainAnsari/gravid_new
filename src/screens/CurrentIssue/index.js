@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
 import React, { useEffect, useState } from 'react';
 import { Image, Text, View, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
@@ -12,11 +5,11 @@ import { svgs } from '@common';
 import styles from './styles';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
-// const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import { useIsFocused } from '@react-navigation/native';
-
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
 const CurrentIssue = (props) => {
-  
+
   const isFocused = useIsFocused();
   const [term, setTerm] = useState(false)
   const [issuelist, setIssueList] = useState([])
@@ -27,20 +20,19 @@ const CurrentIssue = (props) => {
 
   useEffect(() => {
     // if (isFocused) {
-      setIssueList([])
-      HomeIssuedata()
+    setIssueList([])
+    HomeIssuedata()
     // }
   }, [])
 
   const HomeIssuedata = () => {
     setIsLoader(true)
     const params = {
-              id: 1,
-              type: 2
-          }
+      id: 1,
+      type: 2
+    }
     Apis.HomeDatalist(params)
       .then(async (json) => {
-        console.log('IssuesList;;=====:', JSON.stringify(json));
         if (json.status == true) {
           setIssueList(json?.data?.issuelist?.data);
         }
@@ -51,19 +43,18 @@ const CurrentIssue = (props) => {
       })
   }
   const renderItemNewsLetter = ({ item }) => {
-    console.log('itemssssssss', item  )
+    console.log('itemssssssss', item)
     return (
       <TouchableOpacity
         key={item.id}
         style={styles.NewsLetterView}
-        onPress={() => props.navigation.navigate("RecentIssuesDetail", {item})}
+        onPress={() => props.navigation.navigate("RecentIssuesDetail", { item })}
       >
-         
         <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         <View style={styles.newsleftView}>
-        <View style={styles.isFreeView}>
+          <View style={styles.isFreeView}>
             <Text style={styles.isFree}>{item.payment_type}</Text>
-        </View>
+          </View>
           <Text style={styles.issuetitle}>{item.title}</Text>
           <Text style={styles.issueDes}>{item.short_description}</Text>
           <View style={styles.downloadmanview}>
@@ -89,18 +80,15 @@ const CurrentIssue = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow("black", 24, 24)}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Recent Issues</Text>
-        <View style={{ flex: 1, }} />
-      </View>
+      <CommonHeader
+        HeaderTitle={"Recent Issues"}
+        navigation={() => props.navigation.goBack()}
+      />
       <View style={styles.borderview}>
         {
           isLoader ? (
             <View style={{ marginTop: 300 }}>
-              <ActivityIndicator size="large" />
+              <LoaderRow/>
             </View>
           ) : (
             <FlatList

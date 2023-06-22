@@ -5,7 +5,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Linking,FlatList,Clipb
 import styles from "./styles";
 import { svgs, colors } from '@common';
 import Share from 'react-native-share';
-
+import CommonHeader from "../../component/CommonHeader"
 //http://gravidparenting.com/
 
 const Referral = (props) => {
@@ -52,13 +52,7 @@ const Referral = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.haddingView}>
-                <TouchableOpacity style={{ flex: 3 }} onPress={() => props.navigation.goBack()}>
-                    {svgs.backArrow("black", 24, 24)}
-                </TouchableOpacity>
-                <Text style={styles.haddingTxt}>My Referral</Text>
-                <View style={{ flex: 3 }} />
-            </View>
+             <CommonHeader HeaderTitle={"My Referral"} navigation={() =>props.navigation.goBack()} />
             <View style={styles.radiusView} />
             <ScrollView style={{ paddingHorizontal: 16 }} showsVerticalScrollIndicator={false}>
                 {/* <Text style={styles.Colleaguestxt}>You and Colleagues Will get</Text> */}

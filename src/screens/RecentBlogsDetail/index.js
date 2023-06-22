@@ -6,9 +6,9 @@ import Apis from '../../Services/apis';
 import RenderHtml from 'react-native-render-html';
 const { width, height } = Dimensions.get('window')
 import { imageurl } from '../../Services/constants';
+import CommonHeader from '../../component/CommonHeader';
 
 const RecentBlogsDetail = (props) => {
-    
     const BlogDetail = props?.route?.params?.item
     // const [delail, setDetail] = useState();
     // useEffect(() => {
@@ -31,13 +31,10 @@ const RecentBlogsDetail = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.haddingView}>
-                <TouchableOpacity style={{ flex: 3 }} onPress={() => props.navigation.goBack()}>
-                    {svgs.backArrow("black", 24, 24)}
-                </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Blog</Text>
-                <View style={{ flex: 3 }} />
-            </View>
+            <CommonHeader
+                HeaderTitle={"Blog"}
+                navigation={() => props.navigation.goBack()}
+            />
             <View style={styles.radiusView} />
             <ScrollView style={{ paddingHorizontal: 16 }} showsVerticalScrollIndicator={false}>
                 <View>

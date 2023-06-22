@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     radiusView: {
-        height: 30,
+        height: 40,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     ScreenshotImage: {
         width:"100%",

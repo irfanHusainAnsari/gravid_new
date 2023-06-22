@@ -5,6 +5,8 @@ import styles from './styles';
 import Swiper from 'react-native-swiper';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
 
 const Blogs = (props) => {
   const adsense = props?.route?.params?.adsense;
@@ -46,7 +48,6 @@ const Blogs = (props) => {
         style={styles.NewsLetterView}
         onPress={() => props.navigation.navigate("RecentBlogsDetail", { item })}
       >
-
         <Text style={styles.issuetitle}>{item.title}</Text>
         <View style={styles.newsleftView}>
           <Text style={styles.issueDes}>{item.short_description}</Text>
@@ -62,19 +63,15 @@ const Blogs = (props) => {
 
   return (
     <View style={styles.container}>
-
-      <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow("black", 24, 24)}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Recent Blogs</Text>
-        <View style={{ flex: 1, }} />
-      </View>
+       <CommonHeader
+                HeaderTitle={"Recent Blogs"}
+                navigation={() => props.navigation.goBack()}
+            />
       <View style={styles.manflatlistview}>
         {
           isLoader ? (
             <View style={{ marginTop: 300 }}>
-              <ActivityIndicator size="large" />
+              <LoaderRow/>
             </View>
           ) : (
             <FlatList

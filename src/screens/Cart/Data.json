@@ -1,0 +1,18 @@
+{
+    "appointmentCardData" : [
+    {
+        "id": 1,
+        "AppointmentTextName": "Appointment:",
+        "oneTextName": 1,
+        "AppointmentInfoText": "Appointment Info:",
+        "LocalTimeText": "Local Time:",
+        "MayTimeTextL":"May 3, 2023 5:30 pm",
+        "ServiceTextName": "Service:",
+        "ObstetricsTextNAme": "Obstetrics & Gynaecology",
+        "ConsultantTextName": "Consultant:",
+        "DrRituChaudhary": "Dr. Ritu Chaudhary",
+        "PriceTextName": "Price:",
+        "DolerText": "1000/-"
+    }
+]
+}

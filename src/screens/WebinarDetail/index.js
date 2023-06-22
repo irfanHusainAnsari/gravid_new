@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -8,17 +8,19 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {svgs, colors, fonts} from '@common';
+import { svgs, colors, fonts } from '@common';
 import styles from './styles';
 import Apis from '../../Services/apis';
-import {imageurl} from '../../Services/constants';
+import { imageurl } from '../../Services/constants';
 import RenderHtml from 'react-native-render-html';
-const {width, height} = Dimensions.get('window');
-import {useIsFocused} from '@react-navigation/native';
+const { width, height } = Dimensions.get('window');
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
+import CommonHeader from '../../component/CommonHeader';
 const WebinarDetail = props => {
   const isFocused = useIsFocused();
   const paid = props?.route?.params?.paid;
@@ -36,14 +38,14 @@ const WebinarDetail = props => {
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
   const date = new Date(delail?.from_date);
-  const year = date.toLocaleString('default', {year: 'numeric'});
-  const monthh = date.toLocaleString('default', {month: '2-digit'});
-  const day = date.toLocaleString('default', {day: '2-digit'});
+  const year = date.toLocaleString('default', { year: 'numeric' });
+  const monthh = date.toLocaleString('default', { month: '2-digit' });
+  const day = date.toLocaleString('default', { day: '2-digit' });
   const formattedDate = day + '/' + monthh + '/' + year;
-  const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
-  const totalAmount = taxDataitem+cartData?.amount
+  const taxDataitem = parseInt((taxData?.gst / 100) * cartData?.amount)
+  const totalAmount = taxDataitem + cartData?.amount
 
- 
+
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -66,38 +68,38 @@ const WebinarDetail = props => {
     }
   }, [isFocused]);
 
-  const onPressBookNow =()=>{
+  const onPressBookNow = () => {
     let form_data = new FormData();
-      form_data.append("data_id",paid?.id);
-      form_data.append("category_id", paid?.category);
-      form_data.append("expert_id",paid?.expert_id);
-      form_data.append("amount", paid?.amount);
-      form_data.append("sloat_date",paid?.to_date);
-      form_data.append("slot_from", paid?.start_time);
-      form_data.append("slot_to", paid?.end_time);
-      form_data.append("type", "webinar");
-      Apis.getCartPostSaveData(form_data).then(async data => {
-        if(data.status == true){
-          Toast.show(data?.message, Toast.LONG)
-          setIsLoader(true);
-          Apis.getCartData({})
-            .then(async (json) => {
-              if (json.status == true) {
-                  setCartData(json?.data[0])
-                  setTaxData(json?.taxData)
-              }
-              setIsLoader(false);
-            }).catch((error) => {
-              console.log("error", error);
-              setIsLoader(false);
-            })
-          setWebinarDetailItem(false);
-          setOpenCloseCalendar(false)
-          setCartOpen(true)
-        }else{
-          Toast.show(data?.message, Toast.LONG)
-        }
-      }).catch((err)=>{console.log("errrr form_data" , err)})
+    form_data.append("data_id", paid?.id);
+    form_data.append("category_id", paid?.category);
+    form_data.append("expert_id", paid?.expert_id);
+    form_data.append("amount", paid?.amount);
+    form_data.append("sloat_date", paid?.to_date);
+    form_data.append("slot_from", paid?.start_time);
+    form_data.append("slot_to", paid?.end_time);
+    form_data.append("type", "webinar");
+    Apis.getCartPostSaveData(form_data).then(async data => {
+      if (data.status == true) {
+        Toast.show(data?.message, Toast.LONG)
+        setIsLoader(true);
+        Apis.getCartData({})
+          .then(async (json) => {
+            if (json.status == true) {
+              setCartData(json?.data[0])
+              setTaxData(json?.taxData)
+            }
+            setIsLoader(false);
+          }).catch((error) => {
+            console.log("error", error);
+            setIsLoader(false);
+          })
+        setWebinarDetailItem(false);
+        setOpenCloseCalendar(false)
+        setCartOpen(true)
+      } else {
+        Toast.show(data?.message, Toast.LONG)
+      }
+    }).catch((err) => { console.log("errrr form_data", err) })
   }
 
 
@@ -107,14 +109,14 @@ const WebinarDetail = props => {
       if (jsondata !== null) {
         var newVal = JSON.parse(jsondata);
         setUserData(newVal);
-        setShowdpimage({path: imageurl + newVal.profile});
+        setShowdpimage({ path: imageurl + newVal.profile });
       }
     } catch (error) {
       // Error retrieving data
     }
   };
 
-  const proceedToCkeckout =()=>{
+  const proceedToCkeckout = () => {
     handleInstamozo()
   }
 
@@ -128,15 +130,15 @@ const WebinarDetail = props => {
       phone: userData?.mobile,
       buyer_name: userData?.name,
       email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
+      cart_id: cartData?.id,
+      tax_amount: taxDataitem,
+      tax_percent: taxData?.gst,
+      paid_amount: totalAmount,
     };
     Apis.instaMojoPayment(params)
       .then(async json => {
         if (json.status == true) {
-            props.navigation.navigate('InstaMojoWebScreen', {instamojoData: json});
+          props.navigation.navigate('InstaMojoWebScreen', { instamojoData: json });
         }
         setIsLoader(false);
       })
@@ -146,59 +148,45 @@ const WebinarDetail = props => {
       });
   };
 
-  const handleJoinWebinar = async data => {
+  const handleJoinWebinar = async (data) => {
     const params = {
       id: paid.id,
     };
     Apis.webinar_detail(params).then(async json => {
       if (json.status == true) {
         setDetail(json?.data);
+        await Linking.openURL(`https://${delail?.web_link}`);
       }
     });
-    // await Linking.openURL(`https://${delail?.web_link}`);
-    props.navigation.navigate('WebViewScreen', {delail});
+
+
+    // props.navigation.navigate('WebViewScreen', {delail});
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity
-          style={{flex: 3}}
-          onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow('black', 24, 24)}
-        </TouchableOpacity>
-        {/* <Text style={styles.haddingTxt}>Webinar Detail</Text> */}
-        {webinarDetailItem == true ? (
-          <Text style={styles.haddingTxt}>Webinar Detail</Text>
-        ) : openCloseCalendar == true ? (
-          <Text style={styles.haddingTxt}>Date & Time</Text>
-        ) : cartOpen == true ? (
-          <Text style={styles.haddingTxt}>Cart</Text>
-        ) : null}
-        <Text style={styles.haddingTxt}></Text>
-        <View style={{flex: 3}} />
-      </View>
-
+      <CommonHeader
+        HeaderTitle={webinarDetailItem == true ? "Webinar Detail":
+        openCloseCalendar == true ?"Date & Time":
+        cartOpen == true ?"Cart":null} 
+        navigation={() =>props.navigation.goBack()} />
       <View style={styles.radiusView} />
-
       {webinarDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}>
-          <View style={{marginHorizontal: 20}}>
+          <View style={{ marginHorizontal: 20 }}>
             <Image
-              source={{uri: imageurl + delail?.image}}
-              style={{width: '100%', resizeMode: 'contain', height: 300}}
+              source={{ uri: imageurl + delail?.image }}
+              style={{ width: '100%', resizeMode: 'contain', height: 300 }}
             />
-
-
-            <View style={{flex: 1,flexDirection: 'row', marginVertical: 10}}>
-                <View style={{flex: 1, flexDirection: 'row',marginHorizontal:15}}>
-                  <Image
+            <View style={{ flex: 1, flexDirection: 'row', marginVertical: 10 }}>
+              <View style={{ flex: 1, flexDirection: 'row', marginHorizontal: 15 }}>
+                <Image
                   source={require('../../assets/images/calendar.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain' }}
                 />
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{ flex: 1, paddingHorizontal: 5 }}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -213,17 +201,16 @@ const WebinarDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                   {formattedDate}
+                    {formattedDate}
                   </Text>
                 </View>
               </View>
-
-              <View style={{flex: 1, flexDirection: 'row',marginLeft:10}}>
+              <View style={{ flex: 1, flexDirection: 'row', marginLeft: 10 }}>
                 <Image
                   source={require('../../assets/images/watch.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain' }}
                 />
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{ flex: 1, paddingHorizontal: 5 }}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -238,25 +225,23 @@ const WebinarDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                  {delail?.start_time}
+                    {delail?.start_time}
                   </Text>
                 </View>
-              </View> 
-
-              <View style={{flex: 1, flexDirection: 'row',marginRight:-20,marginLeft:10}}>
+              </View>
+              <View style={{ flex: 1, flexDirection: 'row', marginRight: -20, marginLeft: 10 }}>
                 <Image
                   source={require('../../assets/images/card.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain' }}
                 />
-
-                <View style={{flex: 1, paddingHorizontal: 5}}>
+                <View style={{ flex: 1, paddingHorizontal: 5 }}>
                   <Text
                     style={{
                       fontSize: 14,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
-                       Price
+                    Price
                   </Text>
                   <Text
                     style={{
@@ -269,14 +254,11 @@ const WebinarDetail = props => {
                 </View>
               </View>
             </View>
-
-
-
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
             {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
             <RenderHtml
               contentWidth={width}
-              source={{html: delail?.description}}
+              source={{ html: delail?.description }}
             />
             {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
               <TouchableOpacity
@@ -292,7 +274,7 @@ const WebinarDetail = props => {
                 style={styles.joinWebinarBtn}
                 // onPress={onSetScreen}
                 onPress={onPressBookNow}
-                >
+              >
                 <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
               </TouchableOpacity>
             )}
@@ -384,51 +366,42 @@ const WebinarDetail = props => {
           </TouchableOpacity>
         </View>
       )} */}
-
       {cartOpen && (
         <View style={styles.mainContainer}>
           <View style={styles.colorContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-
-
-            <View style={{}}>
-            <View style={styles.appointmentCard}>
-                <View style={{ flex: 2 }}>
+              <View style={{}}>
+                <View style={styles.appointmentCard}>
+                  <View style={{ flex: 2 }}>
                     <View style={styles.appointmentImage}>
-                        <Image source={{uri:imageurl+cartData?.get_webinar?.image}} style={{height:100,resizeMode:"contain"}}/>
+                      <Image source={{ uri: imageurl + cartData?.get_webinar?.image }} style={{ height: 100, resizeMode: "contain" }} />
                     </View>
-                </View>
-                <View style={{ flex: 5, marginLeft: 10}}>
+                  </View>
+                  <View style={{ flex: 5, marginLeft: 10 }}>
                     <Text style={styles.appointmentText}>Appointment: 1</Text>
                     <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Local Time</Text></Text>
                     <Text style={styles.time}>{cartData?.sloat_date}, {cartData?.slot_form}-{cartData?.slot_to}</Text>
                     <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
                     <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
                     <Text style={styles.appointmentText}>Price <Text style={styles.time}>{cartData.amount}/-</Text></Text>
-                </View>
-                {/* <View style={{ flex: 1, }}>
+                  </View>
+                  {/* <View style={{ flex: 1, }}>
                     <TouchableOpacity style={styles.cancelImageCOntainer}>
                         <Image style={{ width: 15, height: 15 }} source={item.Cancel_Image} />
                     </TouchableOpacity>
                 </View> */}
-            </View>
-            <View style={styles.boderContainer}></View>
-        </View>
-
-
-
-
-
-              
+                </View>
+                <View style={styles.boderContainer}></View>
+              </View>
               <View style={styles.couponContainer}>
-                <TextInput style={styles.couponCodeText} placeholder='Coupon Code'/>
+                <TextInput style={styles.couponCodeText} placeholder='Coupon Code' />
                 <TouchableOpacity style={styles.buttonApply}>
                   <Text style={styles.buttonTitle}>Apply</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.subtotalContainers}>
                 <Text style={styles.subtotalTitleText}>Subtotal</Text>
-                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹{paid?.amount}</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 15, fontFamily: fonts.OptimaBold }}>₹{paid?.amount}</Text>
               </View>
               <View
                 style={{
@@ -436,16 +409,15 @@ const WebinarDetail = props => {
                   borderWidth: 0.5,
                   borderColor: 'red',
                   marginTop: 10,
-                  height:0.5
+                  height: 0.5
                 }}></View>
               <View style={styles.subtotalContainers}>
                 <Text style={styles.subtotalTitleText}>Tax</Text>
-                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹ {taxDataitem}</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 15, fontFamily: fonts.OptimaBold }}>₹ {taxDataitem}</Text>
               </View>
-
               <View style={styles.countButton}>
                 <Text style={styles.titleText}>Total Amount</Text>
-                <Text style={{color: '#000',fontSize: 15,fontFamily:fonts.OptimaBold}}>
+                <Text style={{ color: '#000', fontSize: 15, fontFamily: fonts.OptimaBold }}>
                   ₹ {totalAmount}
                 </Text>
               </View>
@@ -476,7 +448,7 @@ const WebinarDetail = props => {
               }}>
               <Image
                 source={require('../../assets/images/GRAVID_O.png')}
-                style={{height: 104, width: 104}}
+                style={{ height: 104, width: 104 }}
               />
               <Text style={styles.offHadding}>
                 To Access Paid Features{'\n'} you need to pay
@@ -489,7 +461,7 @@ const WebinarDetail = props => {
             <TouchableOpacity
               style={styles.submitBtn}
               onPress={handleInstamozo}
-              //  onPress={handleRazorpay}
+            //  onPress={handleRazorpay}
             >
               {isLoader ? (
                 <ActivityIndicator />

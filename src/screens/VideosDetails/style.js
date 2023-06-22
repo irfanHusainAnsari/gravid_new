@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     // backicon: {
     //     height: 32, width: 32, resizeMode: 'contain'
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
         color: '#262626',
         fontSize: 17,
         fontWeight: 'bold',
-        marginHorizontal:25
+        marginHorizontal: 25
     },
     gravidDigestText: {
         fontSize: 16,
         color: '#808080',
         marginTop: 5,
-        marginHorizontal:25
+        marginHorizontal: 25
     },
     buyIssuesButton: {
         backgroundColor: '#FE887E',
@@ -80,6 +80,11 @@ const styles = StyleSheet.create({
     playVideoIcons: {
         width: 100,
         height: 100
+    },
+    extraStyle: {
+        flex: 1,
+        paddingHorizontal: "2%",
+        paddingVertical: "2%"
     }
 })
 export default styles;

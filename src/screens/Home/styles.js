@@ -9,20 +9,16 @@ const styles = StyleSheet.create({
     
   },
   child: {
-    
     alignItems: "center",
     marginHorizontal: 24,
     marginVertical: 20,
     flexDirection: "row",
-    
-    
   },
   signupImg: {
     width: 30,
     height: 30,
     resizeMode:"stretch",
     borderRadius: 100,
-   
   },
   notification:{
     width: 22,
@@ -148,12 +144,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   currenIssueView: {
+    paddingHorizontal:12,
     marginRight: 15,
     flexDirection: "row",
     backgroundColor: "#F9FAFC",
   },
   leftView: {
-    paddingLeft: 18,
+    // paddingLeft: 18,
     paddingVertical: 12,
   },
   isFreeView: {
@@ -180,7 +177,7 @@ const styles = StyleSheet.create({
   issueDes: {
     fontSize: 10,
     marginTop: 8,
-    // lineHeight: 16,
+    lineHeight: 14,
     color: colors.gray,
     fontFamily: fonts.OptimaBold,
     width: 190,

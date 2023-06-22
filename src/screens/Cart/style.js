@@ -1,8 +1,11 @@
 import {StyleSheet} from 'react-native';
 import {svgs, colors, fonts} from '@common';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor:"#ffffff",
   },
   headersContainer: {
     backgroundColor: '#FA8981',
@@ -152,6 +155,12 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     paddingHorizontal: 20,
     paddingTop: 20,
-    marginTop: -30,
+    marginTop: -hp("5%"),
   },
+  emptycard:{ 
+    flex: 1,
+     backgroundColor: "#ffffff",
+      alignItems: "center",
+      marginTop:hp(30)
+     }
 });

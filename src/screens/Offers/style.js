@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { fonts, colors } from "@common";
 import { refresh } from '@react-native-community/netinfo';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
@@ -55,11 +57,14 @@ const styles = StyleSheet.create({
   newsleftView: {
     flexDirection: "row",
     marginTop: 16
+    ,alignItems:"center", 
+    justifyContent:"space-between",
+    paddingHorizontal:8,
   },
   issueDes: {
     // flex: 3,
     // backgroundColor:'red',
-    width: 200,
+    width: moderateScale(140),
     fontSize: 11,
     lineHeight: 18,
     color: "#929397",
@@ -70,14 +75,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingTop: 30,
     borderRadius: 40,
-    marginTop: -30,
+    marginTop: -40,
     flex: 1
   },
   newsImg: {
     // flex: 2,
-    width: 145,
-    height: 118,
+    width: moderateScale(100),
+    height:moderateScale(100),
     marginTop: 5,
+    borderRadius:8,
     resizeMode:"contain",    // width: "100%",
   },
   endView: {

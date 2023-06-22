@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Apis from '../../Services/apis';
 import { useIsFocused } from "@react-navigation/native";
 import { imageurl } from '../../Services/constants';
+import CommonHeader from '../../component/CommonHeader';
 
 const Profile = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -84,9 +85,7 @@ const Profile = ({ navigation }) => {
   }
 
   const renderItem = ({ item, index }) => (
- 
     <>
-      
       {/* {item.titel !== "Referral" ? */}
         <TouchableOpacity style={styles.manFlat} onPress={() => { navigation.navigate(item.navigation,{refferalCode}) }}>
           <View style={styles.profileHeader}>
@@ -101,13 +100,7 @@ const Profile = ({ navigation }) => {
   )
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 3 }} onPress={() => navigation.goBack()}>
-          {svgs.backArrow("black", 24, 24)}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Profile</Text>
-        <View style={{ flex: 3 }} />
-      </View>
+      <CommonHeader HeaderTitle={"Profile"} navigation={()=>navigation.goBack()}/>
       <View style={styles.radiusView} />
       <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
         <View style={{ marginHorizontal: 20 }}>

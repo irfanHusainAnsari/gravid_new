@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     backgroundColor: "white",
-    marginTop: -60,
+    marginTop: -50,
   },
   tabView: {
     // position:"absolute",

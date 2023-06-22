@@ -3,6 +3,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { fonts, colors } from "@common";
 import { refresh } from '@react-native-community/netinfo';
 const { width } = Dimensions.get('window');
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -54,12 +56,15 @@ const styles = StyleSheet.create({
   },
   newsleftView: {
     flexDirection: "row",
-    marginTop: 16
+    justifyContent:"space-between",
+    alignItems:"center",
+    marginTop: 16,
+    paddingHorizontal:10,
   },
   issueDes: {
     // flex: 3,
     // backgroundColor:'red',
-    width: 200,
+    width:moderateScale(150),
     fontSize: 11,
     lineHeight: 18,
     color: "#929397",
@@ -70,13 +75,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingTop: 30,
     borderRadius: 40,
-    marginTop: -30,
+    marginTop: -40,
     flex: 1
   },
   newsImg: {
     // flex: 2,
-    width: 145,
-    height: 118,
+    width: moderateScale(135),
+    height: moderateScale(100),
+    borderRadius:10,
     marginTop: 5,
     resizeMode:"contain",    // width: "100%",
   },

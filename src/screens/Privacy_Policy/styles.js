@@ -21,12 +21,15 @@ const styles = StyleSheet.create({
         color: colors.black,
         fontSize: 18,
     },
+    webhandle: {
+        width: "90%", left: "5%"
+    },
     radiusView: {
         height: 50,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     backicon: {
         height: 32, width: 32, resizeMode: 'contain'

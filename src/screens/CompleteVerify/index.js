@@ -14,6 +14,7 @@ import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CommonHeader from '../../component/CommonHeader';
 
 const CompleteVerify = (props) => {
   const [momlist, setMomList] = useState([])
@@ -69,9 +70,10 @@ const CompleteVerify = (props) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.haddingView}>
-          <Text style={styles.haddingTxt}>Tell us a bit about you!</Text>
-        </View>
+        <CommonHeader
+          icon={"icon"}
+          HeaderTitle={"Parenting TV"}
+          navigation={() => props.navigation.goBack()} />
         <View style={styles.mainView}>
           <View>
             <FlatList

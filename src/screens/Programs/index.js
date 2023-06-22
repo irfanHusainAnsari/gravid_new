@@ -17,6 +17,8 @@ import Apis from '../../Services/apis';
 import {imageurl} from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import {useIsFocused} from '@react-navigation/native';
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
 
 const Programs = props => {
   const isFocused = useIsFocused();
@@ -85,11 +87,8 @@ const Programs = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <Text style={styles.haddingTxt}>Programs</Text>
-      </View>
+      <CommonHeader HeaderTitle={"Programs"} icon={"icon"}/>
       <View style={styles.radiusView} />
-
       <View style={styles.searchBoxView}>
         {svgs.search(colors.grayRegular, 17, 17)}
         <TextInput
@@ -103,7 +102,7 @@ const Programs = props => {
       <ScrollView>
         {isLoader ? (
           <View style={{marginTop: 200}}>
-            <ActivityIndicator size="large" />
+            <LoaderRow/>
           </View>
         ) : (
           <View>

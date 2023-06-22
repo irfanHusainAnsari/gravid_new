@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -10,33 +10,31 @@ import {
   Linking,
   TextInput,
 } from 'react-native';
-import {svgs, colors} from '@common';
+import { svgs, colors } from '@common';
 import styles from './styles';
 import Swiper from 'react-native-swiper';
 import Apis from '../../Services/apis';
-import {imageurl} from '../../Services/constants';
+import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import LoaderRow from '../../component/LoaderRow';
+import CommonHeader from '../../component/CommonHeader';
 
 const Webinar = props => {
   const isFocused = useIsFocused();
   const [webinarrecoded, setWebinarRecoded] = useState([]);
-
   const [webinarLive, setWebinarListApi] = useState([]);
   const [webinarLiveSearch, setWebinarListSearch] = useState([]);
   const [recordedList, setRecordedList] = useState([]);
   const [recordedListSearch, setRecordedListSearch] = useState([]);
-
   const [type, setType] = useState('live');
   const [btmSlider, setBtmSlider] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
   const [isVideoLoader, setIsVideoLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
-
   useEffect(() => {
     recordedVideo();
   }, [type]);
-
   useEffect(() => {
     if (searchTxt && searchTxt != '') {
       setWebinarListSearch(
@@ -70,7 +68,7 @@ const Webinar = props => {
   };
 
   // new added
-  const renderVideos = ({item}) => {
+  const renderVideos = ({ item }) => {
     console.log('item', item);
 
     return (
@@ -82,7 +80,7 @@ const Webinar = props => {
             recordedVideo,
           })
         }>
-        <Image source={{uri: imageurl + item.file}} style={styles.newsImg} />
+        <Image source={{ uri: imageurl + item.file }} style={styles.newsImg} />
         <View style={styles.paidType}>
           <Text style={styles.paidTypeTxt}>{item.payment_type}</Text>
         </View>
@@ -106,7 +104,7 @@ const Webinar = props => {
   };
 
   const handleWebinarDetail = item => {
-    props.navigation.navigate('webinarDetail', {paid: item});
+    props.navigation.navigate('webinarDetail', { paid: item });
   };
 
   useEffect(() => {
@@ -115,7 +113,6 @@ const Webinar = props => {
     recoder();
     // }
   }, [isFocused, type]);
-
   const HomePagedata = () => {
     const params = {
       type: type == 'live',
@@ -148,13 +145,13 @@ const Webinar = props => {
       }
     });
   };
-  const LiverenderItem = ({item}) => {
+  const LiverenderItem = ({ item }) => {
     return (
       <TouchableOpacity
         key={item.id}
         onPress={() => handleWebinarDetail(item)}
         style={styles.NewsLetterView}>
-        <Image source={{uri: imageurl + item.image}} style={styles.newsImg} />
+        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         <View style={styles.paidType}>
           <Text style={styles.paidTypeTxt}>{item.payment_type}</Text>
         </View>
@@ -166,11 +163,11 @@ const Webinar = props => {
     );
   };
 
-  const recordrenderItem = ({item}) => {
+  const recordrenderItem = ({ item }) => {
     return (
       <View style={styles.NewsLetterView} key={item.id}>
         <TouchableOpacity onPress={() => handleWebinarDetail(item)}>
-          <Image source={{uri: imageurl + item.image}} style={styles.newsImg} />
+          <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         </TouchableOpacity>
         <View style={styles.paidType}>
           <Text style={styles.paidTypeTxt}>{item.payment_type}</Text>
@@ -197,7 +194,7 @@ const Webinar = props => {
     );
   };
 
-  const renderItemIssue = ({item}) => {
+  const renderItemIssue = ({ item }) => {
     return (
       <TouchableOpacity style={styles.currenIssueView}>
         <View style={styles.leftView}>
@@ -225,11 +222,8 @@ const Webinar = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <Text style={styles.haddingTxt}>Webinar</Text>
-      </View>
+      <CommonHeader HeaderTitle={"Webinar"} icon={"icon"}/>
       <View style={styles.radiusView} />
-
       <View style={styles.searchBoxView}>
         {svgs.search(colors.grayRegular, 17, 17)}
         <TextInput
@@ -290,8 +284,8 @@ const Webinar = props => {
           </TouchableOpacity>
         </View>
         {isLoader ? (
-          <View style={{marginTop: 200}}>
-            <ActivityIndicator size="large" />
+          <View style={{ marginTop: 200 }}>
+            <LoaderRow />
           </View>
         ) : (
           <View>
@@ -304,7 +298,7 @@ const Webinar = props => {
                       : webinarLive
                   }
                   numColumns={2}
-                  style={{paddingLeft: 16, marginTop: 26, flexDirection: 'row'}}
+                  style={{ paddingLeft: 16, marginTop: 26, flexDirection: 'row' }}
                   renderItem={LiverenderItem}
                   keyExtractor={item => item.id}
                 />
@@ -318,7 +312,7 @@ const Webinar = props => {
                       : recordedList
                   }
                   numColumns={2}
-                  style={{paddingLeft: 16, marginTop: 40, flexDirection: 'row'}}
+                  style={{ paddingLeft: 16, marginTop: 40, flexDirection: 'row' }}
                   renderItem={renderVideos}
                   keyExtractor={item => item.id}
                 />
@@ -327,8 +321,8 @@ const Webinar = props => {
 
             <View style={styles.endView}>
               <Swiper
-                activeDotStyle={{backgroundColor: 'transparent'}}
-                dotStyle={{backgroundColor: 'transparent'}}
+                activeDotStyle={{ backgroundColor: 'transparent' }}
+                dotStyle={{ backgroundColor: 'transparent' }}
                 autoplay={true}>
                 {btmSlider?.map(item => {
                   return (
@@ -341,7 +335,7 @@ const Webinar = props => {
                       }>
                       <Image
                         style={styles.endImg}
-                        source={{uri: imageurl + item.image}}
+                        source={{ uri: imageurl + item.image }}
                       />
                     </TouchableOpacity>
                   );

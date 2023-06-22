@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   borderview: {
     backgroundColor: "white", paddingHorizontal: 6,
     paddingTop: 30, paddingBottom: 100, borderRadius: 40,
-    marginTop: -30
+    marginTop: -40
   },
   NewsLetterView: {
     marginHorizontal: 8,

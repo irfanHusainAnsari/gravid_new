@@ -15,7 +15,8 @@ import Apis from '../../Services/apis';
 import { useIsFocused } from '@react-navigation/native';
 import { imageurl } from '../../Services/constants';
 import Toast from 'react-native-simple-toast';
-
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow'
 const Library = (props) => {
   const isFocused = useIsFocused();
   const { navigation } = props;
@@ -95,7 +96,7 @@ const Library = (props) => {
           () => props.navigation.navigate("RecentIssuesDetail", { item: { ...item.magzine, check_payment: item.check_payment } })}>
         <Image source={
           item.type == "blog" ? { uri: imageurl + item.blogs.image } :
-          // item.type == "offer" ? { uri: imageurl + item.offer.image } :
+            // item.type == "offer" ? { uri: imageurl + item.offer.image } :
             { uri: imageurl + item.magzine.image }} style={styles.newsImg} />
         <TouchableOpacity style={styles.wifiCon} onPress={() => handleDelete(item.type, item.type == "blog" ? item.blogs.id :
           item.type == "offer" ? item.offer.id :
@@ -105,10 +106,10 @@ const Library = (props) => {
         <View style={styles.newsleftView}>
           <Text style={styles.issuetitle} numberOfLines={2}>{item.type == "blog" ? item.blogs.title :
             // item.type == "offer" ? item.offer.title :
-              item.magzine.title}</Text>
+            item.magzine.title}</Text>
           <Text style={styles.issueDes} numberOfLines={3}>{item.type == "blog" ? item.blogs.short_description :
             // item.type == "offer" ? item.offer.short_description :
-              item.magzine.short_description}</Text>
+            item.magzine.short_description}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -128,20 +129,7 @@ const Library = (props) => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 3 }}
-        >
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Library</Text>
-        <View style={{ flex: 3 }} />
-      </View> */}
-      <View style={styles.haddingView}>
-                <TouchableOpacity style={{ flex: 3 }} onPress={() => navigation.goBack()}>
-                    {svgs.backArrow("black", 24, 24)}
-                </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Library</Text>
-                <View style={{ flex: 3 }} />
-            </View>
+      <CommonHeader HeaderTitle={"Library"} navigation={() => props.navigation.goBack()} />
       <View style={styles.radiusView} />
       <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
         <View style={styles.tabView}>
@@ -171,11 +159,11 @@ const Library = (props) => {
         {
           isLoader && type == "bookmark" ? (
             <View style={{ marginTop: 250 }}>
-              <ActivityIndicator size="large" />
+              <LoaderRow />
             </View>
           ) : isVideoLoader && type == "video" ? (
             <View style={{ marginTop: 250 }}>
-              <ActivityIndicator size="large" />
+              <LoaderRow />
             </View>
           ) : type == "bookmark" ? (
             bookmarkDataList?.length > 0 ? (
@@ -199,7 +187,6 @@ const Library = (props) => {
             />
           ) : null
         }
-
       </ScrollView>
       <Modal
         isVisible={confirmDeleteModal}

@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   radiusView: {
-    height: 30,
+    height: 40,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     backgroundColor: "white",
-    marginTop: -30,
+    marginTop: -40,
   },
   tabView: {
     // position:"absolute",

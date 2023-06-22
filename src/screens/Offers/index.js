@@ -5,7 +5,8 @@ import styles from './style';
 import Swiper from 'react-native-swiper';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
-
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow'
 const Offers = (props) => {
   const adsense = props?.route?.params?.adsense;
   const [blogslist, setBlogsList] = useState([])
@@ -21,7 +22,7 @@ console.log('object', blogslist)
   }, [adsense])
 
   const HomeBlogdata = () => {
-    setIsLoader(true)
+    // setIsLoader(true)
     const params = {
       id: 1,
       type: 4
@@ -38,7 +39,7 @@ console.log('object', blogslist)
         setIsLoader(false)
       })
   }
-
+  
   const renderItemNewsLetter = ({ item }) => {
     return (
       <TouchableOpacity
@@ -46,7 +47,6 @@ console.log('object', blogslist)
         style={styles.NewsLetterView}
         onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
       >
-
         <Text style={styles.issuetitle}>{item.title}</Text>
         <View style={styles.newsleftView}>
           <Text style={styles.issueDes}>{item.short_description}</Text>
@@ -59,22 +59,14 @@ console.log('object', blogslist)
   const handleOtherSlider = (url) => {
     Linking.openURL(url);
   }
-
   return (
     <View style={styles.container}>
-
-      <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow("black", 24, 24)}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Recent Offers</Text>
-        <View style={{ flex: 1, }} />
-      </View>
+       <CommonHeader HeaderTitle={"Recent Offers"} navigation={() =>props.navigation.goBack()} />
       <View style={styles.manflatlistview}>
         {
           isLoader ? (
             <View style={{ marginTop: 300 }}>
-              <ActivityIndicator size="large" />
+              <LoaderRow/>
             </View>
           ) : (
             <FlatList

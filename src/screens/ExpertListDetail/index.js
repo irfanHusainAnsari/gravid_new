@@ -18,6 +18,7 @@ import {imageurl} from '../../Services/constants';
 import {useIsFocused} from '@react-navigation/native';
 import CalendarPicker from 'react-native-calendar-picker';
 import Toast from 'react-native-simple-toast';
+import CommonHeader from '../../component/CommonHeader';
 
 const ExpertListDetail = props => {
   const minDate = new Date(); // Today
@@ -230,24 +231,12 @@ const ExpertListDetail = props => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity
-          style={{flex: 3}}
-          onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow('black', 24, 24)}
-        </TouchableOpacity>
-        {expert == true ? (
-          <Text style={styles.haddingTxt}>Expert</Text>
-        ) : openCloseCalendar == true ? (
-          <Text style={styles.haddingTxt}>Date & Time</Text>
-        ) : cartOpen == true ? (
-          <Text style={styles.haddingTxt}>Cart</Text>
-        ) : null}
-        <View style={{flex: 3}} />
-      </View>
+       <CommonHeader
+        HeaderTitle={expert == true ? "Expert" :
+          openCloseCalendar == true ? "Date & Time" :
+            cartOpen == true ? "Cart" : null}
+        navigation={() => props.navigation.goBack()} />
       <View style={styles.radiusView} />
-
-
       {expert &&
         <ScrollView
         style={{paddingHorizontal: 16}}
@@ -261,7 +250,7 @@ const ExpertListDetail = props => {
               />
             </TouchableOpacity>
             <View style={{width: 10}} />
-
+            
             <TouchableOpacity style={{}}>
               <Image
                 source={require('../../assets/images/videoCall.png')}

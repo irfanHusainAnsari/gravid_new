@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, Alert, TextInput, ActivityIndicator,ScrollView} from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert, TextInput, ActivityIndicator, ScrollView } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 import styles from "./styles";
 import { svgs } from '@common';
@@ -9,22 +9,19 @@ import Apis from "../../Services/apis";
 import Toast from 'react-native-simple-toast';
 import { imageurl } from "../../Services/constants";
 import { useIsFocused } from "@react-navigation/native";
+import CommonHeader from "../../component/CommonHeader";
 
 const EditProfile = (props) => {
-    
     const { navigation } = props;
     const isFocused = useIsFocused();
     const [showdpimage, setShowdpimage] = useState({})
     const [userData, setUserData] = useState({})
     const [isLoader, setIsLoader] = useState(false)
-
-
     useEffect(() => {
         if (isFocused) {
             setUserProfileData();
         }
     }, [isFocused])
-
     const setUserProfileData = async () => {
         try {
             const jsondata = await AsyncStorage.getItem('valuedata');
@@ -36,7 +33,6 @@ const EditProfile = (props) => {
                 setShowdpimage({ path: imageurl + newVal.profile })
             }
         } catch (error) {
-            // Error retrieving data
         }
     }
 
@@ -60,16 +56,11 @@ const EditProfile = (props) => {
             Toast.show('Enter Phone Number', Toast.LONG);
             error = true
         }
-         else if (showdpimage == '') {
+        else if (showdpimage == '') {
             Toast.show("Please select DP Image ", Toast.LONG)
         }
         else {
             setIsLoader(true)
-            // const params = {
-            //     fname: userData?.name,
-            //     lname: userData?.lname,
-            //     email: userData?.email,
-            // }
             let formdata = new FormData();
             formdata.append("fname", userData?.name)
             formdata.append("lname", userData?.lname)
@@ -84,7 +75,6 @@ const EditProfile = (props) => {
                 }
                 formdata.append("imgfile", imgfile)
             }
-            // console.log("params", params);
             Apis.Updata_Profile(formdata)
                 .then(async (json) => {
                     console.log('Updata_Profile ====== ', json);
@@ -134,13 +124,7 @@ const EditProfile = (props) => {
         );
     return (
         <View style={styles.container}>
-            <View style={styles.haddingView}>
-                <TouchableOpacity style={{ flex: 3 }} onPress={() => navigation.goBack()}>
-                    {svgs.backArrow("black", 24, 24)}
-                </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Edit Profile</Text>
-                <View style={{ flex: 3 }} />
-            </View>
+            <CommonHeader HeaderTitle={"Profile"} navigation={() => navigation.goBack()} />
             <View style={styles.radiusView} />
             <ScrollView style={{ paddingHorizontal: 16 }} showsVerticalScrollIndicator={false}>
                 <Image source={showdpimage?.path ? { uri: showdpimage?.path } : require('../../assets/images/user_icons.png')}

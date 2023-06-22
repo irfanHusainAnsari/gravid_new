@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     padding: 5,
-    marginTop: 80,
+    marginTop: 30,
     marginBottom: 30,
   },
   signUpBtnTxt: {

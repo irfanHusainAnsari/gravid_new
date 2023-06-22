@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     },
     borderview: {
         backgroundColor: "white", paddingHorizontal: 6,
-        paddingTop: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40,
-        marginTop: -30
+        paddingTop: 40, borderTopLeftRadius: 40, borderTopRightRadius: 40,
+        marginTop: -40
     },
     NewsLetterView2: {
         backgroundColor: "#F9FAFC",

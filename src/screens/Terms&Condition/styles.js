@@ -21,19 +21,22 @@ const styles = StyleSheet.create({
         color: colors.black,
         fontSize: 18,
     },
+    Webhandle: {
+        left:"5%",width:"90%"
+    },
     radiusView: {
         height: 50,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     backicon: {
         height: 32, width: 32, resizeMode: 'contain'
     },
     termstxt: {
-        fontSize: 15, lineHeight: 25,color:colors.black,
-        fontWeight:'500'
+        fontSize: 15, lineHeight: 25, color: colors.black,
+        fontWeight: '500'
     },
 })
 export default styles;

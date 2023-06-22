@@ -5,8 +5,9 @@ import { svgs, colors } from '@common';
 import styles from './styles';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
+import CommonHeader from '../../component/CommonHeader';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
-
+import LoaderRow from "../../component/LoaderRow"
 const Video_Library = (props) => {
     const [videolist, setVideoList] = useState([])
     const [isLoader, setIsLoader] = useState(false)
@@ -58,18 +59,15 @@ const Video_Library = (props) => {
     };
     return (
         <View style={styles.container}>
-            <View style={styles.haddingView}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => props.navigation.goBack()}>
-                    {svgs.backArrow("black", 24, 24)}
-                </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Video Library</Text>
-                <View style={{ flex: 1, }} />
-            </View>
+             <CommonHeader
+                HeaderTitle={"Video Library"}
+                navigation={() => props.navigation.goBack()}
+            />
             <View style={styles.borderview} />
             {
                 isLoader ? (
                     <View style={{ marginTop: 300 }}>
-                        <ActivityIndicator size="large" />
+                        <LoaderRow/>
                     </View>
                 ) : (
                     <FlatList

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     lineHeight: 32
   },
   mainView: {
-    marginTop: -32,
+    marginTop: -42,
     borderRadius: 40,
     backgroundColor: colors.white,
     paddingTop: 45

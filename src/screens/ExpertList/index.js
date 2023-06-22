@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useEffect, useState} from 'react';
 import {
   Image,
@@ -22,6 +21,8 @@ import styles from './styles';
 import Apis from '../../Services/apis';
 import {imageurl} from '../../Services/constants';
 import {useIsFocused} from '@react-navigation/native';
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
 
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 
@@ -73,7 +74,6 @@ const ExpertList = props => {
         console.log('ExpertList', error);
       });
   };
-
   const renderItemNewsLetter = ({item}) => {
     return (
       <View style={{flex: 0.5, margin: 8}}>
@@ -90,23 +90,14 @@ const ExpertList = props => {
       </View>
     );
   };
-
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity
-          style={{flex: 3}}
-          onPress={() => props.navigation.goBack()}>
-          {/* {svgs.backArrow("black", 24, 24)} */}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Expert List</Text>
-        <View style={{flex: 3}} />
-      </View>
+     <CommonHeader HeaderTitle={"Expert List"} icon={"icon"}/>
       <View style={styles.manflatlistview}>
         {/* <ScrollView nestedScrollEnabled={true}> */}
         {isLoader ? (
           <View style={{marginTop: 300}}>
-            <ActivityIndicator size="large" />
+            <LoaderRow/>
           </View>
         ) : (
           <View>
@@ -122,6 +113,7 @@ const ExpertList = props => {
                 <TextInput
                   placeholder="Search"
                   style={styles.searchBox}
+                  placeholderTextColor={"grey"}
                   value={searchTxt}
                   onChangeText={setSearchTxt}
                 />

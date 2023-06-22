@@ -73,6 +73,7 @@ function BottomTabs() {
             // return svgs.userIcon(color, 22, 20);
           }
         },
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: '#FE887E',
         tabBarInactiveTintColor: '#929397',
       })}

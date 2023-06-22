@@ -12,6 +12,9 @@ import RenderHtml from 'react-native-render-html';
 // import VideoPlayer from 'react-native-video-player';
 import VideoPlayer from 'react-native-video-controls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
+import Button from '../../component/Button';
 
 const { width } = Dimensions.get('window');
 
@@ -93,8 +96,6 @@ const handleInstamozo = () => {
       setIsLoader(false)
     })
 }
-
- 
 
   const handleRazorpay = () => {
     var options = {
@@ -192,22 +193,16 @@ const handleInstamozo = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 3 }} onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow("black", 24, 24)}
-        </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Recorded Video</Text>
-        <View style={{ flex: 3 }} />
-      </View>
+       <CommonHeader
+        HeaderTitle={"Recorded Video"} 
+        navigation={() =>props.navigation.goBack()} />
       <View style={styles.radiusView} />
       {
         magazineDetail?.payment_type != "Paid" || magazineDetail?.check_payment?.id ? (
           <ScrollView showsVerticalScrollIndicator={false}>
             {magazineDetail?.url_data?.map((item, index) => {
-              
               return (
                 <View style={{ marginBottom: 10 }}>
-           
            {/* <View style={styles.radiusView} /> */}
                 <View style={styles.backgroundVideo}>
               <VideoPlayer
@@ -215,7 +210,6 @@ const handleInstamozo = () => {
                controls={true}
                paused={true} 
                disableControlsAutoHide={true}
-              
             />
                 </View>
                 <Text style={{marginTop:5,marginHorizontal:10,fontSize:16,color:"black"}}>{item.title}</Text>
@@ -239,7 +233,7 @@ const handleInstamozo = () => {
             >
               {
                 isLoader ? (
-                  <ActivityIndicator />
+                  <LoaderRow />
                 ) : (
                   <Text style={styles.buyIssuesText}>Buy Now Rs {magazineDetail.amount}</Text>
                 )

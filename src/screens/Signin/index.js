@@ -15,6 +15,7 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
+import LoaderRow from '../../component/LoaderRow';
 
 const Signin = (props) => {
   const [code, setCode] = useState('+91')
@@ -48,11 +49,9 @@ const Signin = (props) => {
       setIsLoader(true)
       Apis.LogninApi(params)
         .then(async (json) => {
-         
           console.log('LogninApi+++++++++++=====:',json);
           if (json.status == true) {
             await auth().signInWithPhoneNumber("+91" + number).then(async (confirmation) => {
-             
               props.navigation.navigate("otpverify", {
                 User_Id: json.data.id,
                 verifynumber: json.data.mobile,
@@ -67,7 +66,7 @@ const Signin = (props) => {
             });
           } else {
             setIsLoader(false)
-            alert(json.message)
+            Toast.show(json.message, Toast.LONG)
           }
         })
     }
@@ -114,20 +113,10 @@ const Signin = (props) => {
               onChangeText={(text) => setNumber(text)}
             />
           </View>
-          <View style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 7,
-            bottom: 0,
-            alignItems: 'center',
-            justifyContent: 'center'
-            }}>
-             {isLoader &&  <ActivityIndicator size="large" />}
-          </View>
-         
           <TouchableOpacity style={styles.signUpBtn} onPress={() => { LogninApi() }}>
-            <Text style={styles.signUpBtnTxt}>NEXT</Text>
+          {isLoader ?
+               <LoaderRow/>:
+            <Text style={styles.signUpBtnTxt}>NEXT</Text>}
           </TouchableOpacity>
           {/* <Text style={styles.alreadyAct}>Not have an account? <Text style={styles.termTxt} onPress={handleSignUp}>Sign Up</Text></Text> */}
         </View>

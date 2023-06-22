@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ImageBackground,
   Image,
@@ -24,17 +24,19 @@ import {
   Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {svgs, colors, fonts} from '@common';
+import { svgs, colors, fonts } from '@common';
 import styles from './style';
 import Apis from '../../Services/apis';
-import {imageurl} from '../../Services/constants';
+import { imageurl } from '../../Services/constants';
 import RenderHtml from 'react-native-render-html';
 import RazorpayCheckout from 'react-native-razorpay';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CalendarPicker from 'react-native-calendar-picker';
 import Toast from 'react-native-simple-toast';
-const {width, height} = Dimensions.get('window');
+import CommonHeader from '../../component/CommonHeader';
+import LoaderRow from '../../component/LoaderRow';
+const { width, height } = Dimensions.get('window');
 const ProgramsDetail = props => {
   const isFocused = useIsFocused();
   const paid = props?.route?.params?.paid;
@@ -56,9 +58,9 @@ const ProgramsDetail = props => {
   const minDate = new Date(); // Today
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
-  const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
-  const totalAmount = taxDataitem+cartData?.amount
- 
+  const taxDataitem = parseInt((taxData?.gst / 100) * cartData?.amount)
+  const totalAmount = taxDataitem + cartData?.amount
+
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -68,7 +70,7 @@ const ProgramsDetail = props => {
       id: paid?.id,
     };
     Apis.programs_detail(params).then(async json => {
-      console.log('programs_detail',json);
+      console.log('programs_detail', json);
       if (json.status == true) {
         setDetail(json.data);
       }
@@ -90,7 +92,7 @@ const ProgramsDetail = props => {
         var newVal = JSON.parse(jsondata);
         setUserData(newVal);
         console.log('imageurl + newVal.profile', imageurl + newVal.profile);
-        setShowdpimage({path: imageurl + newVal.profile});
+        setShowdpimage({ path: imageurl + newVal.profile });
       }
     } catch (error) {
       // Error retrieving data
@@ -103,13 +105,13 @@ const ProgramsDetail = props => {
   };
 
   const onPressContinue = () => {
-    if(selectedItem1 == ""){
+    if (selectedItem1 == "") {
       alert("please select a time slot")
-    }else{
+    } else {
       let form_data = new FormData();
-      form_data.append("data_id",paid?.id);
+      form_data.append("data_id", paid?.id);
       form_data.append("category_id", paid?.category);
-      form_data.append("expert_id",paid?.expert_id);
+      form_data.append("expert_id", paid?.expert_id);
       form_data.append("amount", paid?.amount);
       form_data.append("sloat_date", dateforcartsave);
       form_data.append("slot_from", selectedItem1);
@@ -117,15 +119,15 @@ const ProgramsDetail = props => {
       form_data.append("type", "program");
       console.log('form_data', form_data)
       Apis.getCartPostSaveData(form_data).then(async data => {
-        if(data.status == true){
+        if (data.status == true) {
           Toast.show(data?.message, Toast.LONG)
           setIsLoader(true);
           Apis.getCartData({})
             .then(async (json) => {
               console.log('json++++', json)
               if (json.status == true) {
-                  setCartData(json?.data[0])
-                  setTaxData(json?.taxData)
+                setCartData(json?.data[0])
+                setTaxData(json?.taxData)
               }
               setIsLoader(false);
             }).catch((error) => {
@@ -135,14 +137,14 @@ const ProgramsDetail = props => {
           setProgramDetailItem(false);
           setOpenCloseCalendar(false)
           setCartOpen(true)
-        }else{
+        } else {
           Toast.show(data?.message, Toast.LONG)
         }
-      }).catch((err)=>{console.log("errrr form_data" , err);})
+      }).catch((err) => { console.log("errrr form_data", err); })
     }
   };
 
-  const proceedToCkeckout =()=>{
+  const proceedToCkeckout = () => {
     handleInstamozo()
   }
 
@@ -156,10 +158,10 @@ const ProgramsDetail = props => {
       phone: userData?.mobile,
       buyer_name: userData?.name,
       email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
+      cart_id: cartData?.id,
+      tax_amount: taxDataitem,
+      tax_percent: taxData?.gst,
+      paid_amount: totalAmount,
     };
     Apis.instaMojoPayment(params)
       .then(async json => {
@@ -188,17 +190,17 @@ const ProgramsDetail = props => {
         setDetail(json?.data);
       }
     });
-    // await Linking.openURL(`https://${delail?.web_link}`);
-    props.navigation.navigate('WebViewScreen', {delail});
+     await Linking.openURL(`https://${delail?.web_link}`);
+    // props.navigation.navigate('WebViewScreen', { delail });
   };
 
   const onDateChange = date => {
     var date = new Date(date);
-    var year = date.toLocaleString('default', {year: 'numeric'});
-    var monthh = date.toLocaleString('default', {month: '2-digit'});
-    var day = date.toLocaleString('default', {day: '2-digit'});
+    var year = date.toLocaleString('default', { year: 'numeric' });
+    var monthh = date.toLocaleString('default', { month: '2-digit' });
+    var day = date.toLocaleString('default', { day: '2-digit' });
     var formattedDate = day + '/' + monthh + '/' + year;
-    var newFormateDate = year+"-" + monthh +"-"+day
+    var newFormateDate = year + "-" + monthh + "-" + day
     console.log('objectformattedDate', newFormateDate);
     setdateforcartsave(newFormateDate)
     setDates(formattedDate);
@@ -313,45 +315,32 @@ const ProgramsDetail = props => {
     }
   };
 
- 
+
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity
-          style={{flex: 3}}
-          onPress={() => props.navigation.goBack()}>
-          {svgs.backArrow('black', 24, 24)}
-        </TouchableOpacity>
-        {programDetailItem == true ? (
-          <Text style={styles.haddingTxt}>Programs Detail</Text>
-        ) : openCloseCalendar == true ? (
-          <Text style={styles.haddingTxt}>Date & Time</Text>
-        ) : cartOpen == true ? (
-          <Text style={styles.haddingTxt}>Cart</Text>
-        ) : null}
-        <Text style={styles.haddingTxt}></Text>
-        <View style={{flex: 3}} />
-      </View>
-
+      <CommonHeader
+        HeaderTitle={programDetailItem == true ? "Programs Detail" :
+          openCloseCalendar == true ? "Date & Time" :
+            cartOpen == true ? "Cart" : null}
+        navigation={() => props.navigation.goBack()} />
       <View style={styles.radiusView} />
 
       {programDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}>
-          <View style={{marginHorizontal: 20}}>
+          <View style={{ marginHorizontal: 20 }}>
             <Image
-              source={{uri: imageurl + delail?.image}}
-              style={{width: '100%', resizeMode: 'contain', height: 300}}
+              source={{ uri: imageurl + delail?.image }}
+              style={{ width: '100%', resizeMode: 'contain', height: 300 }}
             />
-
-            <View style={{flex:1,flexDirection: 'row', marginVertical: 10,}}>
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+            <View style={{ flex: 1, flexDirection: 'row', marginVertical: 10, }}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
                 <Image
                   source={require('../../assets/images/calendar.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain', marginRight: 6 }}
                 />
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -366,17 +355,17 @@ const ProgramsDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                   {delail?.duration}
+                    {delail?.duration}
                   </Text>
                 </View>
               </View>
 
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
                 <Image
                   source={require('../../assets/images/watch.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain', marginRight: 6 }}
                 />
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -391,25 +380,25 @@ const ProgramsDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                   {delail?.total_sessions}
+                    {delail?.total_sessions}
                   </Text>
                 </View>
               </View>
 
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
                 <Image
                   source={require('../../assets/images/card.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  style={{ width: 25, height: 25, resizeMode: 'contain', marginRight: 6 }}
                 />
 
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                   <Text
                     style={{
                       fontSize: 14,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
-                       Price
+                    Price
                   </Text>
                   <Text
                     style={{
@@ -426,7 +415,7 @@ const ProgramsDetail = props => {
             {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
             <RenderHtml
               contentWidth={width}
-              source={{html: delail?.description}}
+              source={{ html: delail?.description }}
             />
             {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
               <TouchableOpacity
@@ -446,9 +435,9 @@ const ProgramsDetail = props => {
       )}
 
       {openCloseCalendar && (
-        <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+        <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
           <ScrollView style={{}}>
-            <Text style={[styles.haddingTxt, {paddingHorizontal: 20}]}>
+            <Text style={[styles.haddingTxt, { paddingHorizontal: 20 }]}>
               Date & Time
             </Text>
             <CalendarPicker
@@ -458,7 +447,7 @@ const ProgramsDetail = props => {
               customDatesStyles={customDatesStylesCallback}
               customDayHeaderStyles={() => {
                 return {
-                  textStyle: {color: '#FE887E', opacity: 1, fontWeight: 'bold'},
+                  textStyle: { color: '#FE887E', opacity: 1, fontWeight: 'bold' },
                 };
               }}
               dayLabelsWrapper={{
@@ -478,13 +467,13 @@ const ProgramsDetail = props => {
               }}
             />
             <Text style={styles.datetext}>{dates}</Text>
-            <View style={{marginHorizontal: 1}}>
+            <View style={{ marginHorizontal: 1 }}>
               <FlatList
                 data={timeSlot}
                 keyExtractor={item => item.id}
                 numColumns={2}
-                contentContainerStyle={{alignItems: 'center'}}
-                renderItem={({item, index}) => {
+                contentContainerStyle={{ alignItems: 'center' }}
+                renderItem={({ item, index }) => {
                   return (
                     <View
                       style={{
@@ -492,14 +481,14 @@ const ProgramsDetail = props => {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                          if(item.id){
+                          if (item.id) {
                             setSelectedSlotId(item.id)
                             setSelectedItem1(item.slot_form);
                             setSelectedItem2(item.slot_to);
-                          }else{
+                          } else {
 
                           }
-                         
+
                         }}>
                         <Text
                           style={{
@@ -512,7 +501,7 @@ const ProgramsDetail = props => {
                             marginRight: 10,
                             fontFamily: fonts.OptimaBold,
                             backgroundColor:
-                            selectedSlotId == item.id
+                              selectedSlotId == item.id
                                 ? colors.themeColor
                                 : null,
                           }}>
@@ -527,7 +516,7 @@ const ProgramsDetail = props => {
           </ScrollView>
 
           <TouchableOpacity
-            style={[styles.joinWebinarBtn, {marginHorizontal: 20}]}
+            style={[styles.joinWebinarBtn, { marginHorizontal: 20 }]}
             // onPress={() => setModalVisible(true)}
             // onPress={()=>props.navigation.navigate("Cart")}
             onPress={onPressContinue}>
@@ -540,38 +529,38 @@ const ProgramsDetail = props => {
         <View style={styles.mainContainer}>
           <View style={styles.colorContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{}}>
-            <View style={styles.appointmentCard}>
-                <View style={{ flex: 2 }}>
+              <View style={{}}>
+                <View style={styles.appointmentCard}>
+                  <View style={{ flex: 2 }}>
                     <View style={styles.appointmentImage}>
-                        <Image source={{uri:imageurl+cartData?.get_program?.image}} style={{height:100,resizeMode:"contain"}}/>
+                      <Image source={{ uri: imageurl + cartData?.get_program?.image }} style={{ height: 100, resizeMode: "contain" }} />
                     </View>
-                </View>
-                <View style={{ flex: 5, marginLeft: 10}}>
+                  </View>
+                  <View style={{ flex: 5, marginLeft: 10 }}>
                     <Text style={styles.appointmentText}>Appointment: 1</Text>
                     <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Local Time</Text></Text>
                     <Text style={styles.time}>{cartData?.sloat_date}, {cartData?.slot_form}-{cartData?.slot_to}</Text>
                     <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
                     <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
                     <Text style={styles.appointmentText}>Price <Text style={styles.time}>{cartData.amount}/-</Text></Text>
-                </View>
-                {/* <View style={{ flex: 1, }}>
+                  </View>
+                  {/* <View style={{ flex: 1, }}>
                     <TouchableOpacity style={styles.cancelImageCOntainer}>
                         <Image style={{ width: 15, height: 15 }} source={item.Cancel_Image} />
                     </TouchableOpacity>
                 </View> */}
-            </View>
-            <View style={styles.boderContainer}></View>
-        </View>
+                </View>
+                <View style={styles.boderContainer}></View>
+              </View>
               <View style={styles.couponContainer}>
-                <TextInput style={styles.couponCodeText} placeholder='Coupon Code'/>
+                <TextInput style={styles.couponCodeText} placeholder='Coupon Code' />
                 <TouchableOpacity style={styles.buttonApply}>
                   <Text style={styles.buttonTitle}>Apply</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.subtotalContainers}>
                 <Text style={styles.subtotalTitleText}>Subtotal</Text>
-                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹{paid?.amount}</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 15, fontFamily: fonts.OptimaBold }}>₹{paid?.amount}</Text>
               </View>
               <View
                 style={{
@@ -579,16 +568,16 @@ const ProgramsDetail = props => {
                   borderWidth: 0.5,
                   borderColor: 'red',
                   marginTop: 10,
-                  height:0.5
+                  height: 0.5
                 }}></View>
               <View style={styles.subtotalContainers}>
                 <Text style={styles.subtotalTitleText}>Tax</Text>
-                <Text style={{color:colors.themeColor, fontSize: 15,fontFamily:fonts.OptimaBold}}>₹ {taxDataitem}</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 15, fontFamily: fonts.OptimaBold }}>₹ {taxDataitem}</Text>
               </View>
 
               <View style={styles.countButton}>
                 <Text style={styles.titleText}>Total Amount</Text>
-                <Text style={{color: '#000',fontSize: 15,fontFamily:fonts.OptimaBold}}>
+                <Text style={{ color: '#000', fontSize: 15, fontFamily: fonts.OptimaBold }}>
                   ₹ {totalAmount}
                 </Text>
               </View>
@@ -619,7 +608,7 @@ const ProgramsDetail = props => {
               }}>
               <Image
                 source={require('../../assets/images/GRAVID_O.png')}
-                style={{height: 104, width: 104}}
+                style={{ height: 104, width: 104 }}
               />
               <Text style={styles.offHadding}>
                 To Access Paid Features{'\n'} you need to pay
@@ -632,10 +621,11 @@ const ProgramsDetail = props => {
             <TouchableOpacity
               style={styles.submitBtn}
               onPress={handleInstamozo}
-              //  onPress={handleRazorpay}
+            //  onPress={handleRazorpay}
             >
               {isLoader ? (
-                <ActivityIndicator />
+                <LoaderRow/>
+                // <ActivityIndicator />
               ) : (
                 <Text style={styles.submitBtnTxt}>Make Payment</Text>
               )}

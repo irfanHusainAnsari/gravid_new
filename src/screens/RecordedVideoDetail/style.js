@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     backgroundVideo: {
         borderWidth:5,

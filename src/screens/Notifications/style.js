@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
   cardColorContainer: {
     backgroundColor: '#F9FAFC',
     paddingVertical: 10,
+    alignItems:"center",
     borderRadius: 5,
     flexDirection: 'row',
     paddingHorizontal: 10,

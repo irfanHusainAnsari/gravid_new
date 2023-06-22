@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: -30,
+        marginTop: -40,
     },
     // backicon: {
     //     height: 32, width: 32, resizeMode: 'contain'
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         width:'100%',
         height:230,
         borderRadius:20,
-        resizeMode:"cover"
+        resizeMode:"contain"
         // alignSelf:'center'
     },
     CONTRIBUTORSTEXT:{

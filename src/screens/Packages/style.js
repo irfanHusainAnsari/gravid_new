@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
         alignSelf:"center"
     },
     radiusView: {
-        height: 50,
+        height:50,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: 10,
+        marginTop: -40,
     },
     backgroundVideo: {
       marginTop:10,
