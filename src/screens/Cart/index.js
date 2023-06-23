@@ -70,22 +70,8 @@ const Cart = props => {
       });
     }
     setCartDetail(abc);
-    // console.log("absd" , abc);
   }, [cartData, taxData]);
-
-  // useEffect(async()=>{
-  //   console.log('cartData', cartData)
-
-  //   let cart_detail = await cartData?.map(({ id,amount}) => ({ id,amount}));
-
-  //   console.log('cart_detailsssss', cart_detail)
-  //   let cart_detail1 = await cart_detail?.map(v =>({...v, tax_amount:v.amount, tax_percent:taxData?.gst,paid_amount:Math.trunc( (v.amount)+(taxData?.gst/100)*v.amount )}))
-  //   console.log('cart_detailsssss111', cart_detail1)
-  //   setCartDetail(cart_detail1)
-  // },[cartData])
-
   const setUserProfileData = async () => {
-    // console.log('object');
     try {
       const jsondata = await AsyncStorage.getItem('valuedata');
       console.log('jsondata', jsondata);
@@ -212,8 +198,6 @@ const Cart = props => {
                 : item.type == 'expert'
                 ? "Expert Detail"
                 : 'dummy'}
-            
-              
             </Text>
             <Text style={styles.one1Text}>
               <Text style={{ color: '#6D7A90',
@@ -346,19 +330,12 @@ const Cart = props => {
                   ₹ {taxDataitem}
                 </Text>
               </View>
-
               <View style={styles.countButton}>
                 <Text style={styles.titleText}>Total Amount</Text>
                 <Text style={{color: '#000', fontSize: 16, fontWeight: '600'}}>
                   ₹{totalAmount}
                 </Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.buttonBookNow}
-                onPress={removeCart}
-                >
-                <Text style={styles.buttonTitle}>Remove Cart</Text>
-              </TouchableOpacity> */}
               <TouchableOpacity
                 style={styles.buttonBookNow}
                 onPress={handleInstamozo}>
