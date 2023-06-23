@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Linking,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
 import { svgs, colors } from '@common';
 import styles from './styles';
@@ -31,6 +32,7 @@ const Webinar = props => {
   const [isLoader, setIsLoader] = useState(false);
   const [isVideoLoader, setIsVideoLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
+  const [item, setItem] = useState()
   useEffect(() => {
     recordedVideo();
   }, [type]);
@@ -66,8 +68,28 @@ const Webinar = props => {
         console.log('recordedVideo err : ', err);
       });
   };
-
-  // new added
+  const EpisodeAddtocard = (paid) => {
+    setModalVisible(false)
+    setIsLoader(true);
+    let form_data = new FormData();
+    form_data.append("data_id", paid?.id); //id
+    form_data.append("category_id", paid?.category_id); //category_id
+    form_data.append("type", "episode"); //"episode"
+    form_data.append("amount", paid?.amount); //amount
+    Apis.getCartPostSaveData(form_data).then(async data => {
+      if (data.status == true) {
+        ToastAndroid.show(data?.message, ToastAndroid.LONG)
+        setIsLoader(false);
+        props.navigation.navigate("Cart")
+      }
+      else {
+        setIsLoader(false);
+        ToastAndroid.show(data?.message, ToastAndroid.LONG)
+      }
+    }).catch((err) => {
+      setIsLoader(false);
+      console.log("errrr form_data", err); })
+  }
   const renderVideos = ({ item }) => {
     console.log('item=========', item);
     return (
@@ -77,12 +99,10 @@ const Webinar = props => {
           !item.check_payment == null ?
             props.navigation.navigate("RecordedWebinarVidioList", { item: item })
             :
-            setModalVisible(true)
+            setItem(item)
+          setModalVisible(true)
+
         }
-          // props.navigation.navigate('RecordedVideoDetail', {
-          //   item,
-          //   recordedVideo,
-          // })
         }>
         <Image source={{ uri: imageurl + item.file }} style={styles.newsImg} />
         <View style={styles.paidType}>
@@ -297,11 +317,13 @@ const Webinar = props => {
           </View>
         )}
       </ScrollView>
-      <Modelmain
-        modalVisible={modalVisible}
-        onpress={() => { setModalVisible(false) }}
-      />
-
+      {modalVisible &&
+        <Modelmain
+          onPayment={() => { EpisodeAddtocard(item) }}
+          modalVisible={modalVisible}
+          onpress={() => { setModalVisible(false) }}
+        />
+      }
     </View>
   );
 };
