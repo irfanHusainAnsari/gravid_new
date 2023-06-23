@@ -43,8 +43,7 @@ const WebinarDetail = props => {
   const day = date.toLocaleString('default', {day: '2-digit'});
   const formattedDate = day + '/' + monthh + '/' + year;
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
-  const totalAmount = taxDataitem+cartData?.amount;
-
+  const totalAmount = taxDataitem+cartData?.amount
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -95,8 +94,8 @@ const WebinarDetail = props => {
               console.log("error", error);
               setIsLoader(false);
             })
-          setWebinarDetailItem(false);
           setOpenCloseCalendar(false);
+          setWebinarDetailItem(true);
           props.navigation.navigate("Cart")
           // setCartOpen(true)
         }else{
@@ -104,8 +103,6 @@ const WebinarDetail = props => {
         }
       }).catch((err)=>{console.log("errrr form_data" , err)})
   }
-
-
   const setUserProfileData = async () => {
     try {
       const jsondata = await AsyncStorage.getItem('valuedata');
@@ -210,8 +207,6 @@ const WebinarDetail = props => {
       </View>
 
       <View style={styles.radiusView}/>
-      
-
       {webinarDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}

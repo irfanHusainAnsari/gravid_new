@@ -51,6 +51,9 @@ export default class Apis {
   static webinarrecoded = (data) => {
     return Network('GET', 'webinar-list?type=recorded', data)
   }
+  static EpisodeVideos = (data) => {
+    return Network('GET', 'episode-vedios?episode_id=' + data.episode_id, data)
+  }
   static webinar_detail = (data) => {
     return Network('GET', 'webinar-detail?id=' + data.id, data)
   }

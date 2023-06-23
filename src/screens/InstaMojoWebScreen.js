@@ -88,7 +88,6 @@ const  onNavigationChange =(webViewState)=> {
             </TouchableOpacity>
               
               <Image source={require("../assets/images/GRAVID_O.png")} style={{width:100,height:100,alignSelf:"center",marginTop:20}}/>
-             
               <View style={{marginTop:20}}>
                 <Text style={{alignSelf:"center",fontFamily:fonts.OptimaBold,color:"#000",fontSize:16}}>Join Our WhatsApp Community</Text>
                 <View style={{flexDirection:"row",

@@ -59,8 +59,6 @@ const ProgramsDetail = props => {
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
 
-
- 
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -134,8 +132,8 @@ const ProgramsDetail = props => {
               console.log("error", error);
               setIsLoader(false);
             })
-          setProgramDetailItem(false);
           setOpenCloseCalendar(false)
+          setProgramDetailItem(true);
           props.navigation.navigate("Cart")
           // setCartOpen(true)
         }else{
