@@ -33,6 +33,7 @@ const WebinarDetail = props => {
   const [webinarDetailItem, setWebinarDetailItem] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   const [taxData, setTaxData] = useState("");
+  const [webTime, setWebTime] = useState("");
   const minDate = new Date(); // Today
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
@@ -42,9 +43,8 @@ const WebinarDetail = props => {
   const day = date.toLocaleString('default', {day: '2-digit'});
   const formattedDate = day + '/' + monthh + '/' + year;
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
-  const totalAmount = taxDataitem+cartData?.amount
+  const totalAmount = taxDataitem+cartData?.amount;
 
- 
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -57,6 +57,9 @@ const WebinarDetail = props => {
       console.log('Detail=====:', json);
       if (json.status == true) {
         setDetail(json.data);
+        let webTime = json?.data?.start_time;
+        let webinarStartTime = webTime.slice(0,5)
+        setWebTime(webinarStartTime)
       }
     });
   };
@@ -93,8 +96,9 @@ const WebinarDetail = props => {
               setIsLoader(false);
             })
           setWebinarDetailItem(false);
-          setOpenCloseCalendar(false)
-          setCartOpen(true)
+          setOpenCloseCalendar(false);
+          props.navigation.navigate("Cart")
+          // setCartOpen(true)
         }else{
           Toast.show(data?.message, Toast.LONG)
         }
@@ -122,18 +126,19 @@ const WebinarDetail = props => {
   const handleInstamozo = (id) => {
     setIsLoader(true);
     const params = {
-      type: 2,
-      type_id: cartData?.data_id,
-      amount: totalAmount,
-      purpose: cartData?.category?.title,
+      purpose: "Gravid Payment",
       phone: userData?.mobile,
       buyer_name: userData?.name,
       email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
+      cart_id: JSON.stringify(cartData?.id),
+      paid_amount: totalAmount,
+      amount:cartData.amount,
+      cartData:[{id:cartData?.id,
+                 tax_amount:cartData?.amount,
+                 tax_percent:taxData?.gst,
+                 paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
+    console.log('paramshandleInstamozo', params)
     Apis.instaMojoPayment(params)
       .then(async json => {
         if (json.status == true) {
@@ -160,6 +165,29 @@ const WebinarDetail = props => {
     // props.navigation.navigate('WebViewScreen', {delail});
   };
 
+  const removeCart = () => {
+    setIsLoader(true);
+    const params = {
+      id: cartData.id,
+    };
+    Apis.RemoveCart(params)
+      .then(async json => {
+        console.log('RemoveCart00', json);
+        if (json.status == true) {
+          Toast.show(json.message, Toast.LONG);
+          setCartData("");
+          getCart();
+         
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
+
+
   return (
     <View style={styles.container}>
       <View style={styles.haddingView}>
@@ -178,9 +206,12 @@ const WebinarDetail = props => {
         ) : null}
         <Text style={styles.haddingTxt}></Text>
         <View style={{flex: 3}} />
+       
       </View>
 
       <View style={styles.radiusView}/>
+      
+
       {webinarDetailItem && (
         <ScrollView
           nestedScrollEnabled={true}
@@ -236,7 +267,7 @@ const WebinarDetail = props => {
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                  {delail?.start_time}
+                { webTime}
                   </Text>
                 </View>
               </View>
@@ -293,14 +324,11 @@ const WebinarDetail = props => {
         </ScrollView>
       )}
 
-    
-
       {cartOpen && (
+        cartData ?
         <View style={styles.mainContainer}>
           <View style={styles.colorContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-
-
             <View style={{}}>
             <View style={styles.appointmentCard}>
                 <View style={{ flex: 2 }}>
@@ -309,18 +337,23 @@ const WebinarDetail = props => {
                     </View>
                 </View>
                 <View style={{ flex: 5, marginLeft: 10}}>
-                    <Text style={styles.appointmentText}>Appointment: 1</Text>
-                    <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Date & Time</Text></Text>
-                    <Text style={styles.time}>{cartData?.sloat_date}, {cartData?.slot_form}-{cartData?.slot_to}</Text>
+                <Text style={styles.appointmentText}>
+              {cartData.type == 'webinar' ? cartData.type : "dummy"}: <Text style={styles.one1Text}>{cartData.type == 'webinar' ? cartData.get_webinar.title : "dummy"}</Text>
+            </Text>
                     <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>
-                    <Text style={styles.appointmentText}>Consultant: <Text style={styles.time}>{cartData?.get_expert?.name}</Text></Text>
+                    
                     <Text style={styles.appointmentText}>Price <Text style={styles.time}>{cartData.amount}/-</Text></Text>
                 </View>
-                {/* <View style={{ flex: 1, }}>
-                    <TouchableOpacity style={styles.cancelImageCOntainer}>
-                        <Image style={{ width: 15, height: 15 }} source={item.Cancel_Image} />
-                    </TouchableOpacity>
-                </View> */}
+                <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              style={styles.cancelImageCOntainer}
+              onPress={() => removeCart()}>
+              <Image
+                style={{ width: 25, height: 25, resizeMode: 'contain' }}
+                source={require('../../assets/images/deleteIcon.png')}
+              />
+            </TouchableOpacity>
+          </View>
             </View>
             <View style={styles.boderContainer}></View>
         </View>
@@ -359,6 +392,10 @@ const WebinarDetail = props => {
               </TouchableOpacity>
             </ScrollView>
           </View>
+        </View>
+        :
+        <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+          <Text style={{fontFamily:fonts.OptimaBold,fontSize:18,color:"#000"}}>There is no item in cart</Text>
         </View>
       )}
 

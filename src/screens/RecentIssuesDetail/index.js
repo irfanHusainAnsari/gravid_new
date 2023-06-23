@@ -79,18 +79,31 @@ const RecentIssuesDetail = props => {
   const proceedToCkeckout = () => {
     setIsLoader(true);
     const params = {
-      type: 2,
-      type_id: cartData?.data_id,
-      amount: totalAmount,
-      purpose: cartData?.category?.title,
+      purpose: "Gravid Payment",
       phone: userData?.mobile,
       buyer_name: userData?.name,
       email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
+      cart_id: JSON.stringify(cartData?.id),
+      paid_amount: totalAmount,
+      amount:cartData.amount,
+      cartData:[{id:cartData?.id,
+                 tax_amount:cartData?.amount,
+                 tax_percent:taxData?.gst,
+                 paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
+    // const params = {
+    //   type: 2,
+    //   type_id: cartData?.data_id,
+    //   amount: totalAmount,
+    //   purpose: cartData?.category?.title,
+    //   phone: userData?.mobile,
+    //   buyer_name: userData?.name,
+    //   email: userData?.email,
+    //   cart_id:cartData?.id,
+    //   tax_amount:taxDataitem,
+    //   tax_percent:taxData?.gst,
+    //   paid_amount:totalAmount,
+    // };
     Apis.instaMojoPayment(params)
       .then(async json => {
         if (json.status == true) {
@@ -134,7 +147,8 @@ const RecentIssuesDetail = props => {
               setIsLoader(false);
             });
           setMagzineOpen(false)
-          setCartOpen(true);
+          props.navigation.navigate("Cart")
+          // setCartOpen(true);
         } else {
           Toast.show(data?.message, Toast.LONG);
         }
@@ -344,7 +358,7 @@ const RecentIssuesDetail = props => {
                       </View>
                   </View>
                   <View style={{ flex: 5, marginLeft: 10}}>
-                      <Text style={styles.appointmentText}>Appointment: 1</Text>
+                      {/* <Text style={styles.appointmentText}>Appointment: 1</Text> */}
                       {/* <Text style={styles.appointmentText}>Appointment info : <Text style={styles.one1Text}>Date & Time</Text></Text> */}
                       {/* <Text style={styles.time}>{cartData?.sloat_date}, {cartData?.slot_form}-{cartData?.slot_to}</Text> */}
                       <Text style={styles.appointmentText}>Service   <Text style={styles.time}>{cartData?.category?.title}</Text></Text>

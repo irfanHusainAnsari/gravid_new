@@ -32,10 +32,32 @@ const Webinar = props => {
   const [isLoader, setIsLoader] = useState(false);
   const [isVideoLoader, setIsVideoLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
+  const [cartCount, setCartCount] = useState("")
+
 
   useEffect(() => {
     recordedVideo();
-  }, [type]);
+    getCart();
+  }, [type,isFocused]);
+
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+      
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
 
   useEffect(() => {
     if (searchTxt && searchTxt != '') {
@@ -57,7 +79,7 @@ const Webinar = props => {
     setIsVideoLoader(true);
     Apis.recordedVideo({})
       .then(async json => {
-        console.log('recordedVideo=====11111:', JSON.stringify(json));
+        
         if (json.status == true) {
           setRecordedList(json.data);
         }
@@ -71,7 +93,7 @@ const Webinar = props => {
 
   // new added
   const renderVideos = ({item}) => {
-    console.log('item', item);
+   
 
     return (
       <TouchableOpacity
@@ -123,7 +145,7 @@ const Webinar = props => {
     setIsLoader(true);
     Apis.webinarlistLive(params)
       .then(async json => {
-        console.log('webinarlistLive', json);
+      
         if (json.status == true) {
           setWebinarListApi(json?.data?.webinarList);
           setBtmSlider(json?.data?.other_sliders?.data);
@@ -141,7 +163,7 @@ const Webinar = props => {
       type: type == 'recorded',
     };
     Apis.webinarrecoded(params).then(async json => {
-      // console.log('recorded=====:', JSON.stringify(json))
+  
       if (json.status == true) {
         setWebinarRecoded(json?.data?.webinarList);
         setBtmSlider(json?.data?.other_sliders?.data);
@@ -227,7 +249,18 @@ const Webinar = props => {
     <View style={styles.container}>
       <View style={styles.haddingView}>
         <Text style={styles.haddingTxt}>Webinar</Text>
+        <TouchableOpacity
+          style={{position:"absolute",right:20,top:15}}
+          onPress={() => { props.navigation.navigate('Cart') }}>
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')}/>
+          <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:13,height:13,right:-6,top:-8, backgroundColor:"white"}}>
+            <Text style={{fontSize:10,color:colors.themeColor,marginHorizontal:2.3,marginTop:-2}}>
+            {cartCount}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
+     
       <View style={styles.radiusView} />
 
       <View style={styles.searchBoxView}>

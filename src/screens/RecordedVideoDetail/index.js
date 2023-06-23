@@ -70,7 +70,7 @@ const handleInstamozo = () => {
     // currency: "INR",
     // amount: parseFloat(magazineDetail.amount),
     // rozerpay_status: "success"
-      purpose:magazineDetail?.title ,
+      purpose:magazineDetail?.title,
       // amount:parseFloat(magazineDetail?.amount),
       amount:magazineDetail.amount,
       phone:userData?.mobile,

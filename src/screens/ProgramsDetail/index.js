@@ -136,7 +136,8 @@ const ProgramsDetail = props => {
             })
           setProgramDetailItem(false);
           setOpenCloseCalendar(false)
-          setCartOpen(true)
+          props.navigation.navigate("Cart")
+          // setCartOpen(true)
         }else{
           Toast.show(data?.message, Toast.LONG)
         }
@@ -151,18 +152,31 @@ const ProgramsDetail = props => {
   const handleInstamozo = (id) => {
     setIsLoader(true);
     const params = {
-      type: 4,
-      type_id: cartData?.data_id,
-      amount: totalAmount,
-      purpose: cartData?.category?.title,
+      purpose: "Gravid Payment",
       phone: userData?.mobile,
       buyer_name: userData?.name,
       email: userData?.email,
-      cart_id:cartData?.id,
-      tax_amount:taxDataitem,
-      tax_percent:taxData?.gst,
-      paid_amount:totalAmount,
+      cart_id: JSON.stringify(cartData?.id),
+      paid_amount: totalAmount,
+      amount:cartData.amount,
+      cartData:[{id:cartData?.id,
+                 tax_amount:cartData?.amount,
+                 tax_percent:taxData?.gst,
+                 paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
+    // const params = {
+    //   type: 4,
+    //   type_id: cartData?.data_id,
+    //   amount: totalAmount,
+    //   purpose: cartData?.category?.title,
+    //   phone: userData?.mobile,
+    //   buyer_name: userData?.name,
+    //   email: userData?.email,
+    //   cart_id:cartData?.id,
+    //   tax_amount:taxDataitem,
+    //   tax_percent:taxData?.gst,
+    //   paid_amount:totalAmount,
+    // };
     Apis.instaMojoPayment(params)
       .then(async json => {
         console.log('json,,,', json)
@@ -487,6 +501,11 @@ const ProgramsDetail = props => {
                 numColumns={2}
                 contentContainerStyle={{alignItems: 'center'}}
                 renderItem={({item, index}) => {
+                  console.log('item', item)
+                  let slotFrom = item.slot_form;
+                  let newSlotFrom = slotFrom.slice(0,5)
+                  let slotTo = item.slot_to;
+                  let newSlotTo = slotTo.slice(0,5)
                   return (
                     <View
                       style={{
@@ -518,7 +537,7 @@ const ProgramsDetail = props => {
                                 ? colors.themeColor
                                 : null,
                           }}>
-                          {item.slot_form} - {item.slot_to}
+                          {newSlotFrom} - {newSlotTo}
                         </Text>
                       </TouchableOpacity>
                     </View>

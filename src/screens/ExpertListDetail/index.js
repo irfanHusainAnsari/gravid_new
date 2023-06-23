@@ -46,12 +46,13 @@ const ExpertListDetail = props => {
   const [userData, setUserData] = useState({});
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-  console.log('cartData', cartData)
+  console.log('timeSlot', timeSlot)
   useEffect(() => {
     ExpertListDetailData();
     setUserProfileData();
   }, [isFocused]);
 
+  
   
 
 
@@ -274,8 +275,9 @@ const ExpertListDetail = props => {
               setIsLoader(false);
             })
           setProgramDetailItem(false);
-          setOpenCloseCalendar(false)
-          setCartOpen(true)
+          setOpenCloseCalendar(false);
+          props.navigation.navigate("Cart")
+          // setCartOpen(true)
         }else{
           Toast.show(data?.message, Toast.LONG)
         }
@@ -386,6 +388,10 @@ const ExpertListDetail = props => {
                 numColumns={2}
                 contentContainerStyle={{alignItems: 'center'}}
                 renderItem={({item, index}) => {
+                  let slotFrom = item.slot_form;
+                  let newSlotFrom = slotFrom.slice(0,5)
+                  let slotTo = item.slot_to;
+                  let newSlotTo = slotTo.slice(0,5)
                   return (
                     <View
                       style={{
@@ -417,7 +423,7 @@ const ExpertListDetail = props => {
                                 ? colors.themeColor
                                 : null,
                           }}>
-                          {item.slot_form} - {item.slot_to}
+                          {newSlotFrom} - {newSlotTo}
                         </Text>
                       </TouchableOpacity>
                     </View>

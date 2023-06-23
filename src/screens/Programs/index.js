@@ -25,6 +25,7 @@ const Programs = props => {
   const [btmSlider, setBtmSlider] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
+  const [cartCount, setCartCount] = useState("")
 
   useEffect(() => {
     if (searchTxt && searchTxt != '') {
@@ -42,6 +43,7 @@ const Programs = props => {
 
   useEffect(() => {
     HomePagedata();
+    getCart();
   }, [isFocused]);
 
   const HomePagedata = () => {
@@ -52,6 +54,25 @@ const Programs = props => {
         if (json.status == true) {
           setProgramsListApi(json?.data?.prgram_list);
           setBtmSlider(json?.data?.other_sliders?.data);
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
+
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+       
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
         }
         setIsLoader(false);
       })
@@ -87,6 +108,16 @@ const Programs = props => {
     <View style={styles.container}>
       <View style={styles.haddingView}>
         <Text style={styles.haddingTxt}>Programs</Text>
+        <TouchableOpacity
+          style={{position:"absolute",right:20,top:15}}
+          onPress={() => { props.navigation.navigate('Cart') }}>
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')}/>
+          <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:13,height:13,right:-6,top:-8, backgroundColor:"white"}}>
+            <Text style={{fontSize:10,color:colors.themeColor,marginHorizontal:2.3,marginTop:-2}}>
+            {cartCount}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.radiusView} />
 

@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: "center"
   },
+  cart:{
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+    tintColor:"white"
+  },
   haddingTxt: {
     flex: 3,
     fontFamily: fonts.OptimaBold,

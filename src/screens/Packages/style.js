@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
         // lineHeight: 32,
       },
+      cart:{
+        width: 22,
+        height: 22,
+        resizeMode: 'contain',
+        tintColor:"white"
+      },
       searchBoxView: {
         backgroundColor: colors.grayLight,
         marginHorizontal: 24,

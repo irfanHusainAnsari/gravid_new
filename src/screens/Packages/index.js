@@ -25,17 +25,39 @@ const Packages = props => {
   const [packageData, setPackageData] = useState('');
   const [isLoader, setIsLoader] = useState(true);
   const [searchTxt, setSearchTxt] = useState('');
-  console.log('packageData', packageData);
+  const [cartCount, setCartCount] = useState("")
+
 
   useEffect(() => {
     getPackageData();
+    getCart();
   }, [isFocused]);
+
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+        
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
+
 
   const getPackageData = () => {
     setIsLoader(true);
     Apis.getPackageItem({})
       .then(async json => {
-        console.log('getPackageItem', json);
+       
         if (json.status == true) {
           setPackageData(json?.data[0].programs);
         }
@@ -81,6 +103,16 @@ const Packages = props => {
     <View style={styles.container}>
       <View style={styles.haddingView}>
         <Text style={styles.haddingTxt}>Packages</Text>
+        <TouchableOpacity
+          style={{position:"absolute",right:20,top:15}}
+          onPress={() => { props.navigation.navigate('Cart') }}>
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')}/>
+          <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:13,height:13,right:-6,top:-8, backgroundColor:"white"}}>
+            <Text style={{fontSize:10,color:colors.themeColor,marginHorizontal:2.3,marginTop:-2}}>
+            {cartCount}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.radiusView} />
 

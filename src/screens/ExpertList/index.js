@@ -34,10 +34,30 @@ const ExpertList = props => {
   const [specialization, setSpecialization] = useState('');
   const [specializationSearch, setSpecializationSearch] = useState('');
   const [filter, setFilter] = useState(false);
-
+  const [cartCount, setCartCount] = useState("")
   useEffect(() => {
     HomePagedata();
+    getCart();
   }, [isFocused]);
+
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+       
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
 
   useEffect(() => {
     if (searchTxt && searchTxt != '') {
@@ -62,7 +82,6 @@ const ExpertList = props => {
     setIsLoader(true);
     Apis.ExpertList({})
       .then(async json => {
-        console.log('ExpertList=====:', json);
         if (json.status == true) {
           setExpertData(json.data);
         }
@@ -100,6 +119,16 @@ const ExpertList = props => {
           {/* {svgs.backArrow("black", 24, 24)} */}
         </TouchableOpacity>
         <Text style={styles.haddingTxt}>Expert List</Text>
+        <TouchableOpacity
+          style={{position:"absolute",right:20,top:15}}
+          onPress={() => { props.navigation.navigate('Cart') }}>
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')}/>
+          <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:13,height:13,right:-6,top:-8, backgroundColor:"white"}}>
+            <Text style={{fontSize:10,color:colors.themeColor,marginHorizontal:2.3,marginTop:-2}}>
+            {cartCount}
+            </Text>
+          </View>
+        </TouchableOpacity>
         <View style={{flex: 3}} />
       </View>
       <View style={styles.manflatlistview}>

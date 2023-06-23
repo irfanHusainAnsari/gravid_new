@@ -37,7 +37,7 @@ const Home = (props, { route }) => {
   const [videolistSearch, setVideoListSearch] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
   const [cartCount, setCartCount] = useState("")
-  console.log('cartCount', cartCount)
+
   // const [showslider, setShowSlider] = useState(true)
   const [isLoader, setIsLoader] = useState(false)
 
@@ -77,7 +77,7 @@ const Home = (props, { route }) => {
     setIsLoader(true);
     Apis.HomePagedata({})
       .then(async (json) => {
-        console.log('datalistHomePage=====:',json.data);
+       
         if (json.status == true) {
           setBlogsList(json?.data?.blog?.data);
           setOfferList(json?.data?.offer?.data);
@@ -98,7 +98,7 @@ const Home = (props, { route }) => {
     Apis.getCartData({})
       .then(async json => {
         setCartCount(json?.cartCount)
-        console.log('getCartData000000', json.cartCount);
+
         if (json.status == true) {
           setCartData(json?.data[0]);
           setTaxData(json?.taxData);
@@ -114,14 +114,14 @@ const Home = (props, { route }) => {
 
 
   const addBookmark = (bookmarkID, bookmarkType) => {
-    console.log('bookmarkID',"bookmarkType", bookmarkID,bookmarkType)
+   
     const params = {
       id: bookmarkID,
       type: bookmarkType
     }
     Apis.AddBookmark(params)
       .then(async (json) => {
-        console.log('bookmark success=====:', JSON.stringify(json));
+      
         if (json.status == true) {
           Toast.show(json.message, Toast.LONG);
           HomePagedata()
