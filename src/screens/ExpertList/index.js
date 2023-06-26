@@ -110,6 +110,19 @@ const ExpertList = props => {
     );
   };
 
+  const oncallcity = (text) => {
+    const data = expertData.filter((item) => item.city == text).map(({id, name, city}) => ({id, name, city}));
+    console.log("================data",data)
+    if(text.length == 0){
+      HomePagedata()
+    }
+   if(data.length !=0){
+    console.log("================",data)
+    setExpertData(data)
+
+   }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.haddingView}>
@@ -221,7 +234,11 @@ const ExpertList = props => {
                     marginRight: 8,
                     backgroundColor: '#F9FAFC',
                   }}>
-                  <TextInput style={{flex: 1}} placeholder="City" />
+                  <TextInput 
+                        style={{flex: 1}}
+                        placeholder="City"
+                        onChangeText={(text)=>oncallcity(text)}
+                         />
                 </View>
                 <TouchableOpacity
                   style={{

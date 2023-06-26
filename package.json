@@ -42,6 +42,7 @@
     "react-native-screens": "^3.18.2",
     "react-native-share": "^8.2.1",
     "react-native-simple-toast": "^2.0.0",
+    "react-native-size-matters": "^0.4.0",
     "react-native-svg": "^13.6.0",
     "react-native-swiper": "^1.6.0",
     "react-native-swiper-flatlist": "^3.0.18",

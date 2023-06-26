@@ -128,7 +128,6 @@ const Home = (props, { route }) => {
         }
       })
   }
-
  
   const renderItemIssue = ({ item, index }) => {
     return (
@@ -191,21 +190,11 @@ const Home = (props, { route }) => {
   const renderItemOffers = ({ item, index }) => {
     return (
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
+        onPress={async()=> await Linking.openURL(item.offer_url)}
         style={[styles.NewsLetterView, index == 0 ? { marginLeft: 15 } : null]}
       >
-        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
-        <View style={styles.newsleftView}>
-          <View style={styles.bookanddo}>
-            <TouchableOpacity style={styles.bkmrkBtn} onPress={() => addBookmark(item.id, "offer")}>
-              <View style={styles.bkmrkIcn}>
-                {svgs.bookmark("", 8, 8)}
-              </View>
-              <Text style={styles.bkmrkBtnTxt}>Bookmark</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.issuetitle}>{item.title}</Text>
-          <Text style={styles.issueDes}>{item.short_description}</Text>
+         <View style={styles.offeringImage}>
+            <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         </View>
       </TouchableOpacity>
     );
@@ -314,7 +303,7 @@ const Home = (props, { route }) => {
 
   <View style={styles.sliderHadding}>
           <Text style={styles.haddingTxt}>Our Offerings</Text>
-          <TouchableOpacity style={styles.viewAllBtn} onPress={() => props.navigation.navigate("Offers", { adsense: btmSlider })}>
+          <TouchableOpacity style={styles.viewAllBtn} onPress={() => props.navigation.navigate("Offers", { adsense: btmSlider,offerlist })}>
             <Text style={styles.viewAllTxt}>View All</Text>
           </TouchableOpacity>
         </View>

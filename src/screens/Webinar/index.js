@@ -118,7 +118,7 @@ const Webinar = props => {
       <TouchableOpacity
         style={styles.NewsLetterView}
         onPress={() => {
-         item.check_payment == null ?
+          item?.payment_type == "Paid" && item?.check_payment == null ?
             (setItem(item),
               setModalVisible(true))
             :

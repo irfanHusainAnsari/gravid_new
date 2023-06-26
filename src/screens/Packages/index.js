@@ -30,35 +30,15 @@ const Packages = props => {
 
   useEffect(() => {
     getPackageData();
-    getCart();
   }, [isFocused]);
-
-  const getCart = () => {
-    setIsLoader(true);
-    Apis.getCartData({})
-      .then(async json => {
-        setCartCount(json?.cartCount)
-        
-        if (json.status == true) {
-          setCartData(json?.data[0]);
-          setTaxData(json?.taxData);
-          
-        }
-        setIsLoader(false);
-      })
-      .catch(error => {
-        console.log('error', error);
-        setIsLoader(false);
-      });
-  };
-
 
   const getPackageData = () => {
     setIsLoader(true);
     Apis.getPackageItem({})
       .then(async json => {
-       
+       console.log('getPackageData==', json)
         if (json.status == true) {
+
           setPackageData(json?.data[0].programs);
         }
         setIsLoader(false);

@@ -266,15 +266,16 @@ const ExpertListDetail = props => {
               if (json.status == true) {
                   setCartData(json?.data[0])
                   setTaxData(json?.taxData)
-                  setOpenCloseCalendar(false)
-                  setCartOpen(true)
+                  setOpenCloseCalendar(true)
+                  props.navigation.navigate("Cart")
+                  // setCartOpen(true)
               }
               setIsLoader(false);
             }).catch((error) => {
               console.log("error", error);
               setIsLoader(false);
             })
-          setProgramDetailItem(false);
+          setProgramDetailItem(true);
           setOpenCloseCalendar(false);
           props.navigation.navigate("Cart")
           // setCartOpen(true)

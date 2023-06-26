@@ -16,6 +16,13 @@ const Notifications = (props) => {
   const [isLoader, setIsLoader] = useState(false)
   const [notificationData, setNotificationData] = useState("")
   console.log('notificationData', notificationData)
+  // var date = new Date(date);
+  // var year = date.toLocaleString('default', {year: 'numeric'});
+  // var monthh = date.toLocaleString('default', {month: '2-digit'});
+  // var day = date.toLocaleString('default', {day: '2-digit'});
+  // var formattedDate = day + '/' + monthh + '/' + year;
+  // var newFormateDate = year+"-" + monthh +"-"+day
+
   useEffect(() => {
       getNotification();
   }, [])
@@ -70,6 +77,14 @@ const Notifications = (props) => {
     )
   }
   const NotificationsData = ({item}) => {
+  var date = new Date(item?.created_at);
+  var year = date.toLocaleString('default', {year: 'numeric'});
+  var monthh = date.toLocaleString('default', {month: '2-digit'});
+  var day = date.toLocaleString('default', {day: '2-digit'});
+  var hours= date.getHours('default', {day: '2-digit'});
+  var minuts= date.getMinutes('default', {day: '2-digit'});
+  var formattedDate = day + '/' + monthh + '/' + year;
+  
     return (
       <TouchableOpacity style={styles.cardColorContainer} onPress={()=>readNotification(item?.id)}>
         <View style={styles.imageCard}>
@@ -87,7 +102,7 @@ const Notifications = (props) => {
           <Text style={styles.textTimeNotificationcolor}>
             {item.textTimeNotification}
           </Text>
-          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{item.created_at}</Text>         
+          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{formattedDate}   {hours}:{minuts}</Text>         
         </View>
        
       </TouchableOpacity>

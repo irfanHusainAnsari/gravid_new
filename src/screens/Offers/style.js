@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
   },
   haddingView: {
     backgroundColor: colors.themeColor,
@@ -32,11 +32,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   NewsLetterView: {
-    marginHorizontal: 8,
-    marginBottom: 16,
-    padding: 10,
-    backgroundColor: colors.white,
-    borderRadius: 10,
+    // width:width/2.3,
+    // height:160,
+    marginHorizontal:9,
+    marginVertical:5,
+    // marginBottom: 16,
+    borderRadius: 20,
+    borderWidth:1,
+    borderColor:colors.themeColor,
+   
+
+  },
+  newsImg: {
+    width:width/2.3,
+    height:160,
+    resizeMode:"contain",
+    borderRadius: 20,
+  },
+  newsleftView: {
+    // marginTop:8,
+    // backgroundColor:"red"
   },
   blogTitleTime: {
     fontFamily: fonts.OptimaBold,
@@ -52,10 +67,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginTop: 10
   },
-  newsleftView: {
-    flexDirection: "row",
-    marginTop: 16
-  },
+ 
   issueDes: {
     // flex: 3,
     // backgroundColor:'red',
@@ -67,21 +79,16 @@ const styles = StyleSheet.create({
   },
   manflatlistview: {
     backgroundColor: "#FAFAFA",
-    paddingHorizontal: 6,
+    paddingHorizontal:6,
     paddingTop: 30,
     borderRadius: 40,
     marginTop: -30,
     flex: 1
   },
-  newsImg: {
-    // flex: 2,
-    width: 145,
-    height: 118,
-    marginTop: 5,
-    resizeMode:"contain",    // width: "100%",
-  },
+  
   endView: {
-    marginHorizontal: 24,
+   
+    marginHorizontal:24,
     marginVertical: 20,
     height: 200
   },

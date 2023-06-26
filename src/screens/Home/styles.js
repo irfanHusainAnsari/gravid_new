@@ -208,11 +208,16 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 12,
   },
+  offeringImage:{
+    borderRadius:5,
+    borderColor:colors.themeColor,
+    borderWidth:2,
+  },
   newsImg: {
-    width: width / 2,
-    height: 100,
-    borderRadius: 10 / 2,
-    resizeMode: 'contain'
+    width: width /3,
+    height: 160,
+    resizeMode:"stretch",
+    
   },
   bkmrkBtn: {
     flexDirection: "row",

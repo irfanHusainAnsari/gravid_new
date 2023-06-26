@@ -56,7 +56,7 @@ const VideoPlay = ({ Fullscreen, url }) => {
         // toggleResizeModeOnFullscreen={false}
         // controlTimeout={1000}
       // fullscreen={widthhandle}
-      // controls={true}
+      controls={true}
       // resizeMode="contain"
       // onShowControls={true}
       // disableControlsAutoHide={true}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   extraStyle: {
     width: moderateScale(600),
-    height: moderateScale(330),
+    height: moderateScale(310),
     alignSelf: 'center',
     marginBottom: 50,
   }

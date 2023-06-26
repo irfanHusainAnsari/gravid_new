@@ -49,13 +49,13 @@ export const styles = StyleSheet.create({
     color: '#6D7A90',
     fontSize: 14,
     marginBottom: 2,
-    fontFamily:fonts.OptimaDemiBold
+    fontFamily:fonts.OptimaBold
   },
   one1Text: {
     color: '#000',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 14,
-    fontFamily:fonts.OptimaDemiBold
+    fontFamily:fonts.OptimaBold
   },
   localTimeText: {
     color: '#000',

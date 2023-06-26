@@ -44,7 +44,7 @@ const Cart = props => {
   function add(accumulator, a) {
     return accumulator + a;
   }
-  const taxDataitem = parseInt((taxData?.gst / 100) * subTotal);
+  const taxDataitem = Math.round((taxData?.gst / 100) * subTotal);
   const totalAmount = taxDataitem + subTotal;
 
   //
@@ -179,12 +179,14 @@ const Cart = props => {
                       : item.type == 'program'
                         ? imageurl + item?.get_program?.image
                         : item.type == 'expert'
-                          ? imageurl + item?.get_expert?.image
+                          ? imageurl + item?.get_expert?.file
                           : item.type == 'magzine'
-                            ? imageurl + item?.get_program?.image
+                            ? imageurl + item?.get_magazine?.image
+                            : item.type == 'episode'
+                            ? imageurl + item?.get_episode?.file
                             : null,
                 }}
-                style={{ width: 90, height: 120, resizeMode: 'cover' }}
+                style={{ width: 90, height: 120, resizeMode: 'contain' ,backgroundColor:"#f2f2f2"}}
               />
             </View>
           </View>
@@ -198,6 +200,8 @@ const Cart = props => {
                     ? "Program Detail"
                     : item.type == 'expert'
                       ? "Expert Detail"
+                      : item.type == 'episode'
+                      ? "Episode Detail"
                       : 'dummy'}
             </Text>
             <Text style={styles.one1Text}>
@@ -205,15 +209,17 @@ const Cart = props => {
                 color: '#6D7A90',
                 fontSize: 14,
                 marginBottom: 2, fontFamily: fonts.OptimaDemiBold
-              }}>Title:</Text>
+              }}>Title : </Text>
               {item.type == 'webinar'
                 ? item.get_webinar.title
                 : item.type == 'magzine'
-                  ? item.get_program.title
+                  ? item.get_magazine.title
                   : item.type == 'program'
                     ? item.get_program.title
                     : item.type == 'expert'
                       ? item.get_expert.name
+                      : item.type == 'episode'
+                      ? item.get_episode.title
                       : 'dummy'}
             </Text>
             {item?.category != null ?

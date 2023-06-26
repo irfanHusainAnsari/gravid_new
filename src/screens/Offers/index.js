@@ -8,6 +8,8 @@ import { imageurl } from '../../Services/constants';
 
 const Offers = (props) => {
   const adsense = props?.route?.params?.adsense;
+  const offerlist = props?.route?.params?.offerlist
+  console.log('offerlist', offerlist)
   const [blogslist, setBlogsList] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
   const [isLoader, setIsLoader] = useState(false)
@@ -44,14 +46,15 @@ console.log('object', blogslist)
       <TouchableOpacity
         key={item.id}
         style={styles.NewsLetterView}
-        onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
+        // onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
+        onPress={async()=> await Linking.openURL(item.offer_url)}
       >
 
-        <Text style={styles.issuetitle}>{item.title}</Text>
-        <View style={styles.newsleftView}>
-          <Text style={styles.issueDes}>{item.short_description}</Text>
+        {/* <Text style={styles.issuetitle}>{item.title}</Text> */}
+        {/* <View style={styles.newsleftView}> */}
+          {/* <Text style={styles.issueDes}>{item.short_description}</Text> */}
           <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
-        </View>
+        {/* </View> */}
       </TouchableOpacity>
     );
   };
@@ -78,10 +81,11 @@ console.log('object', blogslist)
             </View>
           ) : (
             <FlatList
-              data={blogslist}
+              data={offerlist}
               renderItem={renderItemNewsLetter}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
+              numColumns={2}
               ListFooterComponent={() => {
                 return (
                   <View style={styles.endView}>

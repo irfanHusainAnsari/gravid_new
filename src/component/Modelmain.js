@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
-        height: "22%",
-        width: "50%",
+        padding: 25,
+        height: "25%",
+        width: "70%",
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {

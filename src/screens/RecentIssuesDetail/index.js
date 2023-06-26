@@ -146,7 +146,7 @@ const RecentIssuesDetail = props => {
               console.log('error', error);
               setIsLoader(false);
             });
-          setMagzineOpen(false)
+          setMagzineOpen(true)
           props.navigation.navigate("Cart")
           // setCartOpen(true);
         } else {

@@ -58,7 +58,7 @@ const ProgramsDetail = props => {
   const maxDate = new Date(2023, month + 1, 30);
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-
+console.log('delail', delail)
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -162,19 +162,6 @@ const ProgramsDetail = props => {
                  tax_percent:taxData?.gst,
                  paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
-    // const params = {
-    //   type: 4,
-    //   type_id: cartData?.data_id,
-    //   amount: totalAmount,
-    //   purpose: cartData?.category?.title,
-    //   phone: userData?.mobile,
-    //   buyer_name: userData?.name,
-    //   email: userData?.email,
-    //   cart_id:cartData?.id,
-    //   tax_amount:taxDataitem,
-    //   tax_percent:taxData?.gst,
-    //   paid_amount:totalAmount,
-    // };
     Apis.instaMojoPayment(params)
       .then(async json => {
         console.log('json,,,', json)
@@ -193,16 +180,18 @@ const ProgramsDetail = props => {
 
 
   const handleJoinWebinar = async data => {
+    alert(data?.web_link)
     // console.log("newaoiurl" , JSON.stringify(data)?.data?.web_link);
     const params = {
       id: paid.id,
     };
     Apis.programs_detail(params).then(async json => {
       if (json.status == true) {
+        alert(json?.data)
         setDetail(json?.data);
       }
     });
-    await Linking.openURL(`https://${delail?.web_link}`);
+    // await Linking.openURL(`https://${delail?.web_link}`);
     // props.navigation.navigate('WebViewScreen', {delail});
   };
 

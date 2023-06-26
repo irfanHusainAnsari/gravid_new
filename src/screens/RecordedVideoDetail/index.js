@@ -14,8 +14,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import VideoPlay from '../../component/VideoPlay'
 const { width } = Dimensions.get('window');
 const RecordedVideoDetail = (props) => {
+  let recordedVideoData = props?.route?.params?.item;
+  console.log('recordedVideoData', recordedVideoData?.vedio_link)
   const [start, setStart] = useState(false)
   const [Fullscreen, setFullscreen] = useState(false);
+  const url ="https://adminapp.gravidparenting.com/public/videos/Tusshar_Kapoor_7th_Cut.mp4"
   useEffect(() => {
     setTimeout(() => {
       setStart(true)
@@ -23,14 +26,13 @@ const RecordedVideoDetail = (props) => {
   }, [])
   const isFocused = useIsFocused();
   const [isPaused, setIsPaused] = useState(false);
-  let recordedVideoData = props?.route?.params?.item;
+  
+  
   const [magazineDetail, setMagazineDetail] = useState({})
   const [isLoader, setIsLoader] = useState(false)
   const [playVideoId, setPlayVideoId] = useState()
   const [userData, setUserData] = useState({})
   const [episodeVideos, setEpisodeVideos] = useState([])
-  console.log('userData', userData)
-  console.log('magazineDetail222222222', magazineDetail)
   useEffect(() => {
     setIsPaused(!isFocused)
   }, [isFocused])
@@ -66,7 +68,6 @@ const RecordedVideoDetail = (props) => {
   }
 
   const setUserProfileData = async () => {
-    console.log('object.......')
     try {
       const jsondata = await AsyncStorage.getItem('valuedata');
       console.log('jsondataEditProfile', jsondata)
@@ -135,7 +136,7 @@ const RecordedVideoDetail = (props) => {
         {start ?
           <View style={styles.extraStyle}>
             <VideoPlay
-              url={{ uri: "https://adminapp.gravidparenting.com/public/videos/Tusshar_Kapoor_7th_Cut.mp4" }}
+              url={{ uri:recordedVideoData.vedio_link}}
               Fullscreen={(value) => { setFullscreen(value) }} />
           </View>
           :

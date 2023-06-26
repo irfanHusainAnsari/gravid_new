@@ -9,22 +9,20 @@ const styles = StyleSheet.create({
   },
   haddingView: {
     backgroundColor: colors.themeColor,
-    height: 90,
-    paddingBottom: 40,
+    height: 80,
+    // paddingBottom: 40,
     flexDirection: "row",
     paddingHorizontal: 24,
     alignItems: "center",
-    // justifyContent: 'center'
+    justifyContent: "space-between"
   },
   haddingTxt: {
-    flex: 3,
     fontFamily: fonts.OptimaBold,
     color: colors.black,
-    fontSize: 20,
-    left:20,
-    textAlign: "center",
-    lineHeight: 32,
-    width:100,
+    fontSize: 18,
+    // left:50,
+    // textAlign: "center",
+    // backgroundColor:"red",
   },
   searchBoxView: {
     backgroundColor: colors.grayLight,
@@ -52,13 +50,25 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     flexDirection: "row"
   },
+  // radiusView: {
+  //   height: 40,
+  //   borderTopLeftRadius: 40,
+  //   borderTopRightRadius: 40,
+  //   backgroundColor: "white",
+  //   marginTop: -40,
+  // },
+
   radiusView: {
-    height: 40,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    height: 30,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
     backgroundColor: "white",
-    marginTop: -40,
+    marginTop: -20,
   },
+
+
+
+
   empty:{
     alignSelf:"center",
     fontSize:15,
@@ -127,11 +137,10 @@ const styles = StyleSheet.create({
   issuetitle: {
     marginTop: 5,
     fontFamily: fonts.OptimaRegular,
-    color: colors.black,
+    color: colors.gray,
     fontSize: 13,
     lineHeight: 17,
-    paddingHorizontal:5,
-    width: width / 4 + 80,
+    paddingHorizontal:5
   },
   issueDes: {
     marginTop: 5,
@@ -142,12 +151,15 @@ const styles = StyleSheet.create({
     paddingHorizontal:5
   },
   NewsLetterView: {
+    width: width / 2 - 20,
+    marginRight: 5,
     backgroundColor: "#F9FAFC",
+    // backgroundColor: "red",
     alignItems: "center",
-    elevation:0,
-    marginVertical: 10,
-    paddingVertical: 10,
-    marginHorizontal: 10
+    borderRadius: 5,
+    marginBottom: 16,
+    marginHorizontal:5
+    // flex: 1
   },
   newsleftView: {
     paddingBottom: 12,
@@ -155,16 +167,15 @@ const styles = StyleSheet.create({
     // borderWidth:1
   },
   newsImg: {
-    width: width / 4 + 90,
-    height: width / 4.3 + 50,
-    // borderRadius: 10 / 2,
-     marginTop: 10,
+    width: width / 4 + 60,
+    height: width / 4.3 + 40,
+    borderRadius: 10 / 2, marginTop: 10,
     resizeMode: 'contain',
   },
   thembimg:{
     borderRadius:5,
     position:"absolute",
-    bottom: 60,
+    top:50,
     alignSelf:"center",
     height: 40,
     width: 40,
