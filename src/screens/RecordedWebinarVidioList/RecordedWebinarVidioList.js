@@ -51,26 +51,6 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
                     <Text style={styles.issueDes}>{item.short_description}</Text>
                 </View>
             </TouchableOpacity>
-            // <View
-            //     style={styles.NewsLetterView}>
-            //     <View>
-            //         <Image
-            //             style={styles.newsImg}
-            //             source={{ uri: imageurl + item.file }}
-            //         />
-            //         <TouchableOpacity onPress={() => {
-            //             navigation.navigate('RecordedVideoDetail', {
-            //                 item,
-            //             })
-            //         }}>
-            //             <Image
-            //                 style={styles.thembimg}
-            //                 source={require("../../assets/images/playIcons.png")} />
-            //         </TouchableOpacity>
-            //         <Text style={styles.issuetitle}>{item.title}</Text>
-            //         <Text style={[styles.issuetitle, { fontSize: 11, color: "grey" }]}>{item.short_description}</Text>
-            //     </View>
-            // </View>
         );
     }
     return (
@@ -83,7 +63,6 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <Text style={styles.haddingTxt}>Episode Detail</Text>
                 <View style={{ flex: 3 }} />
-
             </View>
             <View style={styles.radiusView} />
             {empty &&

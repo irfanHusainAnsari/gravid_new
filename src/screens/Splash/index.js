@@ -13,9 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Home = (props) => {
-
   console.log(windowWidth,windowHeight)
-
   useEffect(() => {
     navigationOnClick()
   }, []);

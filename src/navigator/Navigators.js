@@ -37,15 +37,13 @@ import Cart from '../screens/Cart';
 import ProgramsDetail from '../screens/ProgramsDetail';
 import PackageDetail from '../screens/PackageDetail.js';
 import RecordedWebinarVidioList from '../screens/RecordedWebinarVidioList/RecordedWebinarVidioList';
-
+import NewPackegedetail from '../screens/NewPackegedetail';
 const RootStack = createNativeStackNavigator();
-
 const Navigators = () => {
   return (
     <RootStack.Navigator
     // initialRouteName='ServiceSelection'
     >
-
       {/* <RootStack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} /> */}
       <RootStack.Screen name="splash" component={Splash} options={{ headerShown: false }} />
       <RootStack.Screen name="Introduction" component={Introduction} options={{ headerShown: false }} />
@@ -84,6 +82,7 @@ const Navigators = () => {
       <RootStack.Screen name="ProgramsDetail" component={ProgramsDetail} options={{ headerShown: false }} />
       <RootStack.Screen name="PackageDetail" component={PackageDetail} options={{ headerShown: false }} />
       <RootStack.Screen name='RecordedWebinarVidioList' component={RecordedWebinarVidioList} options={{ headerShown: false }} />
+      <RootStack.Screen name='NewPackegedetail' component={NewPackegedetail} options={{headerShown: false}}/>
     </RootStack.Navigator>
   );
 };
