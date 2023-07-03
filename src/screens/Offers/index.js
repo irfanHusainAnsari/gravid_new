@@ -13,7 +13,7 @@ const Offers = (props) => {
   const [blogslist, setBlogsList] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
   const [isLoader, setIsLoader] = useState(false)
-console.log('object', blogslist)
+  console.log('object', blogslist)
   useEffect(() => {
     HomeBlogdata()
   }, [])
@@ -40,21 +40,38 @@ console.log('object', blogslist)
         setIsLoader(false)
       })
   }
+  const clinkOntype = (item) => {
+    if (item.offer_type === "webinar") {
+      props.navigation.navigate("Webinar")
+    }
+    else if (item.offer_type === "episode") {
+      props.navigation.navigate("Webinar",{offer_type:"record"})
+    }
+    else if (item.offer_type === "package") {
+      props.navigation.navigate("Packages")
+    }
+    else if (item.offer_type === "program") {
+      props.navigation.navigate("Programs")
+    }
+    else if (item.offer_type === "magzine") {
+      props.navigation.navigate("CurrentIssue")
+    }
+    else if (item.offer_type =="parenting_tv"){
+      props.navigation.navigate("ParentingList")
+    }
+    else if (item.offer_type === "expert") {
+      props.navigation.navigate("ExpertList")
+    }
+  }
 
   const renderItemNewsLetter = ({ item }) => {
     return (
       <TouchableOpacity
         key={item.id}
         style={styles.NewsLetterView}
-        // onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
-        onPress={async()=> await Linking.openURL(item.offer_url)}
+        onPress={async () => clinkOntype(item)}
       >
-
-        {/* <Text style={styles.issuetitle}>{item.title}</Text> */}
-        {/* <View style={styles.newsleftView}> */}
-          {/* <Text style={styles.issueDes}>{item.short_description}</Text> */}
-          <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
-        {/* </View> */}
+        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
       </TouchableOpacity>
     );
   };

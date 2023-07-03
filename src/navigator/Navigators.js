@@ -38,6 +38,7 @@ import ProgramsDetail from '../screens/ProgramsDetail';
 import PackageDetail from '../screens/PackageDetail.js';
 import RecordedWebinarVidioList from '../screens/RecordedWebinarVidioList/RecordedWebinarVidioList';
 import NewPackegedetail from '../screens/NewPackegedetail';
+import ParentingList from '../screens/ParentingList';
 const RootStack = createNativeStackNavigator();
 const Navigators = () => {
   return (
@@ -83,6 +84,7 @@ const Navigators = () => {
       <RootStack.Screen name="PackageDetail" component={PackageDetail} options={{ headerShown: false }} />
       <RootStack.Screen name='RecordedWebinarVidioList' component={RecordedWebinarVidioList} options={{ headerShown: false }} />
       <RootStack.Screen name='NewPackegedetail' component={NewPackegedetail} options={{headerShown: false}}/>
+      <RootStack.Screen name='ParentingList' component={ParentingList} options={{headerShown: false}}/>
     </RootStack.Navigator>
   );
 };

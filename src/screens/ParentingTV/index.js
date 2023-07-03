@@ -1,15 +1,38 @@
 import react, { useEffect, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, Dimensions,ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, ScrollView } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 import styles from "./styles";
-import VideoPlayer from 'react-native-video-controls';
 import Orientation from 'react-native-orientation-locker';
+import VideoPlay from "../../component/VideoPlay";
+import Apis from "../../Services/apis";
 
-const ParentingTV = (props) => {
-    const [orientation, setOrientation] = useState('')
-    console.log('object', orientation)
+const ParentingTV = ({ props, route }) => {
+  const id = route.params.item.id
+  const [orientation, setOrientation] = useState('')
+  const [Fullscreen, setFullscreen] = useState(false);
+  const [isLoader, setIsLoader] = useState(true)
+  const [episodeVideos, setEpisodeVideos] = useState()
+  console.log('object', orientation)
+  useEffect(() => {
+    PlayEpisodeVideo(id)
+  }, [])
+  const PlayEpisodeVideo = (id) => {
+    const params = {
+      search_id: id
+    };
+    Apis.ParentigDetailVideos(params).then(async json => {
+      setEpisodeVideos(json?.data[0].vedio_link)
+      console.log("=========================result", json?.data[0].vedio_link);
+      if (json.status == true) {
+        setIsLoader(false)
+        if (json?.data?.length == 0) {
+          setIsLoader(false)
+        }
 
-useEffect(() => {
+      }
+    });
+  }
+  useEffect(() => {
     const currentOrientation = Orientation.getInitialOrientation();
     getCurrentScreenOrientation();
     setOrientation('Current Device Orientation is = ' + currentOrientation);
@@ -27,37 +50,36 @@ useEffect(() => {
   const OnOrientationChange = orientation => {
     setOrientation('Current Screen Orientation is ' + orientation);
   };
-    return (
-        <View style={styles.container}>
-            <View style={styles.haddingView}>
-                <Text style={styles.haddingTxt}>Parenting TV</Text>
-                <View style={styles.radiusView} />
+  return (
+    <View style={styles.container}>
+      {Fullscreen ? null :
+        <>
+          <View style={styles.haddingView}>
+            <Text style={styles.haddingTxt}>Parenting TV</Text>
+            <View style={styles.radiusView} />
+          </View>
+          
+        </>
+      }
+      <ScrollView>
+        <View style={styles.backgroundVideo}>
+          {!isLoader ?
+            <View style={styles.extraStyle}>
+              <VideoPlay
+                url={{ uri: episodeVideos }}
+                Fullscreen={(value) => { setFullscreen(value) }} />
             </View>
-            <ScrollView>
-                <View style={styles.backgroundVideo}>
-                   <VideoPlayer
-                            source={{
-                                uri: 'https://adminapp.gravidparenting.com/public/videos/Tusshar_Kapoor_7th_Cut.mp4',
-                            }}
-                            onShowControls={true}
-                            paused={true}
-                            disableControlsAutoHide={true}
-                            onEnterFullscreen={() => {
-                                console.log('First');
-                                Orientation.lockToLandscape();
-                            }}
-                            onExitFullscreen={() => {
-                                console.log('second');
-                                Orientation.unlockAllOrientations();
-                            }}
-                    
-                            />
-                </View>
-            </ScrollView>
+            :
+            <View style={{ marginTop: 100 }}>
+              <ActivityIndicator size="large" />
+            </View>
+          }
         </View>
+      </ScrollView>
+    </View>
 
-    )
+  )
 }
-export default ParentingTV 
+export default ParentingTV
 
 

@@ -24,17 +24,16 @@ const styles = StyleSheet.create({
         alignSelf:"center"
     },
     radiusView: {
-        height: 50,
+        height: 40,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: 30,
+        marginTop: 0,
     },
     backgroundVideo: {
       marginTop:10,
-      borderWidth:5,
-      borderColor:"black",
-      height:250,
+    //   borderWidth:5,
+    //   borderColor:"black",
       width:"90%",
       alignSelf:"center",
       },

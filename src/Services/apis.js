@@ -54,6 +54,12 @@ export default class Apis {
   static EpisodeVideos = (data) => {
     return Network('GET', 'episode-vedios?episode_id=' + data.episode_id, data)
   }
+  static ParentigListVideos = (data) => {
+    return Network('GET', 'parentingtv', data)
+  }
+  static ParentigDetailVideos = (data) => {
+    return Network('GET', 'parentingtv?search_id=' + data.search_id, data)
+  }
   static webinar_detail = (data) => {
     return Network('GET', 'webinar-detail?id=' + data.id, data)
   }

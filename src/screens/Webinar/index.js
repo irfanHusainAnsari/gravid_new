@@ -19,7 +19,8 @@ import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import { useIsFocused } from '@react-navigation/native';
 import Modelmain from '../../component/Modelmain';
-const Webinar = props => {
+const Webinar = ({props, route}) => {
+  const offer_type=  route?.params?.offer_type
   const isFocused = useIsFocused();
   const [modalVisible, setModalVisible] = useState(false);
   const [webinarrecoded, setWebinarRecoded] = useState([]);
@@ -27,7 +28,7 @@ const Webinar = props => {
   const [webinarLiveSearch, setWebinarListSearch] = useState([]);
   const [recordedList, setRecordedList] = useState([]);
   const [recordedListSearch, setRecordedListSearch] = useState([]);
-  const [type, setType] = useState('live');
+  const [type, setType] = useState("live");
   const [btmSlider, setBtmSlider] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
   const [isVideoLoader, setIsVideoLoader] = useState(false);
@@ -44,11 +45,9 @@ const Webinar = props => {
     Apis.getCartData({})
       .then(async json => {
         setCartCount(json?.cartCount)
-
         if (json.status == true) {
           setCartData(json?.data[0]);
           setTaxData(json?.taxData);
-
         }
         setIsLoader(false);
       })
