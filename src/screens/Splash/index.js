@@ -9,7 +9,8 @@
 import React, { useEffect } from 'react';
 import { ImageBackground, Image, SafeAreaView, ScrollView, StatusBar, Text, useColorScheme, View ,Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { requestUserPermission,notificationListener } from '../../../src/utils/notigicationServices';
+import  messaging from '@react-native-firebase/messaging';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Home = (props) => {
@@ -33,7 +34,13 @@ const Home = (props) => {
       }
     }, 2000);
   }
-
+  useEffect(() => {
+    requestUserPermission();
+    notificationListener()
+    messaging().setBackgroundMessageHandler( async remoteMessage =>{
+      console.log('App11111111111',remoteMessage)
+    })
+   }, [])
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground source={require('../../assets/images/Splash-bg.png')} resizeMode="cover" style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

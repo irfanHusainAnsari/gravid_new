@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   haddingView: {
     backgroundColor: colors.themeColor,
     height: 80,
-    // paddingBottom: 40,
     flexDirection: "row",
     paddingHorizontal: 24,
     alignItems: "center",
@@ -20,9 +19,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.OptimaBold,
     color: colors.black,
     fontSize: 18,
-    // left:50,
-    // textAlign: "center",
-    // backgroundColor:"red",
   },
   searchBoxView: {
     backgroundColor: colors.grayLight,
@@ -50,14 +46,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     flexDirection: "row"
   },
-  // radiusView: {
-  //   height: 40,
-  //   borderTopLeftRadius: 40,
-  //   borderTopRightRadius: 40,
-  //   backgroundColor: "white",
-  //   marginTop: -40,
-  // },
-
   radiusView: {
     height: 30,
     borderTopLeftRadius: 50,
@@ -65,10 +53,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: -20,
   },
-
-
-
-
   empty:{
     alignSelf:"center",
     fontSize:15,

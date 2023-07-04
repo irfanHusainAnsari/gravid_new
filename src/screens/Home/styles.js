@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   newsImg: {
     width: width /3,
-    height: 160,
+    height: 110,
     resizeMode:"stretch",
     
   },

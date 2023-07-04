@@ -168,7 +168,7 @@ const Signup = (props) => {
             {svgs.mobileIcon(colors.grayRegular, 18, 20)}
             <TextInput
               maxLength={10}
-              keyboardType='numeric'
+              keyboardType="name-phone-pad"
               placeholder="Phone Number"
               style={styles.signupInput}
               onChangeText={(text) => setNumber(text)}

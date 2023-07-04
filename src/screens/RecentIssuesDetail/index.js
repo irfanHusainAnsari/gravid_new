@@ -87,7 +87,7 @@ const RecentIssuesDetail = props => {
       paid_amount: totalAmount,
       amount:cartData.amount,
       cartData:[{id:cartData?.id,
-                 tax_amount:cartData?.amount,
+                 tax_amount:taxDataitem,
                  tax_percent:taxData?.gst,
                  paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
@@ -104,17 +104,18 @@ const RecentIssuesDetail = props => {
     //   tax_percent:taxData?.gst,
     //   paid_amount:totalAmount,
     // };
-    Apis.instaMojoPayment(params)
-      .then(async json => {
-        if (json.status == true) {
-            props.navigation.navigate('InstaMojoWebScreen', {instamojoData: json});
-        }
-        setIsLoader(false);
-      })
-      .catch(error => {
-        console.log('error', error);
-        setIsLoader(false);
-      });
+    console.log('params', params)
+    // Apis.instaMojoPayment(params)
+    //   .then(async json => {
+    //     if (json.status == true) {
+    //         props.navigation.navigate('InstaMojoWebScreen', {instamojoData: json});
+    //     }
+    //     setIsLoader(false);
+    //   })
+    //   .catch(error => {
+    //     console.log('error', error);
+    //     setIsLoader(false);
+    //   });
   };
   const onBackPress = () => {
     // props?.route?.params?.HomePagedata();

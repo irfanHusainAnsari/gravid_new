@@ -3,7 +3,8 @@ import { View, Text } from 'react-native'
 import messaging from '@react-native-firebase/messaging';
 
 
-const ForegroundNotification = () => {
+const ForegroundNotification = (props) => {
+  console.log('props<<<<<', props)
 
   useEffect(() => {
     

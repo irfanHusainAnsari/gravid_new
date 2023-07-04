@@ -30,6 +30,7 @@ import RecentOffersDetail from '../screens/RecentOffersDetail';
 import Library from '../screens/Library';
 import ExpertList from '../screens/ExpertList';
 import ParentingTV from '../screens/ParentingTV';
+
 import Notifications from '../screens/Notifications';
 import WebViewScreen from '../component/WebViewScreen';
 import ServiceSelection from '../screens/ServiceSelection';
@@ -37,6 +38,8 @@ import Cart from '../screens/Cart';
 import ProgramsDetail from '../screens/ProgramsDetail';
 import PackageDetail from '../screens/PackageDetail.js';
 import RecordedWebinarVidioList from '../screens/RecordedWebinarVidioList/RecordedWebinarVidioList';
+import OrderHistory from '../screens/OrderHistory';
+import OrderHistoryDetail from '../screens/OrderHistoryDetail.js';
 
 const RootStack = createNativeStackNavigator();
 
@@ -84,6 +87,8 @@ const Navigators = () => {
       <RootStack.Screen name="ProgramsDetail" component={ProgramsDetail} options={{ headerShown: false }} />
       <RootStack.Screen name="PackageDetail" component={PackageDetail} options={{ headerShown: false }} />
       <RootStack.Screen name='RecordedWebinarVidioList' component={RecordedWebinarVidioList} options={{ headerShown: false }} />
+      <RootStack.Screen name='OrderHistory' component={OrderHistory} options={{ headerShown: false }} />
+      <RootStack.Screen name='OrderHistoryDetail' component={OrderHistoryDetail} options={{ headerShown: false }} />
     </RootStack.Navigator>
   );
 };

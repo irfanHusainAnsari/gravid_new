@@ -41,13 +41,37 @@ console.log('object', blogslist)
       })
   }
 
+  const clinkOntype = async (item) => {
+    if (item.offer_type === "webinar") {
+      props.navigation.navigate("Webinar")
+    }
+    else if (item.offer_type === "episode") {
+      props.navigation.navigate("Webinar", { offer_type: "record" })
+    }
+    else if (item.offer_type === "package") {
+      props.navigation.navigate("Packages")
+    }
+    else if (item.offer_type === "program") {
+      props.navigation.navigate("Programs")
+    }
+    else if (item.offer_type === "magzine") {
+      props.navigation.navigate("CurrentIssue")
+    }
+    else if (item.offer_type == "parenting_tv") {
+    //  props.navigation.navigate("ParentingList")
+    }
+    else if (item.offer_type === "expert") {
+      props.navigation.navigate("ExpertList")
+    }
+  }
+
   const renderItemNewsLetter = ({ item }) => {
     return (
       <TouchableOpacity
         key={item.id}
         style={styles.NewsLetterView}
         // onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
-        onPress={async()=> await Linking.openURL(item.offer_url)}
+        onPress={()=> clinkOntype(item)}
       >
 
         {/* <Text style={styles.issuetitle}>{item.title}</Text> */}

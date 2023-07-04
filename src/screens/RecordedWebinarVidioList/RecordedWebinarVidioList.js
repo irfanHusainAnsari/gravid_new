@@ -81,7 +81,7 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
                     onPress={() => navigation.goBack()}>
                     {svgs.backArrow('black', 24, 24)}
                 </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Episode Detail</Text>
+                <Text style={styles.haddingTxt}>Recorded Video</Text>
                 <View style={{ flex: 3 }} />
 
             </View>

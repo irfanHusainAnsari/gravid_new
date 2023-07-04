@@ -32,6 +32,10 @@ const ExpertList = props => {
   const [isLoader, setIsLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
   const [specialization, setSpecialization] = useState('');
+  const [city, setCity] = useState('');
+  const [citySearch, setCitySearch] = useState('');
+  const [pinCode, setPinCode] = useState('');
+  const [pinCodeSearch, setPinCodeSearch] = useState('');
   const [specializationSearch, setSpecializationSearch] = useState('');
   const [filter, setFilter] = useState(false);
   const [cartCount, setCartCount] = useState("")
@@ -62,7 +66,7 @@ const ExpertList = props => {
   useEffect(() => {
     if (searchTxt && searchTxt != '') {
       setExpertListSearch(
-        expertData.filter(item =>
+        expertData?.filter(item =>
           item.name.toLowerCase().includes(searchTxt.toLowerCase()),
         ),
       );
@@ -70,13 +74,34 @@ const ExpertList = props => {
     if (specialization && specialization != '') {
       setSpecializationSearch(
         expertData.filter(item =>
-          item.short_description
+          item?.short_description
             .toLowerCase()
             .includes(specialization.toLowerCase()),
         ),
       );
     }
-  }, [searchTxt, specialization]);
+    if (city && city != '') {
+
+      setCitySearch(
+        expertData.filter(item =>
+        item?.city
+            .toLowerCase()
+            .includes(city.toLowerCase()),
+        ),
+      );
+    }
+
+    if (pinCode && pinCode != '') {
+
+      setPinCodeSearch(
+        expertData.filter(item =>
+        item?.pincode
+            .toLowerCase()
+            .includes(pinCode.toLowerCase()),
+        ),
+      );
+    }
+  }, [searchTxt, specialization,city,pinCode]);
 
   const HomePagedata = () => {
     setIsLoader(true);
@@ -110,18 +135,18 @@ const ExpertList = props => {
     );
   };
 
-  const oncallcity = (text) => {
-    const data = expertData.filter((item) => item.city == text).map(({id, name, city}) => ({id, name, city}));
-    console.log("================data",data)
-    if(text.length == 0){
-      HomePagedata()
-    }
-   if(data.length !=0){
-    console.log("================",data)
-    setExpertData(data)
+  // const oncallcity = (text) => {
+  //   const data = expertData.filter((item) => item.city == text).map(({id, name, city}) => ({id, name, city}));
+  //   console.log("================data",data)
+  //   if(text.length == 0){
+  //     HomePagedata()
+  //   }
+  //  if(data.length !=0){
+  //   console.log("================",data)
+  //   setExpertData(data)
 
-   }
-  }
+  //  }
+  // }
 
   return (
     <View style={styles.container}>
@@ -201,7 +226,7 @@ const ExpertList = props => {
                   }}>
                   <TextInput
                     style={{flex: 1}}
-                    placeholder="Specialization"
+                    placeholder="Category"
                     value={specialization}
                     onChangeText={setSpecialization}
                   />
@@ -219,7 +244,11 @@ const ExpertList = props => {
                     marginRight: 8,
                     backgroundColor: '#F9FAFC',
                   }}>
-                  <TextInput style={{flex: 1}} placeholder="Category" />
+                  <TextInput 
+                      style={{flex: 1}} 
+                      placeholder="City"
+                      value={city}
+                      onChangeText={setCity} />
                 </View>
                 <View
                   style={{
@@ -236,8 +265,8 @@ const ExpertList = props => {
                   }}>
                   <TextInput 
                         style={{flex: 1}}
-                        placeholder="City"
-                        onChangeText={(text)=>oncallcity(text)}
+                        placeholder="Pincode"
+                        onChangeText={setPinCode}
                          />
                 </View>
                 <TouchableOpacity
@@ -262,6 +291,10 @@ const ExpertList = props => {
                     ? expertListSearch
                     : specialization && specialization != ''
                     ? specializationSearch
+                    : city && city != ''
+                    ? citySearch
+                    : pinCode && pinCode != ''
+                    ? pinCodeSearch
                     : expertData
                 }
                 renderItem={renderItemNewsLetter}

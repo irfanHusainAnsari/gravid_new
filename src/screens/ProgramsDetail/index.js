@@ -56,9 +56,10 @@ const ProgramsDetail = props => {
   const minDate = new Date(); // Today
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
+
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-console.log('delail', delail)
+console.log('taxDataitem', taxDataitem)
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -158,10 +159,11 @@ console.log('delail', delail)
       paid_amount: totalAmount,
       amount:cartData.amount,
       cartData:[{id:cartData?.id,
-                 tax_amount:cartData?.amount,
+                 tax_amount:taxDataitem,
                  tax_percent:taxData?.gst,
                  paid_amount:Math.trunc(cartData?.amount*taxData?.gst/100+cartData?.amount)}]
     };
+    console.log('params', params)
     Apis.instaMojoPayment(params)
       .then(async json => {
         console.log('json,,,', json)

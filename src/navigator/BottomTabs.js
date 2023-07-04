@@ -56,6 +56,7 @@ function BottomTabs() {
   return (
    
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {

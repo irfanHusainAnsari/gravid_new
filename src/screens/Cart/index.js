@@ -17,6 +17,9 @@ import { imageurl } from '../../Services/constants';
 // import { appointmentCardData } from '../../Common/FlatList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
+import BottomTabs from '../../navigator/BottomTabs';
+import axios from 'axios';
+
 
 const Cart = props => {
   const [isLoader, setIsLoader] = useState(false);
@@ -25,12 +28,16 @@ const Cart = props => {
   const [taxData, setTaxData] = useState('');
   const [userData, setUserData] = useState({});
   const [cartDetail, setCartDetail] = useState();
+  const [coupenCode, setCoupenCode] = useState("");
+  const [coupenDiscount, setCoupanDiscount] = useState("");
+  const [coupen, setCoupan] = useState("");
+  console.log('coupenDiscount', coupenDiscount)
   var date = new Date(cartData?.sloat_date);
   var year = date.toLocaleString('default', { year: 'numeric' });
   var monthh = date.toLocaleString('default', { month: '2-digit' });
   var day = date.toLocaleString('default', { day: '2-digit' });
-  var formattedDate = day + '/' + monthh + '/' + year;
-  var newFormateDate = year + '-' + monthh + '-' + day;
+  // var formattedDate = day + '/' + monthh + '/' + year;
+  // var newFormateDate = year + '-' + monthh + '-' + day;
   let myArray = [];
   let cartId = [];
   if (cartData.length > 0) {
@@ -44,10 +51,18 @@ const Cart = props => {
   function add(accumulator, a) {
     return accumulator + a;
   }
-  const taxDataitem = Math.round((taxData?.gst / 100) * subTotal);
-  const totalAmount = taxDataitem + subTotal;
 
-  //
+  const taxDataitem =Math.round((taxData?.gst / 100) * subTotal);
+  const totalAmount = taxDataitem + subTotal;
+  const discountAmount = totalAmount*coupenDiscount/100
+  const PaidAmount = totalAmount-discountAmount
+
+    console.log('subTotal', subTotal)
+    console.log('taxDataitem', taxDataitem)
+    console.log('totalAmount', totalAmount)
+    console.log('discountAmount', discountAmount)
+    console.log('PaidAmount', PaidAmount)
+    console.log('cartDetail', cartDetail)
 
   //  console.log('cart_detail1', cart_detail1)
 
@@ -62,13 +77,13 @@ const Cart = props => {
     for (let i = 0; i < cartData?.length; i++) {
       abc.push({
         id: cartData[i].id,
-        tax_amount: cartData[i].amount,
+        tax_amount:(taxCal / 100) * cartData[i].amount,
         tax_percent: taxCal,
-        paid_amount: Math.trunc(
+        paid_amount:
           cartData[i].amount + (taxCal / 100) * cartData[i].amount,
-        ),
       });
     }
+    console.log('abc', abc)
     setCartDetail(abc);
   }, [cartData, taxData]);
   const setUserProfileData = async () => {
@@ -103,14 +118,6 @@ const Cart = props => {
       });
   };
 
-  // if (isLoader) {
-  //   return (
-  //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-
   const removeCart = id => {
     setIsLoader(true);
     const params = {
@@ -134,18 +141,21 @@ const Cart = props => {
 
   const handleInstamozo = () => {
     // setIsLoader(true);
-    if (cartDetail) {
+    if (cartDetail && coupen && coupenDiscount && discountAmount) {
       const params = {
         purpose: 'Gravid Payment',
         phone: userData?.mobile,
         buyer_name: userData?.name,
         email: userData?.email,
         cart_id: cartId.join(','),
-        paid_amount: totalAmount,
-        amount: totalAmount,
+        total_amount: totalAmount,
+        amount: PaidAmount,
         cartData: cartDetail && cartDetail,
-      };
-
+        coupan_code:coupen,
+        coupan_codePercent:coupenDiscount,
+        coupan_amount:discountAmount,
+      }
+      console.log('params', params)
       Apis.instaMojoPayment(params)
         .then(async json => {
           console.log('json,,,', json);
@@ -161,7 +171,68 @@ const Cart = props => {
           setIsLoader(false);
         });
     }
+    else{
+      const params = {
+        purpose: 'Gravid Payment',
+        phone: userData?.mobile,
+        buyer_name: userData?.name,
+        email: userData?.email,
+        cart_id: cartId.join(','),
+        total_amount: totalAmount,
+        amount: PaidAmount,
+        cartData: cartDetail && cartDetail,
+      }
+      console.log('params', params)
+      Apis.instaMojoPayment(params)
+        .then(async json => {
+          console.log('json,,,', json);
+          if (json.status == true) {
+            props.navigation.navigate('InstaMojoWebScreen', {
+              instamojoData: json,
+            });
+          }
+          setIsLoader(false);
+        })
+        .catch(error => {
+          console.log('error', error);
+          setIsLoader(false);
+        });
+
+    }
   };
+  const goToDetail =(item) =>{
+    item.type == 'webinar'
+    ? props.navigation.goBack()
+    : item.type == 'program'
+      ? props.navigation.goBack()
+      : item.type == 'expert'
+        ? props.navigation.goBack()
+        : item.type == 'magzine'
+          ? props.navigation.goBack()
+          : item.type == 'episode'
+          ? props.navigation.goBack()
+          : props.navigation.goBack()
+  }
+
+  const applyCouponCode =async()=>{
+    const params = {
+      coupan_code:coupenCode,
+    }
+    Apis.Coupancode(params)
+      .then(async (json) => {
+        console.log('Coupancode:', json);
+        if (json.status == true) {
+          setCoupanDiscount(json?.data?.discount_percent);
+          setCoupan(json?.data?.coupan_code)
+          Toast.show(json?.message, Toast.LONG);
+        }else{
+          Toast.show(json?.message, Toast.LONG);
+        }
+      }).catch((error) => {
+        console.log("Coupancodeerror", error);
+      })
+
+  }
 
   const renderDataItem = ({ item }) => {
     console.log('item>>>>', item);
@@ -191,7 +262,8 @@ const Cart = props => {
             </View>
           </View>
           <View style={{ flex: 5, marginLeft: 15, marginTop: 3 }}>
-            <Text style={styles.appointmentText}>
+            <TouchableOpacity style={styles.appointmentText} onPress={()=>goToDetail(item)}>
+            <Text>
               {item.type == 'webinar'
                 ? "Webinar Detail"
                 : item.type == 'magzine'
@@ -202,8 +274,9 @@ const Cart = props => {
                       ? "Expert Detail"
                       : item.type == 'episode'
                       ? "Episode Detail"
-                      : 'dummy'}
+                      : null}
             </Text>
+            </TouchableOpacity>
             <Text style={styles.one1Text}>
               <Text style={{
                 color: '#6D7A90',
@@ -220,7 +293,7 @@ const Cart = props => {
                       ? item.get_expert.name
                       : item.type == 'episode'
                       ? item.get_episode.title
-                      : 'dummy'}
+                      : null}
             </Text>
             {item?.category != null ?
               <Text style={styles.appointmentText}>
@@ -257,7 +330,7 @@ const Cart = props => {
               <View style={styles.headerTop}>
                 <TouchableOpacity
                   style={{ flex: 1 }}
-                  onPress={() => props.navigation.goBack()}>
+                  onPress={() => props.navigation.replace("BottomTabs")}>
                   <Image
                     style={styles.headerIcons}
                     source={require('../../assets/images/Header_Image.png')}
@@ -280,7 +353,7 @@ const Cart = props => {
                   fontSize: 18,
                   color: '#000',
                 }}>
-                There is no item in cart:null
+                There is no item in cart
               </Text> : 
               <View style={{ flex: 0.5, alignItems: 'center', justifyContent: 'center' }}>
                    <ActivityIndicator size="large" />
@@ -293,7 +366,7 @@ const Cart = props => {
             <View style={styles.headerTop}>
               <TouchableOpacity
                 style={{ flex: 1 }}
-                onPress={() => props.navigation.goBack()}>
+                onPress={() => props.navigation.replace("BottomTabs")}>
                 <Image
                   style={styles.headerIcons}
                   source={require('../../assets/images/Header_Image.png')}
@@ -317,8 +390,9 @@ const Cart = props => {
                   style={styles.couponCodeText}
                   placeholder="Coupon Code"
                   placeholderTextColor={'#000'}
+                  onChangeText={(text)=>setCoupenCode(text)}
                 />
-                <TouchableOpacity style={styles.buttonApply}>
+                <TouchableOpacity style={styles.buttonApply} onPress={applyCouponCode}>
                   <Text style={styles.buttonTitles}>Apply</Text>
                 </TouchableOpacity>
               </View>
@@ -346,7 +420,19 @@ const Cart = props => {
               <View style={styles.countButton}>
                 <Text style={styles.titleText}>Total Amount</Text>
                 <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                  ₹{totalAmount}
+                  ₹ {totalAmount}
+                </Text>
+              </View>
+              <View style={styles.countButton}>
+                <Text style={styles.titleText}>Discount Amount</Text>
+                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
+                  ₹ {discountAmount}
+                </Text>
+              </View>
+              <View style={styles.countButton}>
+                <Text style={styles.titleText}>Paid Amount</Text>
+                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
+                  ₹ {PaidAmount}
                 </Text>
               </View>
               <TouchableOpacity

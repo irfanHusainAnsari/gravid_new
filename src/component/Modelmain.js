@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import fonts from '../common/fonts';
+
+
 const Modelmain = ({ modalVisible,onpress,onPayment }) => {
     //   const [modalVisible, setModalVisible] = useState(true);
     return (
@@ -13,7 +16,7 @@ const Modelmain = ({ modalVisible,onpress,onPayment }) => {
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Episode Payment</Text>
+                        <Text style={styles.modalText}>Do you want to add this to the cart?</Text>
                         <View style={styles.flexrow}>
                             <Pressable
                                 style={[styles.button, styles.buttonClose,{backgroundColor:"grey"}]}
@@ -23,7 +26,7 @@ const Modelmain = ({ modalVisible,onpress,onPayment }) => {
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
                                 onPress={onPayment}>
-                                <Text style={styles.textStyle}>Payment</Text>
+                                <Text style={styles.textStyle}>Submit</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -79,7 +82,10 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
         color:"black",
-        fontWeight:"700"
+        fontWeight:"700",
+        fontFamily:fonts.OptimaBold,
+        fontSize:16
+        
     },
     flexrow:{
         flexDirection:"row",

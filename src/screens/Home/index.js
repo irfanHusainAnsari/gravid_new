@@ -12,6 +12,7 @@ import { imageurl } from '../../Services/constants';
 import { useIsFocused } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 
+
 // import Carousel from 'react-native-reanimated-carousel';
 
 const { width } = Dimensions.get('window');
@@ -41,6 +42,7 @@ const Home = (props, { route }) => {
   // const [showslider, setShowSlider] = useState(true)
   const [isLoader, setIsLoader] = useState(false)
 
+  
 
 
   useEffect(() => {
@@ -128,6 +130,30 @@ const Home = (props, { route }) => {
         }
       })
   }
+
+  const clinkOntype = async (item) => {
+    if (item.offer_type === "webinar") {
+      props.navigation.navigate("Webinar")
+    }
+    else if (item.offer_type === "episode") {
+      props.navigation.navigate("Webinar", { offer_type: "record" })
+    }
+    else if (item.offer_type === "package") {
+      props.navigation.navigate("Packages")
+    }
+    else if (item.offer_type === "program") {
+      props.navigation.navigate("Programs")
+    }
+    else if (item.offer_type === "magzine") {
+      props.navigation.navigate("CurrentIssue")
+    }
+    else if (item.offer_type == "parenting_tv") {
+      props.navigation.navigate("ParentingList")
+    }
+    else if (item.offer_type === "expert") {
+      props.navigation.navigate("ExpertList")
+    }
+  }
  
   const renderItemIssue = ({ item, index }) => {
     return (
@@ -190,7 +216,7 @@ const Home = (props, { route }) => {
   const renderItemOffers = ({ item, index }) => {
     return (
       <TouchableOpacity
-        onPress={async()=> await Linking.openURL(item.offer_url)}
+        onPress={()=> clinkOntype(item)}
         style={[styles.NewsLetterView, index == 0 ? { marginLeft: 15 } : null]}
       >
          <View style={styles.offeringImage}>

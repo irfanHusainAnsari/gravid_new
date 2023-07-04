@@ -11,8 +11,10 @@ import {
 import {styles} from './style';
 import Apis from '../../Services/apis';
 import fonts from '../../common/fonts';
+import { useIsFocused } from '@react-navigation/native';
 
 const Notifications = (props) => {
+  const isFocused = useIsFocused();
   const [isLoader, setIsLoader] = useState(false)
   const [notificationData, setNotificationData] = useState("")
   console.log('notificationData', notificationData)
@@ -25,7 +27,7 @@ const Notifications = (props) => {
 
   useEffect(() => {
       getNotification();
-  }, [])
+  }, [isFocused])
 
   const getNotification = () => {
     setIsLoader(true);
@@ -83,6 +85,12 @@ const Notifications = (props) => {
   var day = date.toLocaleString('default', {day: '2-digit'});
   var hours= date.getHours('default', {day: '2-digit'});
   var minuts= date.getMinutes('default', {day: '2-digit'});
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  console.log('minutes', minutes)
+  // if(minuts.length<1){
+  //   console.log('minuts???', minuts)
+  // }
   var formattedDate = day + '/' + monthh + '/' + year;
   
     return (
@@ -102,7 +110,7 @@ const Notifications = (props) => {
           <Text style={styles.textTimeNotificationcolor}>
             {item.textTimeNotification}
           </Text>
-          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{formattedDate}   {hours}:{minuts}</Text>         
+          <Text style={{fontFamily:fonts.OptimaMedium,fontSize:12}}>{formattedDate}   {hours}:{minutes} {ampm}</Text>         
         </View>
        
       </TouchableOpacity>

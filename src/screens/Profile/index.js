@@ -22,10 +22,11 @@ const Profile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState()
   const refferalCode= userData?.referral_code
   const data = [
-    { img: require('../../assets/images/profileicon.png'), titel: 'My Account', navigation: 'EditProfile' },
+    { img: require('../../assets/images/profileicon.png'), titel: 'My Account', navigation: 'EditProfile'},
     { img: require('../../assets/images/Referral.png'), titel: 'Referral', navigation: 'Referral'},
     { img: require('../../assets/images/library.png'), titel: 'Library', navigation: 'Library' },
     { img: require('../../assets/images/skype.png'), titel: 'ParentingTV', navigation: 'ParentingTV' },
+    { img: require('../../assets/images/order_list.png'), titel: 'Order History', navigation: 'OrderHistory' },
     { img: require('../../assets/images/termi_con.png'), titel: 'Terms & Conditions', navigation: 'TermsCondition' },
     { img: require('../../assets/images/policy_icon.png'), titel: 'Privacy Policy', navigation: 'Privacy_Policy' },
   ]

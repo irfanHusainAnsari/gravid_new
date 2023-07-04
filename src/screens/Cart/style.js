@@ -79,15 +79,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#E3E3E3',
     borderRadius: 8,
     paddingHorizontal: 10,
+    // paddingVertical:2,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   couponCodeText: {
     color: '#000',
-    fontSize: 16,
+    fontSize:16,
     fontWeight: '600',
-    height:40,
+    // height:40,
     width:"70%",
   },
   buttonApply: {

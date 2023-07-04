@@ -66,8 +66,8 @@ export const styles = StyleSheet.create({
     // flex: 2,
   },
   notificationsImage: {
-    width:25,
-    height:25,
+    width:20,
+    height:20,
     resizeMode: 'contain',
   },
   notificationsImageContainer: {
@@ -85,8 +85,7 @@ export const styles = StyleSheet.create({
   textNotificationColor: {
     color: '#1C2F50',
     fontSize: 14,
-    fontFamily:fonts.OptimaMedium,
-    lineHeight:20
+    fontFamily:fonts.OptimaMedium
   },
   textTimeNotificationcolor: {
     color: '#6D7A90',

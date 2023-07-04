@@ -110,21 +110,14 @@ const RecordedVideoDetail = (props) => {
     <View style={styles.container}>
      {Fullscreen ? null:
       <View style={styles.haddingView}>
-        <TouchableOpacity style={{ flex: 3 }} onPress={() => props.navigation.goBack()}>
+        <TouchableOpacity style={{ flex:3}} 
+          onPress={() => props.navigation.goBack()}>
           {svgs.backArrow("black", 24, 24)}
         </TouchableOpacity>
-        <Text style={styles.haddingTxt}>Recorded Video</Text>
+        <Text style={styles.haddingTxt}>Episode Detail</Text>
         <View style={{ flex: 3 }} />
       </View>}
       <View style={styles.radiusView} />
-      {/* <View style={styles.backgroundVideo}>
-        <VideoPlayer
-          source={{ uri: episodeVideos[0]?.vedio_link }}
-          controls={true}
-          paused={true}
-          disableControlsAutoHide={true}
-        />
-      </View> */}
       <View style={{
         marginTop: -10,
         borderWidth: 5,

@@ -30,6 +30,13 @@ export default class Apis {
   static getNotificationData = async (data) => {
     return Network('GET', 'get-notifications', data)
   }
+  static getOrderHistory = async (data) => {
+    return Network('GET', 'order-history', data)
+  }
+  static getOrderHistoryDetail = async (data) => {
+    return Network('GET', `order-history?id=${JSON.parse(data?.id)}`, data)
+  }
+  
   static getPackageItem = async (data) => {
     return Network('GET', 'packages', data)
   }
@@ -53,6 +60,9 @@ export default class Apis {
   }
   static EpisodeVideos = (data) => {
     return Network('GET', 'episode-vedios?episode_id=' + data.episode_id, data)
+  }
+  static Coupancode = (data) => {
+    return Network('GET', 'check-coupan-code?coupan_code=' + data.coupan_code, data)
   }
   static webinar_detail = (data) => {
     return Network('GET', 'webinar-detail?id=' + data.id, data)
@@ -85,7 +95,7 @@ export default class Apis {
     return Network('GET', 'expert-list', data)
   }
   static AddBookmark = (data) => {
-    console.log('data11', data)
+    // console.log('data11', data)
     return Network('POST', 'bookmark', data)
   }
   static AllBookMark = (data) => {
