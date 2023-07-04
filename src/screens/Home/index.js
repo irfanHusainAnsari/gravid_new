@@ -11,13 +11,31 @@ import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import { useIsFocused } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
-
-
+import PushNotification from 'react-native-push-notification';
 // import Carousel from 'react-native-reanimated-carousel';
-
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 const { width } = Dimensions.get('window');
 
 const Home = (props, { route }) => {
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const token = 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtYXRoc3R1ZGVudEBtYWlsLmNvbSIsInVzZXJOYW1lIjoibWF0aHN0dWRlbnRAbWFpbC5jb20iLCJ1c2VyUm9sZSI6IkxFQVJORVIiLCJ1c2VyR3VpZCI6IjExN2QwZTA0LTIxNzctNGRlNi1iNmQzLTVmM2QxYjMyMTVjZiIsInRlbmFudElkIjo3MTIsInRlbmFudE5hbWUiOiJhYnAiLCJmaXJzdE5hbWUiOiJNYXRoIFN0dWRlbnQiLCJsYXN0TmFtZSI6IiIsImRvbWFpbiI6ImRldi5leGFtLWZhY3RvcnMuY29tIn0.a6CP-Ajyux5bybGEXSP1IHLP7UrmIlNx60EHCP3CVY6qlZW6n8eSjbbesAESx95CAvedC0bdt1wl6A1S5xdu496QnBUOm8mVW0LHoL6M2NzHTV1xzMLCHh_4YjIUS6Alurbnbmeg1s-mqrya35E1eTBK-2iyN08i81dhsgr9M7k'; // Replace with your actual token
+  //       const response = await fetch('https://rasatva.apponedemo.top/gravid/api/check-coupan-code?coupan_code=ggggg', {
+  //         method: 'GET',
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+  //       //const jsonData = await response.json();
+  //       alert(JSON.stringify(response))
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
   const isFocused = useIsFocused();
   // console.log('isFocused', isFocused)
   const [userData, setUserData] = useState({})
@@ -25,7 +43,6 @@ const Home = (props, { route }) => {
   const [textinputVal, setTextinputVal] = useState("Gravid Digital 1 Year")
   const [price, setPrice] = useState("1800")
   const [type, setType] = useState("Select")
-
   const [sliderlist, setSliderList] = useState([])
   const [issuelist, setIssueList] = useState([])
   const [blogslist, setBlogsList] = useState([])
@@ -38,12 +55,44 @@ const Home = (props, { route }) => {
   const [videolistSearch, setVideoListSearch] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
   const [cartCount, setCartCount] = useState("")
-
-  // const [showslider, setShowSlider] = useState(true)
   const [isLoader, setIsLoader] = useState(false)
 
-  
-
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage((remoteMessage) => {
+      console.log('handle in foregound====', remoteMessage.data.body)
+    })
+    return unsubscribe
+  }, [])
+  PushNotification.configure({
+    onNotification: function (notification) {
+      if (notification.userInteraction) {
+        if (notification?.data?.body === "webinar") {
+          props.navigation.navigate("Webinar")
+        }
+        else if (notification?.data?.body === "package") {
+          props.navigation.navigate("Packages")
+        }
+        else if (notification?.data?.body === "programs") {
+          props.navigation.navigate("Programs")
+        }
+        else if (notification?.data?.body === "magzine") {
+          props.navigation.navigate("CurrentIssue")
+        }
+        else if (notification?.data?.body === "offer") {
+          props.navigation.navigate("Offers")
+        }
+        else if (notification?.data?.body === "expert") {
+          props.navigation.navigate("ExpertList")
+        }
+        else if (notification?.data?.body === "payment") {
+          alert("Work in processing")
+          // props.navigation.navigate("Offers")
+        }
+      }
+    },
+    popInitialNotification: true,
+    requestPermissions: true,
+  });
 
   useEffect(() => {
     if (isFocused) {
@@ -79,7 +128,7 @@ const Home = (props, { route }) => {
     setIsLoader(true);
     Apis.HomePagedata({})
       .then(async (json) => {
-       
+
         if (json.status == true) {
           setBlogsList(json?.data?.blog?.data);
           setOfferList(json?.data?.offer?.data);
@@ -104,7 +153,7 @@ const Home = (props, { route }) => {
         if (json.status == true) {
           setCartData(json?.data[0]);
           setTaxData(json?.taxData);
-          
+
         }
         setIsLoader(false);
       })
@@ -113,17 +162,14 @@ const Home = (props, { route }) => {
         setIsLoader(false);
       });
   };
-
-
   const addBookmark = (bookmarkID, bookmarkType) => {
-   
     const params = {
       id: bookmarkID,
       type: bookmarkType
     }
     Apis.AddBookmark(params)
       .then(async (json) => {
-      
+
         if (json.status == true) {
           Toast.show(json.message, Toast.LONG);
           HomePagedata()
@@ -190,7 +236,7 @@ const Home = (props, { route }) => {
         onPress={() => props.navigation.navigate("RecentBlogsDetail", { item })}
         style={[styles.NewsLetterView, index == 0 ? { marginLeft: 15 } : null]}
       >
-        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg}/>
+        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         <View style={styles.newsleftView}>
           <View style={styles.bookanddo}>
             <TouchableOpacity style={styles.bkmrkBtn} onPress={() => addBookmark(item.id, "blog")}>
@@ -199,12 +245,6 @@ const Home = (props, { route }) => {
               </View>
               <Text style={styles.bkmrkBtnTxt}>Bookmark</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.bkmrkBtn}>
-              <View style={styles.bkmrkIcn}>
-                {svgs.download("", 12, 12)}
-              </View>
-              <Text style={styles.bkmrkBtnTxt}>Download</Text>
-            </TouchableOpacity> */}
           </View>
           <Text style={styles.issuetitle}>{item.title}</Text>
           <Text style={styles.issueDes}>{item.short_description}</Text>
@@ -216,17 +256,16 @@ const Home = (props, { route }) => {
   const renderItemOffers = ({ item, index }) => {
     return (
       <TouchableOpacity
-        onPress={()=> clinkOntype(item)}
+        onPress={async () => clinkOntype(item)}
         style={[styles.NewsLetterView, index == 0 ? { marginLeft: 15 } : null]}
       >
-         <View style={styles.offeringImage}>
-            <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
+        <View style={styles.offeringImage}>
+          <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
         </View>
       </TouchableOpacity>
     );
   };
   const renderItemvideo = ({ item, index }) => {
-
     return (
       <TouchableOpacity
         onPress={() => props.navigation.navigate("VideosDetails", { item })}
@@ -265,7 +304,6 @@ const Home = (props, { route }) => {
       </View>
     )
   }
-
   return (
     <View style={styles.container}>
       <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -281,17 +319,17 @@ const Home = (props, { route }) => {
             {/* <Text style={styles.userName}>{userData?.lname}</Text> */}
           </View>
           <TouchableOpacity
-            style={{marginHorizontal:5,padding:8,borderRadius:100}}
+            style={{ marginHorizontal: 5, padding: 8, borderRadius: 100 }}
             onPress={() => { props.navigation.navigate('Notifications') }}>
             <Image style={styles.notification} source={require('../../assets/images/notification.png')} />
             {/* <Text style={{position:"absolute",fontSize:8,right:5,top:2.5,color:colors.themeColor}}>5</Text> */}
           </TouchableOpacity>
           <TouchableOpacity
-          
+
             onPress={() => { props.navigation.navigate('Cart') }}>
             <Image style={styles.cart} source={require('../../assets/images/cart.png')} />
-            <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:12,height:12,right:-5,top:-8, backgroundColor:colors.themeColor}}>
-              <Text style={{fontSize:10,color:"white",marginHorizontal:2,marginTop:-2}}>{cartCount}</Text>
+            <View style={{ position: "absolute", borderWidth: 1, borderRadius: 100, borderColor: colors.themeColor, width: 12, height: 12, right: -5, top: -8, backgroundColor: colors.themeColor }}>
+              <Text style={{ fontSize: 10, color: "white", marginHorizontal: 2, marginTop: -2 }}>{cartCount}</Text>
             </View>
           </TouchableOpacity>
           <View>
@@ -325,11 +363,11 @@ const Home = (props, { route }) => {
 
         </View>
 
-  {/* Offers  */}
+        {/* Offers  */}
 
-  <View style={styles.sliderHadding}>
+        <View style={styles.sliderHadding}>
           <Text style={styles.haddingTxt}>Our Offerings</Text>
-          <TouchableOpacity style={styles.viewAllBtn} onPress={() => props.navigation.navigate("Offers", { adsense: btmSlider,offerlist })}>
+          <TouchableOpacity style={styles.viewAllBtn} onPress={() => props.navigation.navigate("Offers", { adsense: btmSlider, offerlist })}>
             <Text style={styles.viewAllTxt}>View All</Text>
           </TouchableOpacity>
         </View>

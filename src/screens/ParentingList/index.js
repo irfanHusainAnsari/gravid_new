@@ -1,45 +1,46 @@
 import React, { Component, useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, ScrollView, TouchableOpacity, Image, Text } from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
 import { colors } from 'react-native-swiper-flatlist/src/themes';
 import { WebView } from 'react-native-webview';
-import styles from './style';
 import { svgs } from '../../common';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
-const RecordedWebinarVidioList = ({ navigation, route }) => {
-    const id = route.params.item.id
+import styles from './styles';
+const ParentingList = ({ navigation, route }) => {
+    // const id = route.params.item.id
+    const [isLoader, setIsLoader] = useState(true)
     const [empty, setEmpty] = useState()
     const [episodeVideos, setEpisodeVideos] = useState([])
 
     useEffect(() => {
-        PlayEpisodeVideo(id)
+        PlayEpisodeVideo()
     }, [])
     const PlayEpisodeVideo = (id) => {
         const params = {
-            episode_id: id,
         };
-        Apis.EpisodeVideos(params).then(async json => {
+        Apis.ParentigListVideos(params).then(async json => {
             if (json.status == true) {
+                setIsLoader(false)
                 if (json?.data?.length == 0) {
-                    setEmpty("No episode vedio")
+                    setIsLoader(false)
+                    setEmpty("No vedio Available")
                 }
                 setEpisodeVideos(json?.data)
             }
         });
     }
     const renderVideos = ({ item }) => {
-        console.log("item=======================", item)
         return (
 
             <TouchableOpacity
                 key={item.id}
                 onPress={() =>
-                    navigation.navigate('RecordedVideoDetail', {
+                    navigation.navigate('ParentingTV', {
                         item,
                     })
                 }
                 style={styles.NewsLetterView}>
-                <Image source={{ uri: imageurl + item.file }} style={styles.newsImg} />
+                <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
                 <Image
                     style={styles.thembimg}
                     source={require("../../assets/images/playIcons.png")} />
@@ -61,12 +62,13 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
                     onPress={() => navigation.goBack()}>
                     {svgs.backArrow('black', 24, 24)}
                 </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Recorded Video</Text>
+                <Text style={styles.haddingTxt}>Parenting List</Text>
                 <View style={{ flex: 3 }} />
             </View>
             <View style={styles.radiusView} />
             {empty &&
                 <Text style={styles.empty}>{empty}</Text>}
+            {isLoader && <ActivityIndicator size="large" />}
             <ScrollView style={{ alignSelf: "center" }}>
                 <FlatList
                     data={
@@ -81,4 +83,4 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
     );
 }
 
-export default RecordedWebinarVidioList
+export default ParentingList

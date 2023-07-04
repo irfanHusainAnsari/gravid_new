@@ -26,8 +26,6 @@ const RecordedVideoDetail = (props) => {
   }, [])
   const isFocused = useIsFocused();
   const [isPaused, setIsPaused] = useState(false);
-  
-  
   const [magazineDetail, setMagazineDetail] = useState({})
   const [isLoader, setIsLoader] = useState(false)
   const [playVideoId, setPlayVideoId] = useState()
@@ -136,7 +134,6 @@ const RecordedVideoDetail = (props) => {
           <View style={{marginTop:100}}>
           <ActivityIndicator size="large"/>
           </View>
-          // <LoaderRow />
         }
       </View>
       <ScrollView style={{ paddingHorizontal: 16 }} showsVerticalScrollIndicator={false}>

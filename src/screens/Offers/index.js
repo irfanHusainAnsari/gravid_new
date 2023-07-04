@@ -13,7 +13,7 @@ const Offers = (props) => {
   const [blogslist, setBlogsList] = useState([])
   const [btmSlider, setBtmSlider] = useState([])
   const [isLoader, setIsLoader] = useState(false)
-console.log('object', blogslist)
+  console.log('object', blogslist)
   useEffect(() => {
     HomeBlogdata()
   }, [])
@@ -40,7 +40,6 @@ console.log('object', blogslist)
         setIsLoader(false)
       })
   }
-
   const clinkOntype = async (item) => {
     if (item.offer_type === "webinar") {
       props.navigation.navigate("Webinar")
@@ -70,15 +69,9 @@ console.log('object', blogslist)
       <TouchableOpacity
         key={item.id}
         style={styles.NewsLetterView}
-        // onPress={() => props.navigation.navigate("RecentOffersDetail", { item })}
-        onPress={()=> clinkOntype(item)}
+        onPress={async () => clinkOntype(item)}
       >
-
-        {/* <Text style={styles.issuetitle}>{item.title}</Text> */}
-        {/* <View style={styles.newsleftView}> */}
-          {/* <Text style={styles.issueDes}>{item.short_description}</Text> */}
-          <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
-        {/* </View> */}
+        <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
       </TouchableOpacity>
     );
   };

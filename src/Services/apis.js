@@ -64,6 +64,12 @@ export default class Apis {
   static Coupancode = (data) => {
     return Network('GET', 'check-coupan-code?coupan_code=' + data.coupan_code, data)
   }
+  static ParentigListVideos = (data) => {
+    return Network('GET', 'parentingtv', data)
+  }
+  static ParentigDetailVideos = (data) => {
+    return Network('GET', 'parentingtv?search_id=' + data.search_id, data)
+  }
   static webinar_detail = (data) => {
     return Network('GET', 'webinar-detail?id=' + data.id, data)
   }

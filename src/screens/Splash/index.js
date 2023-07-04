@@ -14,9 +14,7 @@ import  messaging from '@react-native-firebase/messaging';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Home = (props) => {
-
   console.log(windowWidth,windowHeight)
-
   useEffect(() => {
     navigationOnClick()
   }, []);

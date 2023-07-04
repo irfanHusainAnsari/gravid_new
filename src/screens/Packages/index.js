@@ -17,16 +17,14 @@ import {useIsFocused} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
 import {svgs, colors} from '@common';
 import { imageurl } from '../../Services/constants';
-
 const {width, height} = Dimensions.get('window');
-
 const Packages = props => {
   const isFocused = useIsFocused();
   const [packageData, setPackageData] = useState('');
+  const [packagelist, setPackagelist] = useState([]);
   const [isLoader, setIsLoader] = useState(true);
   const [searchTxt, setSearchTxt] = useState('');
-  const [cartCount, setCartCount] = useState("")
-
+  const [cartCount, setCartCount] = useState('')
 
   useEffect(() => {
     getPackageData();
@@ -36,9 +34,9 @@ const Packages = props => {
     setIsLoader(true);
     Apis.getPackageItem({})
       .then(async json => {
-       console.log('getPackageData==', json)
+       console.log('getPackageData==', json.data)
         if (json.status == true) {
-
+          setPackagelist(json?.data)
           setPackageData(json?.data[0].programs);
         }
         setIsLoader(false);
@@ -58,7 +56,7 @@ const Packages = props => {
   }
 
   const handleWebinarDetail = item => {
-    props.navigation.navigate('PackageDetail', {packageitem: item});
+    props.navigation.navigate('NewPackegedetail', {paid: item});
   };
 
   const LiverenderItem = ({item}) => {
@@ -69,7 +67,7 @@ const Packages = props => {
         style={styles.NewsLetterView}>
         <Image source={{uri: imageurl + item.image}} style={styles.newsImg} />
         <View style={styles.paidType}>
-          <Text style={styles.paidTypeTxt}>{item.payment_type}</Text>
+          <Text style={styles.paidTypeTxt}>Paid</Text>
         </View>
         <View style={styles.newsleftView}>
           <Text style={styles.issuetitle}>{item.title}</Text>
@@ -95,7 +93,6 @@ const Packages = props => {
         </TouchableOpacity>
       </View>
       <View style={styles.radiusView} />
-
       <View style={styles.searchBoxView}>
         {svgs.search(colors.grayRegular, 17, 17)}
         <TextInput
@@ -114,10 +111,7 @@ const Packages = props => {
           <View>
             <FlatList
               data={
-                // searchTxt && searchTxt != ''
-                //   ? programsLiveSearch
-                //   : 
-                packageData
+                packagelist 
               }
               numColumns={2}
               style={{paddingLeft: 16, marginTop: 0, flexDirection: 'row'}}

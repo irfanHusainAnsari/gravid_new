@@ -40,15 +40,14 @@ import PackageDetail from '../screens/PackageDetail.js';
 import RecordedWebinarVidioList from '../screens/RecordedWebinarVidioList/RecordedWebinarVidioList';
 import OrderHistory from '../screens/OrderHistory';
 import OrderHistoryDetail from '../screens/OrderHistoryDetail.js';
-
+import NewPackegedetail from '../screens/NewPackegedetail';
+import ParentingList from '../screens/ParentingList';
 const RootStack = createNativeStackNavigator();
-
 const Navigators = () => {
   return (
     <RootStack.Navigator
     // initialRouteName='ServiceSelection'
     >
-
       {/* <RootStack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} /> */}
       <RootStack.Screen name="splash" component={Splash} options={{ headerShown: false }} />
       <RootStack.Screen name="Introduction" component={Introduction} options={{ headerShown: false }} />
@@ -89,6 +88,8 @@ const Navigators = () => {
       <RootStack.Screen name='RecordedWebinarVidioList' component={RecordedWebinarVidioList} options={{ headerShown: false }} />
       <RootStack.Screen name='OrderHistory' component={OrderHistory} options={{ headerShown: false }} />
       <RootStack.Screen name='OrderHistoryDetail' component={OrderHistoryDetail} options={{ headerShown: false }} />
+      <RootStack.Screen name='NewPackegedetail' component={NewPackegedetail} options={{headerShown: false}}/>
+      <RootStack.Screen name='ParentingList' component={ParentingList} options={{headerShown: false}}/>
     </RootStack.Navigator>
   );
 };
