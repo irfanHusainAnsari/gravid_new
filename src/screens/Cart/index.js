@@ -263,7 +263,7 @@ const Cart = props => {
           </View>
           <View style={{ flex: 5, marginLeft: 15, marginTop: 3 }}>
             <TouchableOpacity style={styles.appointmentText} onPress={()=>goToDetail(item)}>
-            <Text>
+            <Text style={{color:"blue"}}>
               {item.type == 'webinar'
                 ? "Webinar Detail"
                 : item.type == 'magzine'
