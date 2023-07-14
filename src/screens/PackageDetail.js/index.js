@@ -125,7 +125,7 @@ const PackageDetail = props => {
             })
           setProgramDetailItem(false);
           setOpenCloseCalendar(false)
-          setCartOpen(true)
+          // setCartOpen(true)
         }else{
           Toast.show(data?.message, Toast.LONG)
         }
@@ -390,7 +390,6 @@ const PackageDetail = props => {
                   source={require('../../assets/images/card.png')}
                   style={{width: 25, height: 25, resizeMode: 'contain'}}
                 />
-
                 <View style={{flex: 1, paddingHorizontal: 5}}>
                   <Text
                     style={{

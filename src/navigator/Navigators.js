@@ -42,11 +42,17 @@ import OrderHistory from '../screens/OrderHistory';
 import OrderHistoryDetail from '../screens/OrderHistoryDetail.js';
 import NewPackegedetail from '../screens/NewPackegedetail';
 import ParentingList from '../screens/ParentingList';
+import TrackerLink from '../screens/TrackerLink';
+import PregnancyTracker from '../screens/PregnancyTracker';
+import OvulationTracker from '../screens/OvulationTracker';
+import PregnancyDetail from '../screens/PregnancyDetail';
+import OvulationDetail from '../screens/OvulationDetail';
+
 const RootStack = createNativeStackNavigator();
 const Navigators = () => {
   return (
     <RootStack.Navigator
-    // initialRouteName='ServiceSelection'
+    // initialRouteName='TrackerLink'
     >
       {/* <RootStack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} /> */}
       <RootStack.Screen name="splash" component={Splash} options={{ headerShown: false }} />
@@ -90,6 +96,11 @@ const Navigators = () => {
       <RootStack.Screen name='OrderHistoryDetail' component={OrderHistoryDetail} options={{ headerShown: false }} />
       <RootStack.Screen name='NewPackegedetail' component={NewPackegedetail} options={{headerShown: false}}/>
       <RootStack.Screen name='ParentingList' component={ParentingList} options={{headerShown: false}}/>
+      <RootStack.Screen name='TrackerLink' component={TrackerLink} options={{headerShown: false}}/>
+      <RootStack.Screen name='PregnancyTracker' component={PregnancyTracker} options={{headerShown: false}}/>
+      <RootStack.Screen name='OvulationTracker' component={OvulationTracker} options={{headerShown: false}}/>
+      <RootStack.Screen name='PregnancyDetail' component={PregnancyDetail} options={{headerShown: false}}/>
+      <RootStack.Screen name='OvulationDetail' component={OvulationDetail} options={{headerShown: false}}/>
     </RootStack.Navigator>
   );
 };

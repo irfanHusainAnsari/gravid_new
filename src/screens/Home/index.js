@@ -18,26 +18,7 @@ import axios from 'axios';
 const { width } = Dimensions.get('window');
 
 const Home = (props, { route }) => {
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const token = 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtYXRoc3R1ZGVudEBtYWlsLmNvbSIsInVzZXJOYW1lIjoibWF0aHN0dWRlbnRAbWFpbC5jb20iLCJ1c2VyUm9sZSI6IkxFQVJORVIiLCJ1c2VyR3VpZCI6IjExN2QwZTA0LTIxNzctNGRlNi1iNmQzLTVmM2QxYjMyMTVjZiIsInRlbmFudElkIjo3MTIsInRlbmFudE5hbWUiOiJhYnAiLCJmaXJzdE5hbWUiOiJNYXRoIFN0dWRlbnQiLCJsYXN0TmFtZSI6IiIsImRvbWFpbiI6ImRldi5leGFtLWZhY3RvcnMuY29tIn0.a6CP-Ajyux5bybGEXSP1IHLP7UrmIlNx60EHCP3CVY6qlZW6n8eSjbbesAESx95CAvedC0bdt1wl6A1S5xdu496QnBUOm8mVW0LHoL6M2NzHTV1xzMLCHh_4YjIUS6Alurbnbmeg1s-mqrya35E1eTBK-2iyN08i81dhsgr9M7k'; // Replace with your actual token
-  //       const response = await fetch('https://rasatva.apponedemo.top/gravid/api/check-coupan-code?coupan_code=ggggg', {
-  //         method: 'GET',
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       });
-  //       //const jsonData = await response.json();
-  //       alert(JSON.stringify(response))
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
   const isFocused = useIsFocused();
-  // console.log('isFocused', isFocused)
   const [userData, setUserData] = useState({})
   const [modalVisible, setModalVisible] = useState(false);
   const [textinputVal, setTextinputVal] = useState("Gravid Digital 1 Year")
@@ -85,7 +66,7 @@ const Home = (props, { route }) => {
           props.navigation.navigate("ExpertList")
         }
         else if (notification?.data?.body === "payment") {
-          alert("Work in processing")
+          // alert("Work in processing")
           // props.navigation.navigate("Offers")
         }
       }
@@ -105,10 +86,10 @@ const Home = (props, { route }) => {
 
   useEffect(() => {
     if (searchTxt && searchTxt != "") {
-      setIssueListSearch(issuelist.filter((item) => item.title.toLowerCase().includes(searchTxt.toLowerCase())))
-      setBlogsListSearch(blogslist.filter((item) => item.title.toLowerCase().includes(searchTxt.toLowerCase())))
-      setVideoListSearch(videolist.filter((item) => item.title.toLowerCase().includes(searchTxt.toLowerCase())))
-      setofferListSearch(offerlist.filter((item) => item.title.toLowerCase().includes(searchTxt.toLowerCase())))
+      setIssueListSearch(issuelist.filter((item) => item.title?.toLowerCase().includes(searchTxt.toLowerCase()) || item.short_description?.toLowerCase().includes(searchTxt.toLowerCase())))
+      setBlogsListSearch(blogslist.filter((item) => item.title?.toLowerCase().includes(searchTxt.toLowerCase()) || item.short_description?.toLowerCase().includes(searchTxt.toLowerCase())))
+      setVideoListSearch(videolist.filter((item) => item.title?.toLowerCase().includes(searchTxt.toLowerCase()) || item.short_description?.toLowerCase().includes(searchTxt.toLowerCase())))
+      setofferListSearch(offerlist.filter((item) => item.title?.toLowerCase().includes(searchTxt.toLowerCase()) || item.short_description?.toLowerCase().includes(searchTxt.toLowerCase())))
     }
   }, [searchTxt])
 
@@ -198,6 +179,9 @@ const Home = (props, { route }) => {
     }
     else if (item.offer_type === "expert") {
       props.navigation.navigate("ExpertList")
+    }
+    else if (item.offer_type === "tracker") {
+      props.navigation.navigate("TrackerLink")
     }
   }
  

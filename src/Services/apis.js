@@ -82,6 +82,10 @@ export default class Apis {
   static getCartPostSaveData = (data) => {
     return Network('POST', 'cart-post', data , true)
   }
+  static getDirect_order = (data) => {
+    return Network('POST', 'direct-order', data , true)
+  }
+  getDirect_order
   static proceedOrder = (data) => {
     return Network('POST', 'order-post', data , true)
   }
@@ -101,7 +105,6 @@ export default class Apis {
     return Network('GET', 'expert-list', data)
   }
   static AddBookmark = (data) => {
-    // console.log('data11', data)
     return Network('POST', 'bookmark', data)
   }
   static AllBookMark = (data) => {
@@ -121,5 +124,11 @@ export default class Apis {
   }
   static TermsCondition = (data) => {
   return Network('GET', 'terms-condition-app', data)
+  }
+  static get_TrackerData = (data) => {
+    return Network('POST', 'pregnancy-tracker', data, true)
+  }
+  static get_OvulationData = (data) => {
+    return Network('POST', 'ovulation-tracker', data, true)
   }
 }

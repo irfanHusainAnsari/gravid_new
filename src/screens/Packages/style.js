@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 5,
         marginBottom: 16,
+        marginTop:8
         // flex: 1
       },
       newsImg: {

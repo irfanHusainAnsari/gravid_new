@@ -21,14 +21,28 @@ const {width, height} = Dimensions.get('window');
 const Packages = props => {
   const isFocused = useIsFocused();
   const [packageData, setPackageData] = useState('');
+ 
   const [packagelist, setPackagelist] = useState([]);
+  const [packageListSearch, setPackageListSearch] = useState([]);
   const [isLoader, setIsLoader] = useState(true);
   const [searchTxt, setSearchTxt] = useState('');
-  const [cartCount, setCartCount] = useState('')
+  const [cartCount, setCartCount] = useState('');
+  
 
   useEffect(() => {
     getPackageData();
+    getCart();
   }, [isFocused]);
+
+  useEffect(() => {
+    if (searchTxt && searchTxt != '') {
+      setPackageListSearch(
+        packagelist.filter(item =>
+          item.short_description?.toLowerCase().includes(searchTxt.toLowerCase()) || item.title?.toLowerCase().includes(searchTxt.toLowerCase())
+        ),
+      );
+    }
+  }, [searchTxt]);
 
   const getPackageData = () => {
     setIsLoader(true);
@@ -47,14 +61,24 @@ const Packages = props => {
       });
   };
 
-  if (isLoader) {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
+  const getCart = () => {
+    setIsLoader(true);
+    Apis.getCartData({})
+      .then(async json => {
+        setCartCount(json?.cartCount)
+       
+        if (json.status == true) {
+          setCartData(json?.data[0]);
+          setTaxData(json?.taxData);
+          
+        }
+        setIsLoader(false);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsLoader(false);
+      });
+  };
   const handleWebinarDetail = item => {
     props.navigation.navigate('NewPackegedetail', {paid: item});
   };
@@ -111,7 +135,9 @@ const Packages = props => {
           <View>
             <FlatList
               data={
-                packagelist 
+                searchTxt && searchTxt != ''
+                ?packageListSearch
+                :packagelist 
               }
               numColumns={2}
               style={{paddingLeft: 16, marginTop: 0, flexDirection: 'row'}}

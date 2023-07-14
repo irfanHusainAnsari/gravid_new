@@ -19,8 +19,7 @@ import { imageurl } from '../../Services/constants';
 // const imageurl = "https://rasatva.apponedemo.top/gravid/"
 import { useIsFocused } from '@react-navigation/native';
 import Modelmain from '../../component/Modelmain';
-const Webinar = ({props, route}) => {
-  const offer_type=  route?.params?.offer_type
+const Webinar = (props) => {
   const isFocused = useIsFocused();
   const [modalVisible, setModalVisible] = useState(false);
   const [webinarrecoded, setWebinarRecoded] = useState([]);
@@ -61,12 +60,12 @@ const Webinar = ({props, route}) => {
     if (searchTxt && searchTxt != '') {
       setWebinarListSearch(
         webinarLive.filter(item =>
-          item.title.toLowerCase().includes(searchTxt.toLowerCase()),
+           item.short_description?.toLowerCase().includes(searchTxt.toLowerCase()) || item.title?.toLowerCase().includes(searchTxt.toLowerCase())
         ),
       );
       setRecordedListSearch(
         recordedList.filter(item =>
-          item.title.toLowerCase().includes(searchTxt.toLowerCase()),
+          item.title?.toLowerCase().includes(searchTxt.toLowerCase()),
         ),
       );
     }
@@ -124,7 +123,7 @@ const Webinar = ({props, route}) => {
             (props.navigation.navigate("RecordedWebinarVidioList", { item: item }))
         }
         }>
-        <Image source={{ uri: imageurl + item.file }} style={styles.newsImg} />
+        <Image source={{ uri: imageurl + item.file }} style={styles.newsImg}/>
         <View style={styles.paidType}>
           <Text style={styles.paidTypeTxt}>{item.payment_type}</Text>
         </View>
@@ -148,6 +147,7 @@ const Webinar = ({props, route}) => {
   };
 
   const handleWebinarDetail = item => {
+   
     props.navigation.navigate('webinarDetail', { paid: item });
   };
 

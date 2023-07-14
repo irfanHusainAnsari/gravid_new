@@ -31,7 +31,7 @@ const Programs = props => {
     if (searchTxt && searchTxt != '') {
       setProgramsListSearch(
         programsListApi.filter(item =>
-          item.title.toLowerCase().includes(searchTxt.toLowerCase()),
+          item.title?.toLowerCase().includes(searchTxt.toLowerCase()) ||  item.short_description?.toLowerCase().includes(searchTxt.toLowerCase())
         ),
       );
     }

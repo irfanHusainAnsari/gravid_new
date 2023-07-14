@@ -31,7 +31,6 @@ const Cart = props => {
   const [coupenCode, setCoupenCode] = useState("");
   const [coupenDiscount, setCoupanDiscount] = useState("");
   const [coupen, setCoupan] = useState("");
-  console.log('coupenDiscount', coupenDiscount)
   var date = new Date(cartData?.sloat_date);
   var year = date.toLocaleString('default', { year: 'numeric' });
   var monthh = date.toLocaleString('default', { month: '2-digit' });
@@ -52,17 +51,19 @@ const Cart = props => {
     return accumulator + a;
   }
 
-  const taxDataitem =Math.round((taxData?.gst / 100) * subTotal);
-  const totalAmount = taxDataitem + subTotal;
-  const discountAmount = totalAmount*coupenDiscount/100
-  const PaidAmount = totalAmount-discountAmount
+  const discountAmount = subTotal * coupenDiscount / 100
+  const subTotalDiscountAmount = subTotal - discountAmount
+  const taxDataitem = (taxData?.gst / 100) * subTotalDiscountAmount;
+  const totalAmount = taxDataitem + subTotalDiscountAmount;
+  console.log('totalAmount', totalAmount)
+  const PaidAmount = totalAmount - discountAmount
 
-    console.log('subTotal', subTotal)
-    console.log('taxDataitem', taxDataitem)
-    console.log('totalAmount', totalAmount)
-    console.log('discountAmount', discountAmount)
-    console.log('PaidAmount', PaidAmount)
-    console.log('cartDetail', cartDetail)
+  // console.log('subTotal', subTotal)
+  // console.log('taxDataitem', taxDataitem)
+  // console.log('totalAmount', totalAmount)
+  // console.log('discountAmount', discountAmount)
+  // console.log('PaidAmount', PaidAmount)
+  // console.log('cartDetail', cartDetail)
 
   //  console.log('cart_detail1', cart_detail1)
 
@@ -77,10 +78,10 @@ const Cart = props => {
     for (let i = 0; i < cartData?.length; i++) {
       abc.push({
         id: cartData[i].id,
-        tax_amount:(taxCal / 100) * cartData[i].amount,
-        tax_percent: taxCal,
-        paid_amount:
-          cartData[i].amount + (taxCal / 100) * cartData[i].amount,
+        // tax_amount:(taxCal / 100) * cartData[i].amount,
+        // tax_percent: taxCal,
+        // paid_amount:
+        //   cartData[i].amount + (taxCal / 100) * cartData[i].amount,
       });
     }
     console.log('abc', abc)
@@ -148,12 +149,15 @@ const Cart = props => {
         buyer_name: userData?.name,
         email: userData?.email,
         cart_id: cartId.join(','),
-        total_amount: totalAmount,
-        amount: PaidAmount,
+        total_amount: parseFloat(subTotal).toFixed(2),
+        amount: parseFloat(totalAmount).toFixed(2),
         cartData: cartDetail && cartDetail,
-        coupan_code:coupen,
-        coupan_codePercent:coupenDiscount,
-        coupan_amount:discountAmount,
+        coupan_code: coupen,
+        coupan_codePercent: coupenDiscount,
+        coupan_amount: parseFloat(discountAmount).toFixed(2),
+        tax_amount: parseFloat(taxDataitem).toFixed(2),
+        tax_percent: taxData?.gst,
+
       }
       console.log('params', params)
       Apis.instaMojoPayment(params)
@@ -171,16 +175,18 @@ const Cart = props => {
           setIsLoader(false);
         });
     }
-    else{
+    else {
       const params = {
         purpose: 'Gravid Payment',
         phone: userData?.mobile,
         buyer_name: userData?.name,
         email: userData?.email,
         cart_id: cartId.join(','),
-        total_amount: totalAmount,
-        amount: PaidAmount,
+        total_amount: parseFloat(subTotal).toFixed(2),
+        amount: parseFloat(totalAmount).toFixed(2),
         cartData: cartDetail && cartDetail,
+        tax_amount: parseFloat(taxDataitem).toFixed(2),
+        tax_percent: taxData?.gst,
       }
       console.log('params', params)
       Apis.instaMojoPayment(params)
@@ -200,45 +206,47 @@ const Cart = props => {
 
     }
   };
-  const goToDetail =(item) =>{
+  const goToDetail = (item) => {
+    // console.log('objectitemitemitemitemitemitem', item?.get_webinar?.id)
+    // return
     item.type == 'webinar'
-    ? props.navigation.goBack()
-    : item.type == 'program'
-      ? props.navigation.goBack()
-      : item.type == 'expert'
-        ? props.navigation.goBack()
-        : item.type == 'magzine'
-          ? props.navigation.goBack()
-          : item.type == 'episode'
-          ? props.navigation.goBack()
-          : props.navigation.goBack()
+      ? props.navigation.navigate("webinarDetail", { paid: item?.get_webinar })
+      : item.type == 'program'
+        ? props.navigation.navigate("ProgramsDetail", { paid: item?.get_program })
+        : item.type == 'expert'
+          ? props.navigation.navigate("ExpertListDetail", { item: item?.get_expert })
+          : item.type == 'magzine'
+            ? props.navigation.navigate("RecentIssuesDetail", { item: item?.get_magazine })
+            : item.type == 'episode'
+              ? props.navigation.navigate("RecordedWebinarVidioList", { item: item.get_episode })
+              : item.type == 'package'
+                ? props.navigation.navigate("NewPackegedetail", { paid: item?.get_package })
+                : null
   }
 
-  const applyCouponCode =async()=>{
+  const applyCouponCode = async () => {
     const params = {
-      coupan_code:coupenCode,
+      coupan_code: coupenCode,
     }
     Apis.Coupancode(params)
       .then(async (json) => {
-        console.log('Coupancode:', json);
         if (json.status == true) {
           setCoupanDiscount(json?.data?.discount_percent);
           setCoupan(json?.data?.coupan_code)
           Toast.show(json?.message, Toast.LONG);
-        }else{
+        } else {
           Toast.show(json?.message, Toast.LONG);
         }
       }).catch((error) => {
         console.log("Coupancodeerror", error);
       })
-
   }
 
   const renderDataItem = ({ item }) => {
     console.log('item>>>>', item);
     return (
       <View style={{}}>
-        <View style={styles.appointmentCard}>
+        <TouchableOpacity style={styles.appointmentCard} onPress={() => goToDetail(item)}>
           <View style={{ flex: 2 }}>
             <View style={styles.appointmentImage}>
               {/* <Image source={{uri:imageurl+cartData?.get_webinar?.image}} style={{width:90,height:120,resizeMode:"cover"}} */}
@@ -254,16 +262,18 @@ const Cart = props => {
                           : item.type == 'magzine'
                             ? imageurl + item?.get_magazine?.image
                             : item.type == 'episode'
-                            ? imageurl + item?.get_episode?.file
-                            : null,
+                              ? imageurl + item?.get_episode?.file
+                              : item.type == 'package'
+                                ? imageurl + item?.get_package?.image
+                                : null,
                 }}
-                style={{ width: 90, height: 120, resizeMode: 'contain' ,backgroundColor:"#f2f2f2"}}
+                style={{ width: 90, height: 90, resizeMode: 'cover', backgroundColor: "#f2f2f2", borderRadius: 5 }}
               />
             </View>
           </View>
           <View style={{ flex: 5, marginLeft: 15, marginTop: 3 }}>
-            <TouchableOpacity style={styles.appointmentText} onPress={()=>goToDetail(item)}>
-            <Text style={{color:"blue"}}>
+            {/* <View style={styles.appointmentText} >
+            <Text >
               {item.type == 'webinar'
                 ? "Webinar Detail"
                 : item.type == 'magzine'
@@ -274,14 +284,16 @@ const Cart = props => {
                       ? "Expert Detail"
                       : item.type == 'episode'
                       ? "Episode Detail"
+                      : item.type == 'package'
+                      ? "Package Detail"
                       : null}
             </Text>
-            </TouchableOpacity>
+            </View> */}
             <Text style={styles.one1Text}>
               <Text style={{
-                color: '#6D7A90',
+                color: '#000',
                 fontSize: 14,
-                marginBottom: 2, fontFamily: fonts.OptimaDemiBold
+                marginBottom: 2, fontFamily: fonts.OptimaBold
               }}>Title : </Text>
               {item.type == 'webinar'
                 ? item.get_webinar.title
@@ -292,8 +304,8 @@ const Cart = props => {
                     : item.type == 'expert'
                       ? item.get_expert.name
                       : item.type == 'episode'
-                      ? item.get_episode.title
-                      : null}
+                        ? item.get_episode.title
+                        : null}
             </Text>
             {item?.category != null ?
               <Text style={styles.appointmentText}>
@@ -316,7 +328,7 @@ const Cart = props => {
               />
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={styles.boderContainer}></View>
       </View>
     );
@@ -354,10 +366,10 @@ const Cart = props => {
                   color: '#000',
                 }}>
                 There is no item in cart
-              </Text> : 
+              </Text> :
               <View style={{ flex: 0.5, alignItems: 'center', justifyContent: 'center' }}>
-                   <ActivityIndicator size="large" />
-                </View>}
+                <ActivityIndicator size="large" />
+              </View>}
           </View>
         </>
       ) : (
@@ -388,9 +400,9 @@ const Cart = props => {
               <View style={styles.couponContainer}>
                 <TextInput
                   style={styles.couponCodeText}
-                  placeholder="Coupon Code"
+                  placeholder="Enter Coupon Code"
                   placeholderTextColor={'#000'}
-                  onChangeText={(text)=>setCoupenCode(text)}
+                  onChangeText={(text) => setCoupenCode(text)}
                 />
                 <TouchableOpacity style={styles.buttonApply} onPress={applyCouponCode}>
                   <Text style={styles.buttonTitles}>Apply</Text>
@@ -398,26 +410,42 @@ const Cart = props => {
               </View>
               <View style={styles.subtotalContainers}>
                 <Text style={styles.subtotalTitleText}>Subtotal</Text>
-                <Text style={{ color: colors.themeColor, fontSize: 16 }}>
-                  {subTotal}
+                <Text style={{ color: colors.themeColor, fontSize: 14, fontFamily: fonts.OptimaDemiBold }}>
+                  ₹{parseFloat(subTotal).toFixed(2)}
                 </Text>
               </View>
+
+              <View style={styles.subtotalContainers}>
+                <Text style={styles.subtotalTitleText}>Discount</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 14, fontFamily: fonts.OptimaDemiBold }}>
+                  ₹{parseFloat(discountAmount).toFixed(2)}
+                </Text>
+              </View>
+
+              <View style={styles.subtotalContainers}>
+                <Text style={styles.subtotalTitleText}>Tax (GST {taxData?.gst}%)</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 14, fontFamily: fonts.OptimaDemiBold }}>
+                  ₹{parseFloat(taxDataitem).toFixed(2)}
+                </Text>
+              </View>
+
               <View
                 style={{
-                  borderStyle: 'dashed',
-                  borderWidth: 0.5,
-                  borderColor: 'red',
-                  marginTop: 10,
+                  borderStyle: "dashed",
+                  borderTopWidth: 0.5,
+                  borderTopColor: colors.themeColor,
+                  marginTop: 20,
+                  marginBottom: 15
                 }}></View>
+
               <View style={styles.subtotalContainers}>
-                <Text style={styles.subtotalTitleText}>
-                  Tax (GST {taxData.gst}%)
-                </Text>
-                <Text style={{ color: colors.themeColor, fontSize: 16 }}>
-                  ₹ {taxDataitem}
+                <Text style={styles.subtotalTitleText}>Total Amount</Text>
+                <Text style={{ color: colors.themeColor, fontSize: 14, fontFamily: fonts.OptimaDemiBold }}>
+                  ₹ {parseFloat(totalAmount).toFixed(2)}
                 </Text>
               </View>
-              <View style={styles.countButton}>
+
+              {/* <View style={styles.countButton}>
                 <Text style={styles.titleText}>Total Amount</Text>
                 <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
                   ₹ {totalAmount}
@@ -434,7 +462,7 @@ const Cart = props => {
                 <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
                   ₹ {PaidAmount}
                 </Text>
-              </View>
+              </View> */}
               <TouchableOpacity
                 style={styles.buttonBookNow}
                 onPress={handleInstamozo}>

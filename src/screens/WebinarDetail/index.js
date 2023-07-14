@@ -25,6 +25,7 @@ const WebinarDetail = props => {
   const paid = props?.route?.params?.paid;
   const [modalVisible, setModalVisible] = useState(false);
   const [delail, setDetail] = useState();
+  console.log('delail', delail)
   const [cartData, setCartData] = useState("")
   const [userData, setUserData] = useState({});
   const [isLoader, setIsLoader] = useState(false);
@@ -158,7 +159,32 @@ const WebinarDetail = props => {
         setDetail(json?.data);
       }
     });
-    await Linking.openURL(`${delail.web_link}`);
+    if(delail){
+      let form_data = new FormData();
+      form_data.append("data_id",delail?.id);
+      form_data.append("category_id", delail?.category);
+      form_data.append("expert_id",delail?.expert_id);
+      form_data.append("amount", 0);
+      form_data.append("sloat_date",delail?.to_date);
+      form_data.append("slot_from", delail?.start_time);
+      form_data.append("slot_to", delail?.end_time);
+      form_data.append("type", "webinar");
+      Apis.getDirect_order(form_data).then(async data => {
+        console.log('getDirect_order', data) 
+        setIsLoader(true);
+        if(data.status == true){
+          Toast.show(data.message, Toast.LONG)
+          await Linking.openURL(`${delail.web_link}`);
+          setIsLoader(false);
+        }else{
+          setIsLoader(false);
+          Toast.show(data?.message, Toast.LONG)
+        }
+      }).catch((err)=>{console.log("errrr form_data" , err)})
+
+    }
+   
+    // await Linking.openURL(`${delail.web_link}`);
     // props.navigation.navigate('WebViewScreen', {delail});
   };
 
@@ -292,24 +318,20 @@ const WebinarDetail = props => {
               </View>
             </View>
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
-            {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
             <RenderHtml
               contentWidth={width}
               source={{html: delail?.description}}
             />
             {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
+            
               <TouchableOpacity
                 style={styles.joinWebinarBtn}
                 onPress={delail => handleJoinWebinar(delail)}>
                 <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
               </TouchableOpacity>
             ) : (
-              // <TouchableOpacity style={styles.joinWebinarBtn} onPress={() => { setModalVisible(true) }}>
-              //   <Text style={styles.joinWebinarBtnTxt}>Join</Text>
-              // </TouchableOpacity>
               <TouchableOpacity
                 style={styles.joinWebinarBtn}
-                // onPress={onSetScreen}
                 onPress={onPressBookNow}
                 >
                 <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
@@ -393,7 +415,6 @@ const WebinarDetail = props => {
           <Text style={{fontFamily:fonts.OptimaBold,fontSize:18,color:"#000"}}>There is no item in cart</Text>
         </View>
       )}
-
       <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}

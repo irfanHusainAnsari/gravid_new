@@ -62,6 +62,9 @@ const Offers = (props) => {
     else if (item.offer_type === "expert") {
       props.navigation.navigate("ExpertList")
     }
+    else if (item.offer_type === "tracker") {
+      props.navigation.navigate("TrackerLink")
+    }
   }
 
   const renderItemNewsLetter = ({ item }) => {
@@ -98,7 +101,7 @@ const Offers = (props) => {
             </View>
           ) : (
             <FlatList
-              data={offerlist}
+              data={blogslist}
               renderItem={renderItemNewsLetter}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}

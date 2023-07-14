@@ -7,16 +7,16 @@ import { svgs } from '../../common';
 import Apis from '../../Services/apis';
 import { imageurl } from '../../Services/constants';
 const RecordedWebinarVidioList = ({ navigation, route }) => {
-    const id = route.params.item.id
+    const idvalue = route.params.item.id
     const [empty, setEmpty] = useState()
     const [episodeVideos, setEpisodeVideos] = useState([])
 
     useEffect(() => {
-        PlayEpisodeVideo(id)
+        PlayEpisodeVideo(idvalue)
     }, [])
-    const PlayEpisodeVideo = (id) => {
+    const PlayEpisodeVideo = () => {
         const params = {
-            episode_id: id,
+            episode_id:idvalue,
         };
         Apis.EpisodeVideos(params).then(async json => {
             if (json.status == true) {
@@ -28,7 +28,6 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
         });
     }
     const renderVideos = ({ item }) => {
-        console.log("item=======================", item)
         return (
 
             <TouchableOpacity

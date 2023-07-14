@@ -39,11 +39,9 @@ const Signin = (props) => {
       Toast.show(erronumberlength, Toast.LONG)
     }
     else {
-    
       const params = {
         country_code: code,
         mobile: number,
-       
       }
       setIsLoader(true)
       Apis.LogninApi(params)
@@ -123,13 +121,12 @@ const Signin = (props) => {
             alignItems: 'center',
             justifyContent: 'center'
             }}>
-             {isLoader &&  <ActivityIndicator size="large" />}
+             {isLoader &&  <View style={{position:"absolute",top:160}}><ActivityIndicator size="large" /></View>}
           </View>
          
           <TouchableOpacity style={styles.signUpBtn} onPress={() => { LogninApi() }}>
             <Text style={styles.signUpBtnTxt}>NEXT</Text>
           </TouchableOpacity>
-          {/* <Text style={styles.alreadyAct}>Not have an account? <Text style={styles.termTxt} onPress={handleSignUp}>Sign Up</Text></Text> */}
         </View>
        
       </ScrollView>

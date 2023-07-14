@@ -46,22 +46,23 @@ export const styles = StyleSheet.create({
     // width: '100%',
   },
   appointmentText: {
-    color: '#6D7A90',
+    color: '#000',
     fontSize: 14,
     marginBottom: 2,
-    fontFamily:fonts.OptimaBold
+    fontFamily:fonts.OptimaDemiBold,
+    marginTop:7
   },
   one1Text: {
-    color: '#000',
-    // fontWeight: 'bold',
+    color: '#6D7A90',
     fontSize: 14,
-    fontFamily:fonts.OptimaBold
+    fontFamily:fonts.OptimaDemiBold,
+    marginTop:5
   },
   localTimeText: {
     color: '#000',
   },
   time: {
-    color: '#000',
+    color: '#6D7A90',
     fontWeight: '600',
     fontSize: 14,
   },
@@ -70,45 +71,50 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boderContainer: {
-    borderWidth: 0.5,
+    borderTopWidth: 0.5,
     borderColor: '#E3E3E3',
     marginTop: 15,
     marginBottom: 10,
   },
   couponContainer: {
-    backgroundColor: '#E3E3E3',
+    backgroundColor: '#F9FAFC',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    // paddingVertical:2,
+    paddingLeft: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop:20,
+    borderWidth:.5,
+    borderColor:"#e8e6e6",
+    height:45,
+    marginBottom:25,
   },
   couponCodeText: {
     color: '#000',
-    fontSize:16,
-    fontWeight: '600',
-    // height:40,
+    fontSize:14,
+    fontFamily:fonts.OptimaDemiBold,
     width:"70%",
   },
   buttonApply: {
     backgroundColor: '#FA8981',
-    borderRadius:15,
+    borderTopEndRadius:4,
+    borderBottomEndRadius:4,
     alignItems: 'center',
     justifyContent: 'center',
     width: '25%',
-    height: 25,
+    height:45,
   },
  
   subtotalContainers: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop:5,
   },
   subtotalTitleText: {
-    color: '#000',
-    fontSize: 16,
+    color: '#6D7A90',
+    fontSize: 14,
+    fontFamily:fonts.OptimaDemiBold
   },
   countButton: {
     flexDirection: 'row',
@@ -130,13 +136,13 @@ export const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 50,
     // marginBottom: 40,
   },
   buttonTitle: {
     color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontFamily:fonts.OptimaBold
   },
   buttonTitles: {
     color: '#000',

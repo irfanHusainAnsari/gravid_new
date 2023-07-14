@@ -28,6 +28,7 @@ import {useIsFocused} from '@react-navigation/native';
 const ExpertList = props => {
   const isFocused = useIsFocused();
   const [expertData, setExpertData] = useState([]);
+  console.log('expertData', expertData)
   const [expertListSearch, setExpertListSearch] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
@@ -67,16 +68,14 @@ const ExpertList = props => {
     if (searchTxt && searchTxt != '') {
       setExpertListSearch(
         expertData?.filter(item =>
-          item.name.toLowerCase().includes(searchTxt.toLowerCase()),
+            item.name?.toLowerCase().includes(searchTxt.toLowerCase())
         ),
       );
     }
     if (specialization && specialization != '') {
       setSpecializationSearch(
         expertData.filter(item =>
-          item?.short_description
-            .toLowerCase()
-            .includes(specialization.toLowerCase()),
+          item?.short_description?.toLowerCase().includes(specialization.toLowerCase()),
         ),
       );
     }
@@ -90,7 +89,6 @@ const ExpertList = props => {
         ),
       );
     }
-
     if (pinCode && pinCode != '') {
 
       setPinCodeSearch(
