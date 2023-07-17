@@ -7,12 +7,10 @@ const WebViewScreen = (props) => {
  
   const detail = props?.route?.params?.delail
 
-// render
+
 return (
      <WebView
           source={{uri:"https://meet.google.com/thk-ypen-qik"}}
-          // onMessage={() => onMessage()}
-          // // await Linking.openURL(`https://${delail?.web_link}`);
         />
 
   

@@ -40,7 +40,6 @@ function ExpertListTab() {
       <Stack.Screen
         name="ExpertListScreen"
         component={ExpertList}
-      // options={{ title: 'Welcome' }}
       />
     </Stack.Navigator>
   )
@@ -62,16 +61,13 @@ function BottomTabs() {
           if (route.name === 'Home') {
             return svgs.home(color, 22, 20);
           } else if (route.name === 'Webinar') {
-            // return svgs.webinar(color, 22, 20);
             return svgs.webinar(color, 22, 20);
           } else if (route.name === 'Programs') {
             return svgs.program(color, 22, 20);
-            // return svgs.library(color, 22, 20);
           } else if (route.name === 'Expert On Call') {
             return svgs.healthTracker(color, 22, 20);
           } else if (route.name === 'Packages') {
             return svgs.lappyIcon(color, 22, 20);
-            // return svgs.userIcon(color, 22, 20);
           }
         },
         tabBarActiveTintColor: '#FE887E',

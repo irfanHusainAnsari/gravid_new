@@ -40,10 +40,6 @@ export const styles = StyleSheet.create({
   },
   appointmentImage: {
     marginTop:5
-    // backgroundColor: '#E3E3E3',
-    // borderRadius: 8,
-    // height: 110,
-    // width: '100%',
   },
   appointmentText: {
     color: '#000',
@@ -128,7 +124,7 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     color: '#000',
-    fontFamily:fonts.OptimaBold
+    fontFamily:fonts.OptimaBold,
   },
   buttonBookNow: {
     backgroundColor: '#FA8981',

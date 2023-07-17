@@ -18,13 +18,16 @@ import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import styles from './style';
 import CalendarStrip from 'react-native-calendar-strip';
-import plus from '../../assets/images/plus.png';
+
 
 
 const PregnancyDetail = props => {
   const totalWeek = props?.route?.params?.json?.totalWeek;
   const data = props?.route?.params?.json?.data;
-  let colors = ['#88e374', '#abcdef', '#fdecba', '#123456'];
+  const trackerDate = props?.route?.params?.navigateDate;
+  const date = new Date(trackerDate);
+  console.log('trackerDate', date)
+  let colorss = ['#abcdef','#88e374','#fdecba', '#123456'];
   
   return (
     <View style={styles.container}>
@@ -40,13 +43,14 @@ const PregnancyDetail = props => {
 
         <CalendarStrip
           scrollable={true}
-          iconStyle={{tintColor: '#ffffff'}}
-          // iconLeft={require("../../assets/images/gravid-logo.png")}
-          calendarAnimation={{type: 'sequence', duration: 30}}
+          scrollerPaging={true}
+          iconStyle={{tintColor: 'transparent'}}
+          selectedDate={trackerDate}
+          calendarAnimation={{type: 'sequence', duration: 0}}
           daySelectionAnimation={{
             type: 'border',
-            duration: 200,
-            borderWidth: 1,
+            duration: 0,
+            borderWidth:2,
             borderHighlightColor: colors.themeColor,
           }}
           style={{
@@ -57,10 +61,10 @@ const PregnancyDetail = props => {
           }}
           calendarHeaderStyle={{color: colors.themeColor}}
           calendarColor={'transparent'}
-          dateNumberStyle={{color: colors.themeColor}}
-          dateNameStyle={{color: colors.themeColor}}
-          highlightDateNumberStyle={{color: 'yellow'}}
-          highlightDateNameStyle={{color: 'yellow'}}
+          dateNumberStyle={{color:"#000000"}}
+          dateNameStyle={{color:"#000000"}}
+          highlightDateNumberStyle={{color: colors.themeColor}}
+          highlightDateNameStyle={{color: colors.themeColor}}
           disabledDateNameStyle={{color: 'grey'}}
           disabledDateNumberStyle={{color: 'grey'}}
           // datesWhitelist={datesWhitelist}
@@ -105,6 +109,7 @@ const PregnancyDetail = props => {
                   marginTop: 8,
                   lineHeight: 15,
                   flex: 1,
+                  color:"#000000"
                 }}>
                 Log your symptoms
               </Text>
@@ -129,9 +134,11 @@ const PregnancyDetail = props => {
               }}>
               <FlatList
                 data={data}
+                keyExtractor={item => item.id}
+                horizontal={true}
                 renderItem={({item,index}) => (
                   <View style={{width: 100, height: 120}}>
-                    <View style={{ flex: 1,backgroundColor: colors[index % colors.length],
+                    <View style={{ flex: 1,backgroundColor: colorss[index % colorss.length],
                                    borderTopLeftRadius: 4,borderTopRightRadius:4
                        }}>
                     <Text
@@ -141,11 +148,11 @@ const PregnancyDetail = props => {
                         textAlign: 'center',
                         marginTop: 8,
                         lineHeight: 15,
+                        color:"#000000"
                       }}>
                       {item.title}
                     </Text>
                     </View>
-                   
                     <Image
                       source={{uri: imageurl + item.image}}
                       style={{
@@ -153,14 +160,12 @@ const PregnancyDetail = props => {
                         marginTop: 10,
                         flex: 1.2,
                         resizeMode: 'cover',
-                        backgroundColor: 'red',
                         alignSelf: 'center',
                         marginBottom: 5,
                       }}
                     />
                   </View>
                 )}
-                keyExtractor={item => item.id}
               />
             </View>
           </View>

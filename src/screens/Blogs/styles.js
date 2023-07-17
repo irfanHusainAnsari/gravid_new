@@ -57,8 +57,6 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   issueDes: {
-    // flex: 3,
-    // backgroundColor:'red',
     width: 200,
     fontSize: 11,
     lineHeight: 18,
@@ -74,7 +72,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   newsImg: {
-    // flex: 2,
     width: 145,
     height: 118,
     marginTop: 5,

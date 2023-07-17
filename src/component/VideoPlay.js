@@ -53,16 +53,7 @@ const VideoPlay = ({ Fullscreen, url }) => {
         onExitFullscreen={() => {
           onRotatehandle(false)
         }}
-        // toggleResizeModeOnFullscreen={false}
-        // controlTimeout={1000}
-      // fullscreen={widthhandle}
       controls={true}
-      // resizeMode="contain"
-      // onShowControls={true}
-      // disableControlsAutoHide={true}
-      // disableBack
-      // disableVolume
-      // disableFullscreen
       />
     </View>
   );

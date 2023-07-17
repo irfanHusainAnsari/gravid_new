@@ -4,7 +4,7 @@ import { Image, ScrollView, Text, View, TouchableOpacity, TextInput, FlatList, A
 import { svgs, colors } from '@common';
 import Modal from "react-native-modal";
 import styles from './styles';
-import Swiper from 'react-native-swiper'
+import Swiper from 'react-native-swiper';
 import Apis from '../../Services/apis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { imageurl } from '../../Services/constants';

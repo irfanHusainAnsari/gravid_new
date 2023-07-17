@@ -23,6 +23,8 @@ import axios from 'axios';
 
 const Cart = props => {
   const [isLoader, setIsLoader] = useState(false);
+  const [isProceedLoader, setIsProceedLoader] = useState(false);
+  const [isApplyLoader, setIsApplyLoader] = useState(false);
   const [cartData, setCartData] = useState([]);
   const [text, setText] = useState(1)
   const [taxData, setTaxData] = useState('');
@@ -58,15 +60,6 @@ const Cart = props => {
   console.log('totalAmount', totalAmount)
   const PaidAmount = totalAmount - discountAmount
 
-  // console.log('subTotal', subTotal)
-  // console.log('taxDataitem', taxDataitem)
-  // console.log('totalAmount', totalAmount)
-  // console.log('discountAmount', discountAmount)
-  // console.log('PaidAmount', PaidAmount)
-  // console.log('cartDetail', cartDetail)
-
-  //  console.log('cart_detail1', cart_detail1)
-
   useEffect(() => {
     getCart();
     setUserProfileData();
@@ -78,10 +71,6 @@ const Cart = props => {
     for (let i = 0; i < cartData?.length; i++) {
       abc.push({
         id: cartData[i].id,
-        // tax_amount:(taxCal / 100) * cartData[i].amount,
-        // tax_percent: taxCal,
-        // paid_amount:
-        //   cartData[i].amount + (taxCal / 100) * cartData[i].amount,
       });
     }
     console.log('abc', abc)
@@ -98,7 +87,7 @@ const Cart = props => {
         setShowdpimage({ path: imageurl + newVal.profile });
       }
     } catch (error) {
-      // Error retrieving data
+     console.log('error', error)
     }
   };
 
@@ -141,7 +130,7 @@ const Cart = props => {
   };
 
   const handleInstamozo = () => {
-    // setIsLoader(true);
+    setIsProceedLoader(true);
     if (cartDetail && coupen && coupenDiscount && discountAmount) {
       const params = {
         purpose: 'Gravid Payment',
@@ -168,11 +157,11 @@ const Cart = props => {
               instamojoData: json,
             });
           }
-          setIsLoader(false);
+          setIsProceedLoader(false);
         })
         .catch(error => {
           console.log('error', error);
-          setIsLoader(false);
+          setIsProceedLoader(false);
         });
     }
     else {
@@ -207,8 +196,6 @@ const Cart = props => {
     }
   };
   const goToDetail = (item) => {
-    // console.log('objectitemitemitemitemitemitem', item?.get_webinar?.id)
-    // return
     item.type == 'webinar'
       ? props.navigation.navigate("webinarDetail", { paid: item?.get_webinar })
       : item.type == 'program'
@@ -225,6 +212,7 @@ const Cart = props => {
   }
 
   const applyCouponCode = async () => {
+    setIsApplyLoader(true)
     const params = {
       coupan_code: coupenCode,
     }
@@ -237,19 +225,19 @@ const Cart = props => {
         } else {
           Toast.show(json?.message, Toast.LONG);
         }
+        setIsApplyLoader(false)
       }).catch((error) => {
         console.log("Coupancodeerror", error);
+        setIsApplyLoader(false)
       })
   }
 
   const renderDataItem = ({ item }) => {
-    console.log('item>>>>', item);
     return (
       <View style={{}}>
         <TouchableOpacity style={styles.appointmentCard} onPress={() => goToDetail(item)}>
           <View style={{ flex: 2 }}>
             <View style={styles.appointmentImage}>
-              {/* <Image source={{uri:imageurl+cartData?.get_webinar?.image}} style={{width:90,height:120,resizeMode:"cover"}} */}
               <Image
                 source={{
                   uri:
@@ -272,23 +260,6 @@ const Cart = props => {
             </View>
           </View>
           <View style={{ flex: 5, marginLeft: 15, marginTop: 3 }}>
-            {/* <View style={styles.appointmentText} >
-            <Text >
-              {item.type == 'webinar'
-                ? "Webinar Detail"
-                : item.type == 'magzine'
-                  ? "Magzine Detail"
-                  : item.type == 'program'
-                    ? "Program Detail"
-                    : item.type == 'expert'
-                      ? "Expert Detail"
-                      : item.type == 'episode'
-                      ? "Episode Detail"
-                      : item.type == 'package'
-                      ? "Package Detail"
-                      : null}
-            </Text>
-            </View> */}
             <Text style={styles.one1Text}>
               <Text style={{
                 color: '#000',
@@ -405,7 +376,10 @@ const Cart = props => {
                   onChangeText={(text) => setCoupenCode(text)}
                 />
                 <TouchableOpacity style={styles.buttonApply} onPress={applyCouponCode}>
-                  <Text style={styles.buttonTitles}>Apply</Text>
+                {isApplyLoader == true ? 
+                    <ActivityIndicator size="small"/>: 
+                    <Text style={styles.buttonTitles}>Apply</Text>}
+                 
                 </TouchableOpacity>
               </View>
               <View style={styles.subtotalContainers}>
@@ -444,29 +418,13 @@ const Cart = props => {
                   ₹ {parseFloat(totalAmount).toFixed(2)}
                 </Text>
               </View>
-
-              {/* <View style={styles.countButton}>
-                <Text style={styles.titleText}>Total Amount</Text>
-                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                  ₹ {totalAmount}
-                </Text>
-              </View>
-              <View style={styles.countButton}>
-                <Text style={styles.titleText}>Discount Amount</Text>
-                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                  ₹ {discountAmount}
-                </Text>
-              </View>
-              <View style={styles.countButton}>
-                <Text style={styles.titleText}>Paid Amount</Text>
-                <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                  ₹ {PaidAmount}
-                </Text>
-              </View> */}
               <TouchableOpacity
                 style={styles.buttonBookNow}
                 onPress={handleInstamozo}>
-                <Text style={styles.buttonTitle}>Proceed To Checkout</Text>
+                    {isProceedLoader == true ? 
+                    <ActivityIndicator size="small"/>: 
+                    <Text style={styles.buttonTitle}>Proceed To Checkout</Text>}
+               
               </TouchableOpacity>
             </ScrollView>
           </View>

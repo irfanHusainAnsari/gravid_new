@@ -147,7 +147,6 @@ const Webinar = (props) => {
   };
 
   const handleWebinarDetail = item => {
-   
     props.navigation.navigate('webinarDetail', { paid: item });
   };
 
@@ -300,8 +299,8 @@ const Webinar = (props) => {
                       ? webinarLiveSearch
                       : webinarLive
                   }
-                  numColumns={2}
-                  style={{ paddingLeft: 16, marginTop: 26, flexDirection: 'row' }}
+                  numColumns={3}
+                  style={{ paddingLeft: 16, marginTop: 26, flexDirection: 'row'}}
                   renderItem={LiverenderItem}
                   keyExtractor={item => item.id}
                 />

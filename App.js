@@ -7,16 +7,6 @@ import ForegroundNotification from './src/utils/ForegroundNotification';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 const App = (props) => {
-  // PushNotification.configure({
-  //   onNotification: function (notification) {
-  //     console.log("[onNotification] :", notification);
-  //     if (notification.userInteraction) {
-  //       alert("ookkkk")
-  //     }
-  //   },
-  //   popInitialNotification: true,
-  //   requestPermissions: true,
-  // });
   useEffect(() => {
     requestUserPermission();
     notificationListener()

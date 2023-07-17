@@ -27,11 +27,14 @@ const PregnancyTracker = props => {
   const [date, setDate] = useState(new Date());
   const [periodDate, setPeriodDate] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
+  const [navigateDate, setNavigateDate] = useState("");
   const [maximumDate, setMaximumDate] = useState(new Date());
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [isLoader, setIsLoader] = useState(false)
   const selectDatePeriodDelivery = (type,date) => {
+        setNavigateDate(date)
+    console.log('date==========', date)
     if (type == 'pregnancy') {
       let year = date.toLocaleString('default', {year: 'numeric'});
       let monthh = date.toLocaleString('default', {month: '2-digit'});
@@ -60,7 +63,7 @@ const PregnancyTracker = props => {
                     console.log('get_PeriodData ====== ', json);
                     if (json.status == true) {
                       setIsLoader(false)
-                      props.navigation.navigate("PregnancyDetail",{json})
+                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:navigateDate})
                     } else (json)(
                         Toast.show(json.message, Toast.LONG)
                     )
@@ -78,7 +81,7 @@ const PregnancyTracker = props => {
                     console.log('get_DeliveryData ====== ', json);
                     if (json.status == true) {
                       setIsLoader(false)
-                      props.navigation.navigate("PregnancyDetail",{json})
+                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:navigateDate})
                     } else (json)(
                         Toast.show(json.message, Toast.LONG)
                     )
