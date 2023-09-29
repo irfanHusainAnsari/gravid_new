@@ -88,9 +88,7 @@ const Notifications = (props) => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const ampm = hours >= 12 ? 'PM' : 'AM';
   console.log('minutes', minutes)
-  // if(minuts.length<1){
-  //   console.log('minuts???', minuts)
-  // }
+  
   var formattedDate = day + '/' + monthh + '/' + year;
   
     return (

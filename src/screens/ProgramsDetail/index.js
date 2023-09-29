@@ -23,6 +23,7 @@ import {
   Dimensions,
   Linking,
 } from 'react-native';
+import moment from 'moment';
 import Modal from 'react-native-modal';
 import {svgs, colors, fonts} from '@common';
 import styles from './style';
@@ -53,13 +54,31 @@ const ProgramsDetail = props => {
   const [programDetailItem, setProgramDetailItem] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   const [taxData, setTaxData] = useState("");
+
+  const sloatDat = new Date(delail?.check_payment?.sloat_date); // back date
+  const sloatDate = moment(sloatDat).format("YYYY-MM-DD");
+
+  const Hourfrom = delail?.check_payment?.slot_form
+  var ff = moment(Hourfrom, 'HHmmss');
+  let from  = ff.format('HH:mm:ss')
+
+  const HourTo = delail?.check_payment?.slot_to
+  var tt = moment(HourTo, 'HHmmss');
+  let to  = tt.format('HH:mm:ss')
+
+
+
   const minDate = new Date(); // Today
+  const Currdate = moment(minDate).format("YYYY-MM-DD");
+  console.log('object', sloatDate,Currdate)
+  const current_time = moment(minDate).format("HH:mm:ss")
+  console.log('current_time', current_time)
+
   const month = minDate.getMonth();
   const maxDate = new Date(2023, month + 1, 30);
-
   const taxDataitem = parseInt((taxData?.gst/100)*cartData?.amount)
   const totalAmount = taxDataitem+cartData?.amount
-console.log('taxDataitem', taxDataitem)
+
   useEffect(() => {
     HomePagedata();
   }, [isFocused]);
@@ -103,10 +122,41 @@ console.log('taxDataitem', taxDataitem)
     setOpenCloseCalendar(true);
   };
 
-  const onPressContinue = () => {
+  const onPressContinue =async (type) => {
+    console.log('type', type)
     if(selectedItem1 == ""){
       alert("please select a time slot")
-    }else{
+    }else if(type == "Free"){
+      let form_data = new FormData();
+      form_data.append("data_id",paid?.id);
+      form_data.append("category_id", paid?.category);
+      form_data.append("expert_id",paid?.expert_id);
+      form_data.append("amount",0);
+      form_data.append("sloat_date", dateforcartsave);
+      form_data.append("slot_from", selectedItem1);
+      form_data.append("slot_to", selectedItem2);
+      form_data.append("type", "program");
+      console.log('form_data', form_data)
+      Apis.getDirect_order(form_data).then(async data => {
+        console.log('getDirect_order', data) 
+        setIsLoader(true);
+        if(data.status == true){
+          Toast.show(data.message, Toast.LONG)
+          if(delail.web_link == null){
+            Toast.show("Web link is not available", Toast.LONG)
+          }else{
+            props.navigation.goBack()
+            // await Linking.openURL(`${delail.web_link}`);
+          }
+         
+          setIsLoader(false);
+        }else{
+          setIsLoader(false);
+          Toast.show(data?.message, Toast.LONG)
+        }
+      }).catch((err)=>{console.log("errrr form_data" , err)})
+    }
+    else{
       let form_data = new FormData();
       form_data.append("data_id",paid?.id);
       form_data.append("category_id", paid?.category);
@@ -145,7 +195,7 @@ console.log('taxDataitem', taxDataitem)
   };
 
   const proceedToCkeckout =()=>{
-    handleInstamozo()
+    handleInstamozo();
   }
 
   const handleInstamozo = (id) => {
@@ -182,18 +232,44 @@ console.log('taxDataitem', taxDataitem)
 
 
   const handleJoinWebinar = async data => {
-    alert(data?.web_link)
-    // console.log("newaoiurl" , JSON.stringify(data)?.data?.web_link);
     const params = {
       id: paid.id,
     };
     Apis.programs_detail(params).then(async json => {
       if (json.status == true) {
-        alert(json?.data)
         setDetail(json?.data);
       }
     });
-    // await Linking.openURL(`https://${delail?.web_link}`);
+    // if(delail){
+    //   let form_data = new FormData();
+    //   form_data.append("data_id",delail?.id);
+    //   form_data.append("category_id", delail?.category);
+    //   form_data.append("expert_id",delail?.expert_id);
+    //   form_data.append("amount", 0);
+    //   // form_data.append("sloat_date",delail?.to_date);
+    //   // form_data.append("slot_from", delail?.start_time);
+    //   // form_data.append("slot_to", delail?.end_time);
+    //   form_data.append("sloat_date", dateforcartsave);
+    //   form_data.append("slot_from", selectedItem1);
+    //   form_data.append("slot_to", selectedItem2);
+    //   form_data.append("type", "program");
+    //   console.log('ooooooo>>>>>>', form_data)
+    //   Apis.getDirect_order(form_data).then(async data => {
+    //     console.log('getDirect_order>>>>>>>>>', data) 
+    //     setIsLoader(true);
+    //     if(data.status == true){
+    //       Toast.show(data.message, Toast.LONG)
+    //       await Linking.openURL(`${delail.web_link}`);
+    //       setIsLoader(false);
+    //     }else{
+    //       setIsLoader(false);
+    //       Toast.show(data?.message, Toast.LONG)
+    //     }
+    //   }).catch((err)=>{console.log("errrr form_data" , err)})
+
+    // }
+   
+    await Linking.openURL(`https://${delail?.web_link}`);
     // props.navigation.navigate('WebViewScreen', {delail});
   };
 
@@ -221,7 +297,7 @@ console.log('taxDataitem', taxDataitem)
   };
 
   const startDate = dates ? dates.toString() : '';
-  console.log('date', startDate);
+
   const customDatesStylesCallback = date => {
     switch (date.isoWeekday()) {
       case 1: // Monday
@@ -350,16 +426,19 @@ console.log('taxDataitem', taxDataitem)
               style={{width: '100%', resizeMode: 'contain', height: 300}}
             />
 
-            <View style={{flex:1,flexDirection: 'row', marginVertical: 10,}}>
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+           
+
+          
+            <View style={{flex:1,flexDirection: 'row', marginVertical: 10}}>
+              <View style={{flex:.24, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
                 <Image
                   source={require('../../assets/images/calendar.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  style={{width:25, height: 25, resizeMode: 'contain'}}
                 />
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{alignItems:"center",justifyContent:"center",flex:1}}>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 10,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
@@ -376,15 +455,15 @@ console.log('taxDataitem', taxDataitem)
                 </View>
               </View>
 
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+              <View style={{flex:.23, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
                 <Image
                   source={require('../../assets/images/watch.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
                 />
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{alignItems:"center",justifyContent:"center",flex:1}}>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 10,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
@@ -401,39 +480,105 @@ console.log('taxDataitem', taxDataitem)
                 </View>
               </View>
 
-              <View style={{flex: 1, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+              <View style={{flex:.32, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
                 <Image
-                  source={require('../../assets/images/card.png')}
-                  style={{width: 25, height: 25, resizeMode: 'contain',marginRight:6}}
+                  source={require('../../assets/images/watch.png')}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
                 />
-
-                <View style={{alignItems:"center",justifyContent:"center"}}>
+                <View style={{alignItems:"center",justifyContent:"center",flex:1}}>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 10,
                       fontFamily: fonts.OptimaMedium,
                       color: '#000',
                     }}>
-                       Price
+                    Sessions duration
                   </Text>
+                 
                   <Text
                     style={{
                       fontSize: 10,
                       fontFamily: fonts.OptimaMedium,
                       color: 'gray',
                     }}>
-                    ₹ {delail?.amount} /-
+                   {delail?.sessions_duraton_time}
                   </Text>
                 </View>
               </View>
+
+              <View style={{flex:.2, flexDirection: 'row',alignItems:"center",justifyContent:"center"}}>
+                <Image
+                  source={require('../../assets/images/card.png')}
+                  style={{width: 25, height: 25, resizeMode: 'contain'}}
+                />
+
+                <View style={{alignItems:"center",justifyContent:"center",flex:1}}>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontFamily: fonts.OptimaMedium,
+                      color: '#000',
+                    }}>
+                       Price
+                  </Text>
+                  {console.log('delail?.amount', delail?.amount)}
+                  {delail?.amount == null ? 
+                   <Text
+                   style={{
+                     fontSize: 10,
+                     fontFamily: fonts.OptimaMedium,
+                     color: 'gray',
+                   }}>
+                   Free
+                 </Text>
+                 :
+                 <Text
+                 style={{
+                   fontSize: 10,
+                   fontFamily: fonts.OptimaMedium,
+                   color: 'gray',
+                 }}>₹{delail?.amount}
+               </Text>
+                  }
+                </View>
+                
+              </View>
             </View>
+
+
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
-            {/* <Text style={styles.webinarDes}>{delail?.description}</Text> */}
+            {/* <Text style={styles.webinarDes}>{delail?.register_By}</Text> */}
             <RenderHtml
               contentWidth={width}
               source={{html: delail?.description}}
             />
-            {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
+
+
+            {
+              delail?.check_payment?.id && sloatDate > Currdate ? 
+              <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                >
+                <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
+              </TouchableOpacity>
+              : 
+              sloatDate == Currdate ?
+
+              <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                onPress={(delail)=>handleJoinWebinar(delail)}
+                >
+                <Text style={styles.joinWebinarBtnTxt}>Join</Text>
+              </TouchableOpacity>
+              :
+              <TouchableOpacity
+              style={styles.joinWebinarBtn}
+              onPress={onSetScreen}>
+              <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+              </TouchableOpacity>
+
+            }
+            {/* {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
               <TouchableOpacity
                 style={styles.joinWebinarBtn}
                 onPress={delail => handleJoinWebinar(delail)}>
@@ -445,7 +590,57 @@ console.log('taxDataitem', taxDataitem)
                 onPress={onSetScreen}>
                 <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
               </TouchableOpacity>
-            )}
+            )} */}
+
+              {/* <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                onPress={onSetScreen}>
+                <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+              </TouchableOpacity> */}
+              {/* { delail?.check_payment?.id ? 
+                
+                minDate > sloatDate ? 
+
+                <TouchableOpacity
+                style={styles.joinWebinarBtn}
+                onPress={onSetScreen}
+                >
+                <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+              </TouchableOpacity>
+                :
+                <TouchableOpacity
+                  style={styles.joinWebinarBtn}
+                  onPress={() => Linking.openURL(`${delail?.web_link}`)}
+                  >
+                  <Text style={styles.joinWebinarBtnTxt}>Join Link</Text>
+                </TouchableOpacity>
+                :
+                  delail?.payment_type == 'Free' ?
+                  <TouchableOpacity
+                    style={styles.joinWebinarBtn}
+                    onPress={onSetScreen}
+                    >
+                    <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+                  </TouchableOpacity> 
+                :
+                    delail?.payment_type == 'Paid' ?
+                    <TouchableOpacity
+                      style={styles.joinWebinarBtn}
+                      onPress={onSetScreen}
+                      >
+                      <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+                    </TouchableOpacity> 
+                    :null
+          } */}
+
+      { delail?.check_payment?.id && delail?.community_banner != null &&
+          <TouchableOpacity
+          style={{marginVertical:20}}
+          onPress={()=>Linking.openURL(`${delail?.community_link}`)}
+          >
+          <Image style={{width:"100%",height:170,resizeMode:"cover",borderRadius:20}} source={{uri:imageurl+delail?.community_banner}}/>
+        </TouchableOpacity>
+          }
           </View>
         </ScrollView>
       )}
@@ -460,6 +655,10 @@ console.log('taxDataitem', taxDataitem)
               minDate={minDate}
               maxDate={maxDate}
               firstDay={1}
+              previousTitle="Previous"
+              nextTitle="Next"
+              previousTitleStyle={{marginLeft:13,color:"#000000"}}
+              nextTitleStyle={{marginRight:13,color:"#000000"}}
               customDatesStyles={customDatesStylesCallback}
               customDayHeaderStyles={() => {
                 return {
@@ -540,7 +739,7 @@ console.log('taxDataitem', taxDataitem)
             style={[styles.joinWebinarBtn, {marginHorizontal: 20}]}
             // onPress={() => setModalVisible(true)}
             // onPress={()=>props.navigation.navigate("Cart")}
-            onPress={onPressContinue}>
+            onPress={()=>onPressContinue(delail?.payment_type)}>
             <Text style={styles.joinWebinarBtnTxt}>Continue</Text>
           </TouchableOpacity>
         </View>

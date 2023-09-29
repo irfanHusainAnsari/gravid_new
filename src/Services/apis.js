@@ -23,10 +23,17 @@ export default class Apis {
   static CategoryApi = (data) => {
     return Network('GET', 'category-list', data)
   }
+
+
   static HomePagedata = async (data) => {
     const localData = await AsyncStorage.getItem('catID')
     return Network('GET', 'home-data?category_id=' + JSON.parse(localData), data)
   }
+  static CheckTrackerHistory = async (data) => {
+    return Network('GET', 'check-tracker-history?type=' + data.type, data)
+  }
+
+
   static getNotificationData = async (data) => {
     return Network('GET', 'get-notifications', data)
   }
@@ -39,6 +46,10 @@ export default class Apis {
   
   static getPackageItem = async (data) => {
     return Network('GET', 'packages', data)
+  }
+
+  static getPackageItemDetail = async (data) => {
+    return Network('GET', `packages?search_id=${data?.search_id}`, data)
   }
   static HomeDatalist = async (data) => {
     return Network('GET', 'home-data-list?type='+data.type +'&category_id='+data.id, data)
@@ -62,7 +73,7 @@ export default class Apis {
     return Network('GET', 'episode-vedios?episode_id=' + data.episode_id, data)
   }
   static Coupancode = (data) => {
-    return Network('GET', 'check-coupan-code?coupan_code=' + data.coupan_code, data)
+    return Network('GET', 'check-coupan-code?coupon_code=' + data.coupon_code, data)
   }
   static ParentigListVideos = (data) => {
     return Network('GET', 'parentingtv', data)
@@ -85,7 +96,7 @@ export default class Apis {
   static getDirect_order = (data) => {
     return Network('POST', 'direct-order', data , true)
   }
-  getDirect_order
+  
   static proceedOrder = (data) => {
     return Network('POST', 'order-post', data , true)
   }
@@ -97,6 +108,10 @@ export default class Apis {
   }
   static HomeListsDetails = (data) => {
     return Network('GET', 'home-list-details?type=' + data.type + '&id=' + data.id, data)
+  }
+  // moodTrackerTips
+  static moodTrackerTips = (data) => {
+    return Network('GET', 'mood-tracker-tips?tip_no=' +data.tip_no , data)
   }
   static Updata_Profile = (data) => {
     return Network('POST', 'profile-update', data, true)
@@ -128,7 +143,16 @@ export default class Apis {
   static get_TrackerData = (data) => {
     return Network('POST', 'pregnancy-tracker', data, true)
   }
+  static userCategory = (data) => {
+    return Network('POST', 'user-category', data, true)
+  }
   static get_OvulationData = (data) => {
     return Network('POST', 'ovulation-tracker', data, true)
+  }
+  static get_MoodData = (data) => {
+    return Network('GET', 'mood-tracker', data)
+  }
+  static moodTrackerStore = (data) => {
+    return Network('POST', 'create-mood-tracker', data,true)
   }
 }

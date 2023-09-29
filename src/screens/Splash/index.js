@@ -44,7 +44,7 @@ const Home = (props) => {
       <ImageBackground source={require('../../assets/images/Splash-bg.png')} resizeMode="cover" style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
           style={{width:windowWidth-50,resizeMode:"contain"}}
-          source={require('../../assets/images/gravid-logo.png')}
+          source={require('../../assets/images/logo_white.png')}
         />
       </ImageBackground>
     </View>

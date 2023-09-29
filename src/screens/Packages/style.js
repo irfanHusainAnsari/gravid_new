@@ -9,19 +9,19 @@ const styles = StyleSheet.create({
       },
       haddingView: {
         backgroundColor: colors.themeColor,
-        height: 120,
-        paddingTop: 16,
-        // paddingBottom: 40,
-        // flexDirection: "row",
-        paddingHorizontal: 24,
-        alignItems: "center",
-        // justifyContent: 'center'
+   height: 110,
+   paddingTop: 16,
+   paddingBottom: 40,
+   // flexDirection: "row",
+   paddingHorizontal: 24,
+   alignItems: "center",
+   // justifyContent: 'center'
       },
       haddingTxt: {
         flex: 3,
         fontFamily: fonts.OptimaBold,
         color: colors.black,
-        fontSize: 20,
+        fontSize:18,
         textAlign: "center",
         // lineHeight: 32,
       },

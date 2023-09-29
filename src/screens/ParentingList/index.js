@@ -11,7 +11,7 @@ const ParentingList = ({ navigation, route }) => {
     const [isLoader, setIsLoader] = useState(true)
     const [empty, setEmpty] = useState()
     const [episodeVideos, setEpisodeVideos] = useState([])
-
+console.log('episodeVideos', episodeVideos)
     useEffect(() => {
         PlayEpisodeVideo()
     }, [])
@@ -37,6 +37,8 @@ const ParentingList = ({ navigation, route }) => {
                 onPress={() =>
                     navigation.navigate('ParentingTV', {
                         item,
+                        VedioUrl:item?.vedio_link,
+                        imageUri:item?.image
                     })
                 }
                 style={styles.NewsLetterView}>
@@ -62,7 +64,7 @@ const ParentingList = ({ navigation, route }) => {
                     onPress={() => navigation.goBack()}>
                     {svgs.backArrow('black', 24, 24)}
                 </TouchableOpacity>
-                <Text style={styles.haddingTxt}>Parenting List</Text>
+                <Text style={styles.haddingTxt}>Parenting TV</Text>
                 <View style={{ flex: 3 }} />
             </View>
             <View style={styles.radiusView} />

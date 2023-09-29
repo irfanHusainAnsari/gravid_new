@@ -29,6 +29,7 @@ const ExpertList = props => {
   const isFocused = useIsFocused();
   const [expertData, setExpertData] = useState([]);
   console.log('expertData', expertData)
+  
   const [expertListSearch, setExpertListSearch] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
@@ -43,8 +44,12 @@ const ExpertList = props => {
   useEffect(() => {
     HomePagedata();
     getCart();
+    setSearchTxt("")
+    setSpecialization("")
+    setCity("")
+    setPinCode("")
   }, [isFocused]);
-
+console.log('filter', filter)
   const getCart = () => {
     setIsLoader(true);
     Apis.getCartData({})
@@ -90,7 +95,6 @@ const ExpertList = props => {
       );
     }
     if (pinCode && pinCode != '') {
-
       setPinCodeSearch(
         expertData.filter(item =>
         item?.pincode
@@ -117,8 +121,9 @@ const ExpertList = props => {
   };
 
   const renderItemNewsLetter = ({item}) => {
+    console.log('itemwwwww', item)
     return (
-      <View style={{flex: 0.5, margin: 8}}>
+      <View style={{flex: 0.5, marginLeft:8,marginRight:8}}>
         <TouchableOpacity
           key={item.id}
           style={styles.NewsLetterView}
@@ -148,13 +153,33 @@ const ExpertList = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
-        <TouchableOpacity
-          style={{flex: 3}}
-          onPress={() => props.navigation.goBack()}>
-          {/* {svgs.backArrow("black", 24, 24)} */}
-        </TouchableOpacity>
+
+<View style={styles.haddingView}>
         <Text style={styles.haddingTxt}>Expert List</Text>
+        <TouchableOpacity
+          style={{ position: "absolute", right: 20, top: 15 }}
+          onPress={() => { props.navigation.navigate('Cart') }}>
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')} />
+          <View style={{ position: "absolute", borderWidth: 1, borderRadius: 100, borderColor: colors.themeColor, width: 13, height: 13, right: -6, top: -8, backgroundColor: "white" }}>
+            <Text style={{ fontSize: 10, color: colors.themeColor, marginHorizontal:3, marginTop:-1 }}>
+              {cartCount}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.radiusView} />
+
+      {/* <View style={styles.haddingView}>
+
+      <TouchableOpacity style={{position:"absolute",left:20,top:18}} onPress={() => props.navigation.goBack()}>
+                    {svgs.backArrow("black", 24, 24)}
+                </TouchableOpacity>
+
+
+
+        <Text style={styles.haddingTxt}>Expert List</Text>
+       
+
         <TouchableOpacity
           style={{position:"absolute",right:20,top:15}}
           onPress={() => { props.navigation.navigate('Cart') }}>
@@ -166,7 +191,7 @@ const ExpertList = props => {
           </View>
         </TouchableOpacity>
         <View style={{flex: 3}} />
-      </View>
+      </View> */}
       <View style={styles.manflatlistview}>
         {/* <ScrollView nestedScrollEnabled={true}> */}
         {isLoader ? (
@@ -181,11 +206,13 @@ const ExpertList = props => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: 20,
+                marginTop:-20
               }}>
               <View style={styles.searchBoxView}>
                 {svgs.search(colors.grayRegular, 17, 17)}
                 <TextInput
                   placeholder="Search"
+                  placeholderTextColor={"#000000"}
                   style={styles.searchBox}
                   value={searchTxt}
                   onChangeText={setSearchTxt}
@@ -225,6 +252,7 @@ const ExpertList = props => {
                   <TextInput
                     style={{flex: 1}}
                     placeholder="Category"
+                    placeholderTextColor={"#000000"}
                     value={specialization}
                     onChangeText={setSpecialization}
                   />
@@ -245,6 +273,7 @@ const ExpertList = props => {
                   <TextInput 
                       style={{flex: 1}} 
                       placeholder="City"
+                      placeholderTextColor={"#000000"}
                       value={city}
                       onChangeText={setCity} />
                 </View>
@@ -264,6 +293,7 @@ const ExpertList = props => {
                   <TextInput 
                         style={{flex: 1}}
                         placeholder="Pincode"
+                        placeholderTextColor={"#000000"}
                         onChangeText={setPinCode}
                          />
                 </View>
@@ -306,7 +336,12 @@ const ExpertList = props => {
         {/* <View style={{ height: 90 }} /> */}
         {/* </ScrollView> */}
       </View>
+      {filter == true ?
+      <View style={{marginBottom:210}}></View>
+      :
       <View style={{marginBottom: 100}}></View>
+      }
+      
     </View>
   );
 };

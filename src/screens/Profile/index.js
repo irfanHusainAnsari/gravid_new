@@ -22,7 +22,7 @@ const Profile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState()
   const refferalCode= userData?.referral_code
   const data = [
-    { img: require('../../assets/images/profileicon.png'), titel: 'My Account', navigation: 'EditProfile'},
+    // { img: require('../../assets/images/profileicon.png'), titel: 'My Account', navigation: 'EditProfile'},
     { img: require('../../assets/images/Referral.png'), titel: 'Referral', navigation: 'Referral'},
     { img: require('../../assets/images/library.png'), titel: 'Library', navigation: 'Library' },
     { img: require('../../assets/images/order_list.png'), titel: 'Order History', navigation: 'OrderHistory' },
@@ -127,7 +127,9 @@ const Profile = ({ navigation }) => {
                 </View>
               )
             }
-            <Text style={styles.userName}>{userData?.name ? userData?.name : userData?.fname} {userData?.lname}</Text>
+            <View style={{flex:1}}>
+              <Text style={styles.userName}>{userData?.name ? userData?.name : userData?.fname} {userData?.lname}</Text>
+            </View>
           </View>
           <View style={styles.activerow}>
             <Image source={require('../../assets/images/Activeicon.png')}

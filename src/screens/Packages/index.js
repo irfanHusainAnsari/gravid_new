@@ -32,6 +32,7 @@ const Packages = props => {
   useEffect(() => {
     getPackageData();
     getCart();
+    setSearchTxt("")
   }, [isFocused]);
 
   useEffect(() => {

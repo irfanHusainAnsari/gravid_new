@@ -526,6 +526,8 @@ const PackageDetail = props => {
                 </View>
               </View>
             </View>
+
+            <Text style={styles.webinarTitle}>Title :</Text>
             <Text style={styles.webinarTitle}>{delail?.title}</Text>
             <Text style={styles.webinarDes}>{delail?.description}</Text>
             <RenderHtml
@@ -559,6 +561,10 @@ const PackageDetail = props => {
               minDate={minDate}
               maxDate={maxDate}
               firstDay={1}
+              previousTitle="Previous"
+              nextTitle="Next"
+              previousTitleStyle={{marginLeft:13,color:"#000000"}}
+              nextTitleStyle={{marginRight:13,color:"#000000"}}
               customDatesStyles={customDatesStylesCallback}
               customDayHeaderStyles={() => {
                 return {

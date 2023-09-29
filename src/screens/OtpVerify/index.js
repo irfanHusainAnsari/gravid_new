@@ -15,8 +15,9 @@ import fonts from '../../common/fonts';
 import Apis from '../../Services/apis';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import auth from '@react-native-firebase/auth';
 const OtpVerify = (props) => {
+  console.log('props', props)
   const { navigation, route } = props;
   // console.log("loginumber", route)
   // console.log("Idd ========::", route)
@@ -30,6 +31,7 @@ const OtpVerify = (props) => {
   const [countrycode, setCountryCode] = useState(route.params.Country_Code)
   const [signType, setSignType] = useState(route?.params?.type)
   const [isLoader, setIsLoader] = useState(false)
+  const [code, setCode] = useState('+91')
   console.log("isLoader",isLoader)
   // useEffect(() => {
   //   console.log('------route.params.type:: ', signType);
@@ -132,15 +134,46 @@ const OtpVerify = (props) => {
     }
   }
 
-  const ResendOtp = () => {
+  const ResendOtp =async () => {
     const params = {
-      country_code: countrycode,
+      country_code: code,
       mobile: number,
     }
-    Apis.ResendOtpSignup(params)
-      .then(async (json) => {
-        console.log('==========Resend-Otp-Signup:', JSON.stringify(json));
+    // Apis.ResendOtpSignup(params)
+    //   .then(async (json) => {
+    //     console.log('==========Resend-Otp-Signup:', JSON.stringify(json));
 
+    //   })
+   
+    setIsLoader(true)
+    Apis.LogninApi(params)
+      .then(async (json) => {
+        console.log('LogninApi+++++++++++=====:',json);
+        setTimeout(()=>{
+          setIsLoader(false)
+          // Toast.show("Something Went wrong", Toast.LONG)
+        },40000)
+        if (json.status == true) {
+          
+          await auth().signInWithPhoneNumber("+91" + number).then(async (confirmation) => {
+
+            console.log('confirmation', confirmation)
+            // props.navigation.navigate("otpverify", {
+            //   User_Id: json.data.id,
+            //   verifynumber: json.data.mobile,
+            //   confirmation
+            //   // NUMDERVerify: json.data.mobile,
+            // })
+            setIsLoader(false)
+          }).catch((err) => {
+            console.log("Error : ", err);
+            setIsLoader(false)
+            Toast.show("Something Went wrong", Toast.LONG)
+          });
+        } else {
+          setIsLoader(false)
+          alert(json.message)
+        }
       })
   }
 
@@ -166,7 +199,7 @@ const OtpVerify = (props) => {
         </View>
         <View style={styles.formMainView}>
           <Text style={styles.welcmTxt}>Verification Code</Text>
-          <Text style={styles.signinTxt}>We have sent the code verification to</Text>
+          <Text style={styles.signinTxt}>We have sent the verification code to</Text>
 
           <View style={{flexDirection:"row",marginHorizontal:35}}>
               <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>

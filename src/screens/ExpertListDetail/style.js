@@ -74,14 +74,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.themeColor,
-        paddingVertical: 12,
         marginBottom: 24,
         borderRadius: 6
     },
     bookNowBtnTxt: {
-        fontFamily: fonts.OptimaBold,
-        color: colors.black,
-        fontSize: 18,
+      fontFamily: fonts.OptimaMedium,
+      color: colors.black,
+      fontSize:18,
+      paddingVertical: 14,
+      alignSelf:"center"
     },
     joinWebinarBtn: {
         backgroundColor: colors.themeColor,

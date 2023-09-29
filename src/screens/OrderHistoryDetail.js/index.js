@@ -13,12 +13,21 @@ import {styles} from './style';
 import fonts from '../../common/fonts';
 import {imageurl} from '../../Services/constants';
 import colors from '../../common/colors';
+import Pdf from 'react-native-pdf';
 
 const OrderHistoryDetail = props => {
+  const currency = props?.route?.params?.currency;
+  const Disc = props?.route?.params?.Disc;
+  const profileImage = require('../../assets/images/profileicon.png');
   const orderId = props?.route?.params;
-  console.log('orderId', orderId)
   const [isLoader, setIsLoader] = useState(false);
   const [orderHistoryDetail, setOrderHistoryDetail] = useState('');
+  console.log('currency,Disc', currency,Disc);
+
+  var date = new Date(orderHistoryDetail[0]?.created_at);
+  var year_start = date.toLocaleString('default', {year: 'numeric'});
+  var monthh_start = date.toLocaleString('default', {month: '2-digit'});
+  var day_start = date.toLocaleString('default', {day: '2-digit'});
 
   useEffect(() => {
     getOrderHistoryData();
@@ -40,6 +49,28 @@ const OrderHistoryDetail = props => {
         setIsLoader(false);
       });
   };
+
+  const goToDetail = (item) => {
+    console.log('objectitemitemitem', item)
+    item.type == 'webinar'
+      ? props.navigation.navigate("webinarDetail", { paid: item?.get_webinar })
+      : item.type == 'program'
+        ? props.navigation.navigate("ProgramsDetail", { paid: item?.get_program })
+        : item.type == 'expert'
+          ? props.navigation.navigate("ExpertListDetail", { item: item?.get_expert })
+          : item.type == 'magzine'
+            ? props.navigation.navigate("RecentIssuesDetail", { item: item?.get_magazine })
+            : item.type == 'episode'
+              ? props.navigation.navigate("RecordedWebinarVidioList", { item: item.get_episode })
+              : item.type == 'package'
+                ? props.navigation.navigate("NewPackegedetail", { paid: item?.get_package })
+                : null
+}
+
+
+
+
+
 
   return (
     <View style={styles.mainContainer}>
@@ -65,107 +96,17 @@ const OrderHistoryDetail = props => {
             <ActivityIndicator size="large" />
           </View>
         ) : (
-          <View
-            style={{
-              backgroundColor: '#ffffff',
-              width: '100%',
-              borderRadius: 10,
-              elevation: 2,
-            }}>
-            <View style={{marginHorizontal: 20, marginVertical: 20}}>
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: 'contain',
-                  borderRadius: 100,
-                }}
-                source={{
-                  uri: orderHistoryDetail?.type == "webinar" ?
-                       imageurl + orderHistoryDetail?.get_webinar?.image
-                       :orderHistoryDetail?.type == "expert" ?
-                       imageurl + orderHistoryDetail?.get_expert?.image
-                       :orderHistoryDetail?.type == "programs" ?
-                       imageurl + orderHistoryDetail?.get_program?.image
-                       :orderHistoryDetail?.type == "package" ?
-                       imageurl + orderHistoryDetail?.get_package?.image
-                       :orderHistoryDetail?.type == "magazine" ?
-                       imageurl + orderHistoryDetail?.get_magazine?.file
-                       :orderHistoryDetail?.type == "episode" ?
-                       imageurl + orderHistoryDetail?.get_episode?.file
-                       :null,
-                }}
-              />
-              <Text
-                style={{
-                  marginTop: 10,
-                  fontFamily: fonts.OptimaDemiBold,
-                  color: '#000',
-                }}>
-                {orderHistoryDetail?.type == "webinar" ?
-                        orderHistoryDetail?.get_webinar?.title
-                       :orderHistoryDetail?.type == "expert" ?
-                        orderHistoryDetail?.get_expert?.title
-                       :orderHistoryDetail?.type == "programs" ?
-                       orderHistoryDetail?.get_program?.title
-                       :orderHistoryDetail?.type == "package" ?
-                       orderHistoryDetail?.get_package?.title
-                       :orderHistoryDetail?.type == "magazine" ?
-                       orderHistoryDetail?.get_magazine?.title
-                       :orderHistoryDetail?.type == "episode" ?
-                       orderHistoryDetail?.get_episode?.title
-                       :null}
-              </Text>
-            </View>
+          <View style={{flex: 1}}>
+           
             <View
               style={{
-                borderBottomColor: colors.grayLight,
-                borderBottomWidth: 2,
-                marginHorizontal: 20,
-                marginBottom: 20,
-              }}
-            />
-            <View style={{marginHorizontal: 20, marginBottom: 20}}>
-              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
-                Type :{' '}
-                <Text
-                  style={{
-                    fontFamily: fonts.OptimaDemiBold,
-                    color: colors.gray,
-                  }}>
-                  {orderHistoryDetail?.type}
-                </Text>
-              </Text>
-              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
-                Amount ₹ :{' '}
-                <Text
-                  style={{
-                    fontFamily: fonts.OptimaDemiBold,
-                    color: colors.gray,
-                  }}>
-                  {orderHistoryDetail?.amount}
-                </Text>
-              </Text>
-              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
-                GST % :{' '}
-                <Text
-                  style={{
-                    fontFamily: fonts.OptimaDemiBold,
-                    color: colors.gray,
-                  }}>
-                  {orderHistoryDetail?.tax_percent}
-                </Text>
-              </Text>
-              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
-                Final Amount ₹ :{' '}
-                <Text
-                  style={{
-                    fontFamily: fonts.OptimaDemiBold,
-                    color: colors.gray,
-                  }}>
-                  {orderHistoryDetail?.paid_amount}
-                </Text>
-              </Text>
+                backgroundColor: '#ffffff',
+                marginBottom: 10,
+                padding: 20,
+                elevation: 2,
+                margin: 3,
+                borderRadius: 10,
+              }}>
               <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
                 Payment ID:{' '}
                 <Text
@@ -173,7 +114,7 @@ const OrderHistoryDetail = props => {
                     fontFamily: fonts.OptimaDemiBold,
                     color: colors.gray,
                   }}>
-                  {orderHistoryDetail?.payment_id}
+                  {orderHistoryDetail[0]?.get_payment?.pay_id}
                 </Text>
               </Text>
               <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
@@ -183,10 +124,225 @@ const OrderHistoryDetail = props => {
                     fontFamily: fonts.OptimaDemiBold,
                     color: colors.gray,
                   }}>
-                  {orderHistoryDetail?.created_at}
+                  {day_start}-{monthh_start}-{year_start}
                 </Text>
               </Text>
+
+              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
+                Currency:{' '}
+                <Text
+                  style={{
+                    fontFamily: fonts.OptimaDemiBold,
+                    color: colors.gray,
+                  }}>
+                  {currency}
+                </Text>
+              </Text>
+
+              <Text style={{fontFamily: fonts.OptimaDemiBold, color: '#000'}}>
+                Discount Amount:{' '}
+                <Text
+                  style={{
+                    fontFamily: fonts.OptimaDemiBold,
+                    color: colors.gray,
+                  }}>
+                  {Disc}
+                </Text>
+              </Text>
+
+
             </View>
+            <FlatList
+              data={orderHistoryDetail}
+              keyExtractor={item => item.id}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                var date = new Date(item?.created_at);
+                var year_start = date.toLocaleString('default', {
+                  year: 'numeric',
+                });
+                var monthh_start = date.toLocaleString('default', {
+                  month: '2-digit',
+                });
+                var day_start = date.toLocaleString('default', {
+                  day: '2-digit',
+                });
+
+                return (
+
+
+
+                  <View
+                    style={{
+                      backgroundColor: '#ffffff',
+                      width: '98%',
+                      borderRadius: 10,
+                      elevation: 2,
+                      marginBottom: 10,
+                      margin: 3,
+                      
+                    }}>
+                   <TouchableOpacity style={{flexDirection: 'row',}}  onPress={() => goToDetail(item)}>
+                    <View style={{marginHorizontal: 20, marginVertical: 20}}>
+                      {item?.type == 'webinar' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={{uri: imageurl + item?.get_webinar?.image}}
+                        />
+                      ) : null}
+                      {item?.type == 'expert' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={{uri: imageurl + item?.get_expert?.file}}
+                        />
+                      ) : null}
+                      {item?.type == 'program' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={{uri: imageurl + item?.get_program?.image}}
+                        />
+                      ) : null}
+                      {item?.type == 'package' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={{uri: imageurl + item?.get_package?.image}}
+                        />
+                      ) : null}
+                      {item?.type == 'magzine' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={profileImage}
+                        />
+                      ) : null}
+                      {item?.type == 'episode' ? (
+                        <Image
+                          style={{
+                            width: 70,
+                            height: 70,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                          source={{uri: imageurl + item?.get_episode?.file}}
+                        />
+                      ) : null}
+                      {/* <Image
+                      style={{
+                        width: 70,
+                        height: 70,
+                        resizeMode: 'contain',
+                        borderRadius: 100,
+                      }}
+                      
+                      source={{
+                        uri: item?.type == "webinar" ?
+                             imageurl + item?.get_webinar?.image
+                             :item?.type == "expert" ?
+                             imageurl + item?.get_expert?.image
+                             :item?.type == "program" ?
+                             imageurl + item?.get_program?.image
+                             :item?.type == "package" ?
+                             imageurl + item?.get_package?.image
+                             :item?.type == "magzine" ?
+                             imageurl + item?.get_magazine?.file
+                             :item?.type == "episode" ?
+                             imageurl + item?.get_episode?.file
+                             :null,
+                      }}
+                    /> */}
+                    </View>
+                    <View
+                      style={{
+                        borderLeftColor: colors.grayLight,
+                        borderLeftWidth: 2,
+                        // marginHorizontal: 20,
+                        // marginBottom: 20,
+                      }}
+                    />
+                    <View style={{marginHorizontal: 20, marginBottom: 20,flex:1}}>
+                      <Text
+                        style={{
+                          marginTop: 10,
+                          fontFamily: fonts.OptimaDemiBold,
+                          color: '#000',
+                          // backgroundColor:"red"
+                        }}>
+                        {item?.type == 'webinar'
+                          ? item?.get_webinar?.title
+                          : item?.type == 'expert'
+                          ? item?.get_expert?.name
+                          : item?.type == 'program'
+                          ? item?.get_program?.title
+                          : item?.type == 'package'
+                          ? item?.get_package?.title
+                          : item?.type == 'magzine'
+                          ? item?.get_magazine?.title
+                          : item?.type == 'episode'
+                          ? item?.get_episode?.title
+                          : null}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: fonts.OptimaDemiBold,
+                          color: '#000',
+                        }}>
+                        Type :{' '}
+                        <Text
+                          style={{
+                            fontFamily: fonts.OptimaDemiBold,
+                            color: colors.gray,
+                          }}>
+                          {item?.type}
+                        </Text>
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: fonts.OptimaDemiBold,
+                          color: '#000',
+                        }}>
+                        Amount ₹ :{' '}
+                        <Text
+                          style={{
+                            fontFamily: fonts.OptimaDemiBold,
+                            color: colors.gray,
+                          }}>
+                          {item?.amount}
+                        </Text>
+                      </Text>
+                    </View>
+                    </TouchableOpacity>
+                  </View>
+
+
+
+
+                );
+              }}
+            />
           </View>
         )}
       </View>

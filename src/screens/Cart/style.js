@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 50,
-    // marginBottom: 40,
+    marginBottom: 40,
   },
   buttonTitle: {
     color: '#000',

@@ -37,7 +37,7 @@ const Video_Library = (props) => {
                 <Image source={{ uri: imageurl + item.image }} style={styles.newsImg} />
                 <View style={styles.newsleftView}>
                     <View style={styles.bookanddo}>
-                        <TouchableOpacity style={styles.bkmrkBtn}>
+                        {/* <TouchableOpacity style={styles.bkmrkBtn}>
                             <View style={styles.bkmrkIcn}>
                                 {svgs.bookmark("", 8, 8)}
                             </View>
@@ -48,7 +48,7 @@ const Video_Library = (props) => {
                                 {svgs.download("", 12, 12)}
                             </View>
                             <Text style={styles.bkmrkBtnTxt}>Download</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     <Text style={styles.issuetitle}>{item.title}</Text>
                     <Text style={styles.issueDes}>{item.short_description}</Text>

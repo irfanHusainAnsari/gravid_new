@@ -25,7 +25,7 @@ const WebinarDetail = props => {
   const paid = props?.route?.params?.paid;
   const [modalVisible, setModalVisible] = useState(false);
   const [delail, setDetail] = useState();
-  console.log('delail', delail)
+
   const [cartData, setCartData] = useState("")
   const [userData, setUserData] = useState({});
   const [isLoader, setIsLoader] = useState(false);
@@ -150,6 +150,46 @@ const WebinarDetail = props => {
       });
   };
 
+  const onPressBookNowFree =()=> {
+    const params = {
+      id: paid.id,
+    };
+    Apis.webinar_detail(params).then(async json => {
+      if (json.status == true) {
+        setDetail(json?.data);
+      }
+    });
+    if(delail){
+      let form_data = new FormData();
+      form_data.append("data_id",delail?.id);
+      form_data.append("category_id", delail?.category);
+      form_data.append("expert_id",delail?.expert_id);
+      form_data.append("amount", 0);
+      form_data.append("sloat_date",delail?.to_date);
+      form_data.append("slot_from", delail?.start_time);
+      form_data.append("slot_to", delail?.end_time);
+      form_data.append("type", "webinar");
+      Apis.getDirect_order(form_data).then(async data => {
+        setIsLoader(true);
+        if(data.status == true){
+          Toast.show(data.message, Toast.LONG)
+          if(delail.web_link == null){
+            Toast.show("Web link is not available", Toast.LONG)
+          }else{
+            props.navigation.goBack()
+            Toast.show("Web link is available", Toast.LONG)
+          }
+          // await Linking.openURL(`${delail.web_link}`);
+          setIsLoader(false);
+        }else{
+          setIsLoader(false);
+          Toast.show(data?.message, Toast.LONG)
+        }
+      }).catch((err)=>{console.log("errrr form_data" , err)})
+
+    }
+  }
+
   const handleJoinWebinar = async data => {
     const params = {
       id: paid.id,
@@ -170,10 +210,12 @@ const WebinarDetail = props => {
       form_data.append("slot_to", delail?.end_time);
       form_data.append("type", "webinar");
       Apis.getDirect_order(form_data).then(async data => {
-        console.log('getDirect_order', data) 
         setIsLoader(true);
         if(data.status == true){
           Toast.show(data.message, Toast.LONG)
+          if(delail.web_link == null){
+            Toast.show("Web link is not available", Toast.LONG)
+          }
           await Linking.openURL(`${delail.web_link}`);
           setIsLoader(false);
         }else{
@@ -322,12 +364,11 @@ const WebinarDetail = props => {
               contentWidth={width}
               source={{html: delail?.description}}
             />
-            {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
-            
+            {/* {delail?.check_payment?.id || delail?.payment_type == 'Free' ? (
               <TouchableOpacity
                 style={styles.joinWebinarBtn}
                 onPress={delail => handleJoinWebinar(delail)}>
-                <Text style={styles.joinWebinarBtnTxt}>Get Link</Text>
+                <Text style={styles.joinWebinarBtnTxt}>Join Link</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -336,7 +377,42 @@ const WebinarDetail = props => {
                 >
                 <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
               </TouchableOpacity>
-            )}
+            )} */}
+
+            { delail?.check_payment?.id ? 
+                <TouchableOpacity
+                  style={styles.joinWebinarBtn}
+                  onPress={() => Linking.openURL(`${delail?.web_link}`) }
+                  >
+                  <Text style={styles.joinWebinarBtnTxt}>Join Link</Text>
+                </TouchableOpacity>
+                :
+                  delail?.payment_type == 'Free' ?
+                  <TouchableOpacity
+                    style={styles.joinWebinarBtn}
+                    onPress={onPressBookNowFree}
+                    >
+                    <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+                  </TouchableOpacity> 
+                :
+                    delail?.payment_type == 'Paid' ?
+                    <TouchableOpacity
+                      style={styles.joinWebinarBtn}
+                      onPress={onPressBookNow}
+                      >
+                      <Text style={styles.joinWebinarBtnTxt}>Book Now</Text>
+                    </TouchableOpacity> 
+                    :null
+          }
+
+          { delail?.check_payment?.id && delail?.community_banner != null &&
+          <TouchableOpacity
+          style={{}}
+          onPress={()=>Linking.openURL(`${delail?.community_link}`)}
+          >
+          <Image style={{width:"100%",height:170,resizeMode:"cover",borderRadius:20}} source={{uri:imageurl+delail?.community_banner}}/>
+        </TouchableOpacity>
+          }
           </View>
         </ScrollView>
       )}

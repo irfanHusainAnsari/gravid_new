@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     borderColor: colors.themeColor,
     borderRadius: 10,
     backgroundColor: "#F9FAFC",
-    height:150,
+    // height:150,
+    padding:10
     
     
   },
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
   },
   joinWebinarBtn: {
     backgroundColor: colors.themeColor,
-    marginTop: 100,
-    marginBottom: 20,
+    marginTop:90,
+    marginBottom:100,
     alignItems: "center",
     borderRadius: 5,
     marginHorizontal:20

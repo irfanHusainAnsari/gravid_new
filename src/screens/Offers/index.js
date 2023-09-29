@@ -58,6 +58,7 @@ const Offers = (props) => {
     }
     else if (item.offer_type == "parenting_tv") {
     //  props.navigation.navigate("ParentingList")
+    props.navigation.navigate("ParentingList")
     }
     else if (item.offer_type === "expert") {
       props.navigation.navigate("ExpertList")

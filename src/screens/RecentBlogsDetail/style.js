@@ -45,13 +45,13 @@ const styles = StyleSheet.create({
     },
     CONTRIBUTORSTEXT:{
         marginTop:25,
-        color:'#262626',
+        color:'#000000',
         fontSize:17,
         fontWeight:'bold'
     },
     gravidDigestText:{
         fontSize:16,
-        color:'#808080',
+        color:'#000000',
         marginTop:5
     },
     buyIssuesButton:{
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     loremText:{
         marginTop:30,
         lineHeight:18,
-        color:'#929397'
+        color:'#000000'
     }
 })
 export default styles;

@@ -9,26 +9,24 @@ const styles = StyleSheet.create({
     },
     haddingView: {
         backgroundColor: colors.themeColor,
-      
-        // paddingBottom: 40,
-        // flexDirection: "row",
-        // paddingHorizontal: 24,
-        // alignItems: "center",
-        // justifyContent: "center"
+        paddingTop: 16,
+        paddingBottom: 40,
+        flexDirection: "row",
+        paddingHorizontal: 24,
+        alignItems: "center",
+        justifyContent: 'space-between'
     },
     haddingTxt: {
         fontFamily: fonts.OptimaBold,
         color: colors.black,
         fontSize: 18,
-        marginVertical:10,
-        alignSelf:"center"
     },
     radiusView: {
-        height: 40,
+        height: 50,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "white",
-        marginTop: 0,
+        marginTop: -30,
     },
     backgroundVideo: {
       marginTop:10,

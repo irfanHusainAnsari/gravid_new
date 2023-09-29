@@ -30,7 +30,6 @@ import RecentOffersDetail from '../screens/RecentOffersDetail';
 import Library from '../screens/Library';
 import ExpertList from '../screens/ExpertList';
 import ParentingTV from '../screens/ParentingTV';
-
 import Notifications from '../screens/Notifications';
 import WebViewScreen from '../component/WebViewScreen';
 import ServiceSelection from '../screens/ServiceSelection';
@@ -47,14 +46,20 @@ import PregnancyTracker from '../screens/PregnancyTracker';
 import OvulationTracker from '../screens/OvulationTracker';
 import PregnancyDetail from '../screens/PregnancyDetail';
 import OvulationDetail from '../screens/OvulationDetail';
+import PregnancyDetailView from '../screens/PregnancyDetailView.js';
+import EpisodeVideoDetail from '../screens/EpisodeVideoDetail';
+import MoodTracker from '../screens/MoodTracker';
+import MoodTrackerDetail from '../screens/MoodTrackerDetail';
+import Dummy from '../screens/Dommy';
 
 const RootStack = createNativeStackNavigator();
 const Navigators = () => {
   return (
     <RootStack.Navigator
-    // initialRouteName='TrackerLink'
+    // initialRouteName='OvulationDetail'
     >
       {/* <RootStack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} /> */}
+      {/* <RootStack.Screen name="Dommy" component={Dummy} options={{ headerShown: false }} /> */}
       <RootStack.Screen name="splash" component={Splash} options={{ headerShown: false }} />
       <RootStack.Screen name="Introduction" component={Introduction} options={{ headerShown: false }} />
       <RootStack.Screen name="welcome" component={Welcome} options={{ headerShown: false }} />
@@ -101,6 +106,10 @@ const Navigators = () => {
       <RootStack.Screen name='OvulationTracker' component={OvulationTracker} options={{headerShown: false}}/>
       <RootStack.Screen name='PregnancyDetail' component={PregnancyDetail} options={{headerShown: false}}/>
       <RootStack.Screen name='OvulationDetail' component={OvulationDetail} options={{headerShown: false}}/>
+      <RootStack.Screen name='PregnancyDetailView' component={PregnancyDetailView} options={{headerShown: false}}/>
+      <RootStack.Screen name='EpisodeVideoDetail' component={EpisodeVideoDetail} options={{headerShown: false}}/>
+      <RootStack.Screen name='MoodTracker' component={MoodTracker} options={{headerShown: false}}/>
+      <RootStack.Screen name='MoodTrackerDetail' component={MoodTrackerDetail} options={{headerShown: false}}/>
     </RootStack.Navigator>
   );
 };

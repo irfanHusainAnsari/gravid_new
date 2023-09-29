@@ -48,11 +48,22 @@ const RecentBlogsDetail = (props) => {
                 <RenderHtml
                     contentWidth={width}
                     source={{ html: BlogDetail.description }}
+                    tagsStyles={tagsStyles}
                 />
                 {/* <Text style={styles.loremText}>{BlogDetail.description}</Text> */}
             </ScrollView>
         </View>
     );
 };
+
+const tagsStyles = {
+    body: {
+      whiteSpace: 'normal',
+      color: 'black'
+    },
+    a: {
+      color: 'green'
+    }
+  };
 
 export default RecentBlogsDetail;

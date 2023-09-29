@@ -39,11 +39,13 @@ const Programs = props => {
 
   const handleWebinarDetail = item => {
     props.navigation.navigate('ProgramsDetail', {paid: item});
+    setSearchTxt("")
   };
 
   useEffect(() => {
     HomePagedata();
     getCart();
+    setSearchTxt("")
   }, [isFocused]);
 
   const HomePagedata = () => {
@@ -106,19 +108,22 @@ const Programs = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.haddingView}>
+     
+
+    <View style={styles.haddingView}>
         <Text style={styles.haddingTxt}>Programs</Text>
         <TouchableOpacity
-          style={{position:"absolute",right:20,top:15}}
+          style={{ position: "absolute", right: 20, top: 15 }}
           onPress={() => { props.navigation.navigate('Cart') }}>
-          <Image style={styles.cart} source={require('../../assets/images/cart.png')}/>
-          <View style={{position:"absolute",borderWidth:1,borderRadius:100,borderColor:colors.themeColor,width:13,height:13,right:-6,top:-8, backgroundColor:"white"}}>
-            <Text style={{fontSize:10,color:colors.themeColor,marginHorizontal:2.3,marginTop:-2}}>
-            {cartCount}
+          <Image style={styles.cart} source={require('../../assets/images/cart.png')} />
+          <View style={{ position: "absolute", borderWidth: 1, borderRadius: 100, borderColor: colors.themeColor, width: 13, height: 13, right: -6, top: -8, backgroundColor: "white" }}>
+            <Text style={{ fontSize: 10, color: colors.themeColor, marginHorizontal:3, marginTop:-1 }}>
+              {cartCount}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
+      
       <View style={styles.radiusView} />
 
       <View style={styles.searchBoxView}>

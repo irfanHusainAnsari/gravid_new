@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignSelf:"center"
   },
   webinarTitle: {
-    marginVertical: 16,
+    marginTop: 16,
     fontFamily: fonts.OptimaBold,
     color: colors.black,
     fontSize: 16,

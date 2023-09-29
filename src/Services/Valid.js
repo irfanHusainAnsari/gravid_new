@@ -38,15 +38,15 @@ isValidAadharCard = aadhar => {
 },
 isValidMobile = mobile => {
     let regex = /([0-9]){10}$/;
-    return regex.test(mobile)
+    return regex.test(mobile);
 },
 isValidPinCode = pinCode => {
     let regex = /^[1-9][0-9]{5}$/;
-    return regex.test(pinCode)
+    return regex.test(pinCode);
 },
 isValidPassword = password => {
     let regex =  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
-    return regex.test(password)
+    return regex.test(password);
 }
 export {
     isValidMobile,

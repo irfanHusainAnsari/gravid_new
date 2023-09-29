@@ -17,11 +17,13 @@ const styles = StyleSheet.create({
   },
   haddingView: {
     backgroundColor: colors.themeColor,
-    paddingTop: 16,
-    paddingBottom: 40,
-    flexDirection: "row",
-    paddingHorizontal: 24,
-    alignItems: "center"
+   height: 110,
+   paddingTop: 16,
+   paddingBottom: 40,
+   // flexDirection: "row",
+   paddingHorizontal: 24,
+   alignItems: "center",
+   // justifyContent: 'center'
   },
   cart:{
     width: 22,
@@ -33,9 +35,17 @@ const styles = StyleSheet.create({
     flex: 3,
     fontFamily: fonts.OptimaBold,
     color: colors.black,
-    fontSize: 20,
+    fontSize:18,
     textAlign: "center",
-    lineHeight: 32
+    // lineHeight:25,
+    
+  },
+  radiusView: {
+    height: 60,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "white",
+    marginTop: -60,
   },
   mainView: {
     marginTop: -30,
@@ -98,10 +108,6 @@ const styles = StyleSheet.create({
   manflatlistview: {
     backgroundColor: "#ffffff",
     // paddingHorizontal: 6,
-    paddingTop: 30,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    marginTop: -30,
     flex: 1
   },
   newsImg: {

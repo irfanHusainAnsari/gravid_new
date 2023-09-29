@@ -22,6 +22,7 @@ const Library = (props) => {
   const [type, setType] = useState("bookmark")
   const [confirmDeleteModal, setConfirmDeleteModal] = useState(false)
   const [bookmarkDataList, setBookmarkDataList] = useState([])
+  console.log('bookmarkDataList', bookmarkDataList)
   const [recordedList, setRecordedList] = useState([])
   const [removeBookmarkParams, setRemoveBookmarkParams] = useState({})
   const [isLoader, setIsLoader] = useState(false)
@@ -31,7 +32,7 @@ const Library = (props) => {
     if (isFocused) {
       bookmarkList()
       recordedVideo()
-      deleteBookmark()
+      // deleteBookmark()
     }
   }, [isFocused, type])
 
@@ -54,7 +55,7 @@ const Library = (props) => {
     setIsVideoLoader(true)
     Apis.recordedVideo({})
       .then(async (json) => {
-        console.log('recordedVideo=====:', JSON.stringify(json));
+        console.log('recordedVideo=====:',json);
         if (json.status == true) {
           let newData = json?.data?.filter((item) => { return item?.check_payment })
           //  console.log("json.datajson.datajson.datajson.datajson.data" , newData)
@@ -72,6 +73,8 @@ const Library = (props) => {
   }
 
   const handleDelete = (type, id) => {
+    // console.log('type', type)
+    // console.log('id', id)
     setRemoveBookmarkParams({ type, id })
     setConfirmDeleteModal(true)
   }
@@ -91,11 +94,11 @@ const Library = (props) => {
   const renderItemNewsLetter = ({ item }) => {
     return (
       <TouchableOpacity style={styles.NewsLetterView} onPress={item.type == "blog" ? () => props.navigation.navigate("RecentBlogsDetail", { item: item.blogs }) :
-        item.type == "offer" ? () => props.navigation.navigate("RecentOffersDetail", { item: item.offer }) :
+        item.type == "video" ? () => props.navigation.navigate("VideosDetails", { item: item.video}) :
           () => props.navigation.navigate("RecentIssuesDetail", { item: { ...item.magzine, check_payment: item.check_payment } })}>
         <Image source={
           item.type == "blog" ? { uri: imageurl + item.blogs.image } :
-          // item.type == "offer" ? { uri: imageurl + item.offer.image } :
+          item.type == "video" ? { uri: imageurl + item.video.image } :
             { uri: imageurl + item.magzine.image }} style={styles.newsImg} />
         <TouchableOpacity style={styles.wifiCon} onPress={() => handleDelete(item.type, item.type == "blog" ? item.blogs.id :
           item.type == "offer" ? item.offer.id :
@@ -104,10 +107,11 @@ const Library = (props) => {
         </TouchableOpacity>
         <View style={styles.newsleftView}>
           <Text style={styles.issuetitle} numberOfLines={2}>{item.type == "blog" ? item.blogs.title :
+          item.type == "video" ? item.video.title :
             // item.type == "offer" ? item.offer.title :
               item.magzine.title}</Text>
           <Text style={styles.issueDes} numberOfLines={3}>{item.type == "blog" ? item.blogs.short_description :
-            // item.type == "offer" ? item.offer.short_description :
+            item.type == "video" ? item.video.short_description :
               item.magzine.short_description}</Text>
         </View>
       </TouchableOpacity>
@@ -115,8 +119,9 @@ const Library = (props) => {
   };
 
   const renderVideos = ({ item }) => {
+    console.log('item', item)
     return (
-      <TouchableOpacity style={styles.NewsLetterView} onPress={() => props.navigation.navigate("RecordedVideoDetail", { item })}>
+      <TouchableOpacity style={styles.NewsLetterView} onPress={()=>props.navigation.navigate("EpisodeVideoDetail",{item})}>
         <Image source={{ uri: imageurl + item.file }} style={styles.newsImg} />
         <View style={styles.newsleftView}>
           <Text style={styles.issuetitle} numberOfLines={2}>{item.title}</Text>
@@ -165,7 +170,7 @@ const Library = (props) => {
                 </>
               ) : null
             }
-            <Text style={type == "video" ? styles.WebinarActiveBtnTxt : styles.WebinarInactiveBtnTxt}>Recorded videos</Text>
+            <Text style={type == "video" ? styles.WebinarActiveBtnTxt : styles.WebinarInactiveBtnTxt}>Recorded Episode</Text>
           </TouchableOpacity>
         </View>
         {

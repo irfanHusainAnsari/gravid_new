@@ -19,6 +19,7 @@ const RecordedWebinarVidioList = ({ navigation, route }) => {
             episode_id:idvalue,
         };
         Apis.EpisodeVideos(params).then(async json => {
+            console.log('json', json)
             if (json.status == true) {
                 if (json?.data?.length == 0) {
                     setEmpty("No episode vedio")

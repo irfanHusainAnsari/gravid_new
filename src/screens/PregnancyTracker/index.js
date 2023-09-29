@@ -23,27 +23,54 @@ import { useIsFocused } from "@react-navigation/native";
 import Toast from 'react-native-simple-toast';
 
 const PregnancyTracker = props => {
+  const type =props?.route?.params?.types
+  const trackerDate = props?.route?.params?.trackerDate
+  
   const isFocused = useIsFocused();
   const [date, setDate] = useState(new Date());
   const [periodDate, setPeriodDate] = useState("");
+  const [pregnancyText, setPregnancyText] = useState(`This is the disclaimer text in the pregnancy tracker..
+  it is also available in the tracker sheet It is important to note that every woman's pregnancy experience
+  is different, and you may not experience all of these symptoms. If you have any concerns or questions about
+  your symptoms, it is important to talk to your healthcare provider.It is important to note that every woman's
+  pregnancy experience is different, and you may not experience all of these symptoms. If you have any concerns 
+  or questions about your symptoms, it is important to talk to your healthcare provider.`);
+  console.log('periodDate', periodDate)
   const [deliveryDate, setDeliveryDate] = useState("");
   const [navigateDate, setNavigateDate] = useState("");
   const [maximumDate, setMaximumDate] = useState(new Date());
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [isLoader, setIsLoader] = useState(false)
+
+
+useEffect(() => {
+  arrangeDate()
+}, [])
+
+const arrangeDate = ()=>{
+  if (type == "LMP"){
+    setPeriodDate(trackerDate)
+  }else{
+    setDeliveryDate(trackerDate)
+  }
+}
+
+
   const selectDatePeriodDelivery = (type,date) => {
         setNavigateDate(date)
-    console.log('date==========', date)
-    if (type == 'pregnancy') {
+        console.log('date==========', date)
+    if (type == 'LMP') {
       let year = date.toLocaleString('default', {year: 'numeric'});
       let monthh = date.toLocaleString('default', {month: '2-digit'});
       let day = date.toLocaleString('default', {day: '2-digit'});
       let formattedDate = day + '-' + monthh + '-' + year;
+
+      console.log('formattedDateqqqq', formattedDate)
       setPeriodDate(formattedDate);
       setDeliveryDate("");
     } 
-    else if(type == "period"){
+    else if(type == "EDD"){
       let year = date.toLocaleString('default', {year: 'numeric'});
       let monthh = date.toLocaleString('default', {month: '2-digit'});
       let day = date.toLocaleString('default', {day: '2-digit'});
@@ -55,7 +82,8 @@ const PregnancyTracker = props => {
   const submitDate = () => {
       if(periodDate != ""){
         let formdata = new FormData();
-        formdata.append("Imp",periodDate)
+        formdata.append("lmp",periodDate)
+        formdata.append("is_change",1)
         console.log('formdata1', formdata)
         setIsLoader(true)
         Apis.get_TrackerData(formdata)
@@ -63,7 +91,7 @@ const PregnancyTracker = props => {
                     console.log('get_PeriodData ====== ', json);
                     if (json.status == true) {
                       setIsLoader(false)
-                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:navigateDate})
+                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:periodDate,type:"LMP"})
                     } else (json)(
                         Toast.show(json.message, Toast.LONG)
                     )
@@ -72,16 +100,17 @@ const PregnancyTracker = props => {
                     setIsLoader(false)
                 })
     }else if(deliveryDate != ""){
-        let formdata = new FormData();
-        formdata.append("edt",deliveryDate)
-        console.log('formdata2', formdata)
+        let formdataa = new FormData();
+        formdataa.append("edt",deliveryDate)
+        formdataa.append("is_change",1)
+        console.log('formdata2', formdataa)
         setIsLoader(true)
-        Apis.get_TrackerData(formdata)
+        Apis.get_TrackerData(formdataa)
                 .then(async (json) => {
                     console.log('get_DeliveryData ====== ', json);
                     if (json.status == true) {
                       setIsLoader(false)
-                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:navigateDate})
+                      props.navigation.navigate("PregnancyDetail",{json:json,navigateDate:deliveryDate,type:"EDD"})
                     } else (json)(
                         Toast.show(json.message, Toast.LONG)
                     )
@@ -125,7 +154,7 @@ const PregnancyTracker = props => {
                 alignItems: 'center',
               }}>
               <View style={styles.searchBoxView}>
-                <Text>{periodDate}</Text>
+                <Text style={{color:"#000000",fontSize:15,fontFamily:fonts.OptimaBold}}>{periodDate}</Text>
               </View>
               <DatePicker
                 modal
@@ -135,7 +164,7 @@ const PregnancyTracker = props => {
                 maximumDate={maximumDate}
                 onConfirm={date => {
                   setOpen1(false);
-                  selectDatePeriodDelivery("pregnancy",date)
+                  selectDatePeriodDelivery("LMP",date)
                 }}
                 onCancel={() => {
                   setOpen1(false);
@@ -166,7 +195,7 @@ const PregnancyTracker = props => {
         </View>
 
         <View style={[styles.btn]}>
-          <Text style={styles.btnTxt}>Estimated Delivery Date</Text>
+          <Text style={styles.btnTxt}>Estimated Delivery Date(EDD)</Text>
           <View
             style={{
               flex: 1,
@@ -175,17 +204,17 @@ const PregnancyTracker = props => {
               alignItems: 'center',
             }}>
             <View style={styles.searchBoxView}>
-              <Text>{deliveryDate}</Text>
+              <Text style={{color:"#000000",fontSize:15,fontFamily:fonts.OptimaBold}}>{deliveryDate}</Text>
             </View>
             <DatePicker
               modal
               mode="date"
               open={open2}
               date={date}
-              maximumDate={maximumDate}
+              minimumDate={maximumDate}
               onConfirm={date => {
                 setOpen2(false);
-                selectDatePeriodDelivery("period",date)
+                selectDatePeriodDelivery("EDD",date)
               }}
               onCancel={() => {
                 setOpen2(false);
@@ -208,20 +237,39 @@ const PregnancyTracker = props => {
         </View>
 
         <View style={[styles.btn1]}>
-          <TextInput
+          <Text style={{fontFamily:fonts.OptimaDemiBold,color:"#000000",lineHeight:22}}>This is the disclaimer text in the pregnancy tracker..
+            it is also available in the tracker sheet It is important to note that every woman's pregnancy experience
+            is different, and you may not experience all of these symptoms. If you have any concerns or questions about
+            your symptoms, it is important to talk to your healthcare provider.It is important to note that every woman's
+            pregnancy experience is different, and you may not experience all of these symptoms. If you have any concerns 
+            or questions about your symptoms, it is important to talk to your healthcare provider.</Text>
+          {/* <TextInput
             placeholder="Space for disclaimer"
             style={styles.searchBox1}
             multiline={true}
-            // value={searchTxt}
-            // onChangeText={setSearchTxt}
-          />
+            value={ovlutionText}
+            onChangeText={setOvlutionText}
+          /> */}
         </View>
-        <TouchableOpacity
+        <TouchableOpacity 
+              // style={styles.joinWebinarBtn} 
+              style={{backgroundColor: colors.themeColor,
+              width:"95%",
+              alignSelf:"center",
+              borderRadius: 5,
+              marginTop:30,
+              marginBottom:100
+              }}
+              onPress={submitDate}>
+            <Text style={styles.joinWebinarBtnTxt}>Submit</Text>
+          {/* <Text style={styles.joinWebinarBtnTxt}>{isLoader != true ? "Submit" : <ActivityIndicator/> }</Text>  */}
+        </TouchableOpacity>
+        {/* <TouchableOpacity
                 style={styles.joinWebinarBtn}
                 onPress={submitDate}
                 >
                 <Text style={styles.joinWebinarBtnTxt}>Submit</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
       </ScrollView>
     </View>
   );

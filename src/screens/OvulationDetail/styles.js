@@ -141,6 +141,17 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     alignSelf:"center"
   },
+  edittext: {
+    fontSize: 12,
+    fontFamily: fonts.OptimaBold,
+    color: colors.black,
+  },
+  editview: {
+    flexDirection: "row", backgroundColor: "#F8E3DA",
+    alignSelf: "center", paddingVertical: 6,
+    paddingHorizontal: 16, borderRadius: 16,
+    alignItems: "center"
+  },
 });
 
 export default styles;

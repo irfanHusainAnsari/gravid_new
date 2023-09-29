@@ -156,6 +156,7 @@ const EditProfile = (props) => {
                             placeholder={'First Name'}
                             onChangeText={(text) => setUserData({ ...userData, name: text })}
                             value={userData.name}
+                            maxLength={15}
                         />
                     </View>
                     <View style={styles.formInputView}>
@@ -166,6 +167,7 @@ const EditProfile = (props) => {
                             placeholder={'Last Name'}
                             onChangeText={(text) => setUserData({ ...userData, lname: text })}
                             value={userData.lname}
+                            maxLength={15}
                         />
                     </View>
                     <View style={styles.formInputView}>

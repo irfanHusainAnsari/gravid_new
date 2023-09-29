@@ -16,8 +16,12 @@ import { useIsFocused } from '@react-navigation/native';
 const OrderHistory = props => {
   const isFocused = useIsFocused();
   const [isLoader, setIsLoader] = useState(false);
-  const [orderHistoryData, setOrderHistoryData] = useState('');
-  console.log('orderHistoryData', orderHistoryData);
+  const [orderHistoryDataa, setOrderHistoryDataa] = useState('');
+
+  console.log('orderHistoryData', orderHistoryDataa)
+
+  // console.log('orderHistoryData', orderHistoryData);
+
   // var date = new Date(date);
   // var year = date.toLocaleString('default', {year: 'numeric'});
   // var monthh = date.toLocaleString('default', {month: '2-digit'});
@@ -35,7 +39,8 @@ const OrderHistory = props => {
       .then(async json => {
         console.log('getOrderHistoryData', json);
         if (json.status == true) {
-          setOrderHistoryData(json?.data);
+          let data= json?.data?.reverse()
+          setOrderHistoryDataa(data);
         }
         setIsLoader(false);
       })
@@ -45,8 +50,8 @@ const OrderHistory = props => {
       });
   };
 
-  const getOrderDetail = (id) => {
-        props.navigation.navigate("OrderHistoryDetail",{id})
+  const getOrderDetail = (id,currency,Disc) => {
+        props.navigation.navigate("OrderHistoryDetail",{id,currency,Disc})
   }
   
   const OrderHistoryData = ({item}) => {
@@ -61,15 +66,16 @@ const OrderHistory = props => {
     var formattedDate = day + '/' + monthh + '/' + year;
 
     return (
-      <View
+
+      <TouchableOpacity onPress={() => getOrderDetail(item?.id,item?.currency,item?.coupan_amount)}
         style={styles.cardColorContainer}>
         <View style={styles.imageCard}>
-          <TouchableOpacity style={styles.notificationsImageContainer} onPress={() => getOrderDetail(item?.id)}>
+          <View style={styles.notificationsImageContainer}>
             <Image
               style={styles.notificationsImage}
               source={require('../../assets/images/eye.png')}
             />
-          </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.notificationsText}>
           <Text style={styles.textNotificationColor}>
@@ -85,33 +91,57 @@ const OrderHistory = props => {
             </Text>
           </Text>
           <Text style={styles.textNotificationColor}>
-            Payment Id :{' '}
+            Payment Id:{' '}
             <Text style={styles.textTimeNotificationcolor}>{item?.pay_id}</Text>
           </Text>
           <Text style={styles.textNotificationColor}>
-            Status :{' '}
+            Status:{' '}
             <Text style={styles.textTimeNotificationcolor}>
-              {item?.rozerpay_status}
+              {item?.rozerpay_status=="success" ? "Success" : null}
             </Text>
           </Text>
-          <Text style={styles.textNotificationColor}>
+          {/* <Text style={styles.textNotificationColor}>
             Currency :{' '}
             <Text style={styles.textTimeNotificationcolor}>
               {item?.currency}
             </Text>
-            <Text style={styles.textNotificationColor}>
-              {' '}
-              Amount :{' '}
-              <Text style={styles.textTimeNotificationcolor}>
-                {item?.amount}
-              </Text>
+          </Text> */}
+          <Text style={styles.textNotificationColor}>
+          Paid Amount:{' '}
+            <Text style={styles.textTimeNotificationcolor}>
+              {item?.amount}
             </Text>
           </Text>
-          <Text style={{fontFamily: fonts.OptimaMedium, fontSize: 12}}>
-            {formattedDate} {hours}:{minutes} {ampm}
+          <Text style={styles.textNotificationColor}>
+          Total Amount:{' '}
+            <Text style={styles.textTimeNotificationcolor}>
+              {item?.total_amount}
+            </Text>
           </Text>
+
+          <Text style={styles.textNotificationColor}>
+          GST Amount:{' '}
+            <Text style={styles.textTimeNotificationcolor}>
+              {item?.tax_amount}
+            </Text>
+          </Text>
+
+          {/* <Text style={styles.textNotificationColor}>
+          Discount Amount :{' '}
+            <Text style={styles.textTimeNotificationcolor}>
+              {item?.coupan_amount}
+            </Text>
+          </Text> */}
+           <Text style={styles.textNotificationColor}>
+          Date:{' '}
+            <Text style={styles.textTimeNotificationcolor}>
+            {formattedDate} {hours}:{minutes} {ampm}
+            </Text>
+          </Text>
+          
+         
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
@@ -140,7 +170,7 @@ const OrderHistory = props => {
         ) : (
           <ScrollView showsVerticalScrollIndicator={false}>
             <FlatList
-              data={orderHistoryData}
+              data={orderHistoryDataa}
               keyExtractor={item => item.id}
               renderItem={OrderHistoryData}
               ItemSeparatorComponent={() => (

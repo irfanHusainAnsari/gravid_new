@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 
  export async function requestUserPermission() {
- 
   const authStatus = await messaging().requestPermission();
   console.log('permission',authStatus)
   const enabled =

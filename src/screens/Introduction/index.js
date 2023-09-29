@@ -26,8 +26,8 @@ const Introduction = (props) => {
 
   const Welcomescreendata = () => {
     const params = {
-      
     }
+    
     Apis.Welcomescreendata(params)
       .then(async (json) => {
         console.log('WelcomeScreendata========:', JSON.stringify(json));

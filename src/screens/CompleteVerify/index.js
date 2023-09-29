@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const CompleteVerify = (props) => {
   const [momlist, setMomList] = useState([])
   const [righticon, setRighIcon] = useState('0')
-
+console.log('righticon', righticon)
   const handleSubmit = async () => {
     props.navigation.reset({ index: 0, routes: [{ name: "BottomTabs" }] })
     // props.navigation.navigate("BottomTabs")
@@ -29,13 +29,14 @@ const CompleteVerify = (props) => {
   }, [])
 
   const selectArrow = async (index, item) => {
+    console.log('item', item)
+    console.log('index', index)
     await AsyncStorage.setItem('catID', JSON.stringify(item.id))
     setRighIcon(index)
   }
 
   const CategoryApi = () => {
     const params = {
-
     }
     Apis.CategoryApi(params)
       .then(async (json) => {
@@ -43,11 +44,12 @@ const CompleteVerify = (props) => {
         if (json.status == true) {
           setMomList(json.data)
         }
-
       })
   }
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item, index }) => 
+  (
+   
     <View>
       <TouchableOpacity onPress={() => { selectArrow(index, item) }} style={[styles.btn]}>
         <View style={styles.imgView}>
@@ -79,7 +81,9 @@ const CompleteVerify = (props) => {
               renderItem={renderItem}
             />
           </View>
-          <TouchableOpacity style={styles.signUpBtn} onPress={() => { handleSubmit() }}>
+          <TouchableOpacity style={styles.signUpBtn} 
+                    onPress={() => { handleSubmit() }}
+                    >
             <Text style={styles.signUpBtnTxt}>Submit</Text>
           </TouchableOpacity>
         </View>

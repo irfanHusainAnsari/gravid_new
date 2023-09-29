@@ -25,7 +25,7 @@ const Welcome = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.child}>
-        <Image style={{ height: 178, width: 178 }} source={require('../../assets/images/welcome-logo.png')} />
+        <Image style={{ height: 178, width: 178 }} source={require('../../assets/images/logo_orange_welcome.png')}/>
       </View>
       <Text style={styles.welcmTxt}>Welcome</Text>
       <View style={styles.btnMainView}>

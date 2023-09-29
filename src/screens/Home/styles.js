@@ -9,11 +9,14 @@ const styles = StyleSheet.create({
     
   },
   child: {
-    
+    width:"100%",
     alignItems: "center",
-    marginHorizontal: 24,
-    marginVertical: 20,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     flexDirection: "row",
+    borderBottomColor:colors.themeColor,
+    borderWidth:.2
+    // backgroundColor:"red"
     
     
   },
@@ -68,7 +71,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    marginTop:8
+
   },
   searchBox: {
     fontFamily: fonts.OptimaBold,
@@ -128,7 +133,8 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    // backgroundColor:"red"
   },
   haddingTxt: {
     fontFamily: fonts.OptimaBold,
@@ -239,7 +245,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginVertical: 20,
     // marginTop:20,
-    height: 200
+    height:180,
+
+    // backgroundColor:"green"
   },
   endImg: {
     width: "100%",

@@ -66,7 +66,7 @@ const CurrentIssue = (props) => {
         </View>
           <Text style={styles.issuetitle}>{item.title}</Text>
           <Text style={styles.issueDes}>{item.short_description}</Text>
-          <View style={styles.downloadmanview}>
+          {/* <View style={styles.downloadmanview}>
             <TouchableOpacity style={styles.bkmrkBtn}>
               <View style={styles.bkmrkIcn}>
                 <Image source={require('../../assets/images/read.png')}
@@ -81,7 +81,7 @@ const CurrentIssue = (props) => {
               </View>
               <Text style={styles.bkmrkBtnTxt}>Download</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </TouchableOpacity>
     );
